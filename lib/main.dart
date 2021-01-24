@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/screens/init.dart';
 import 'screens/login.dart';
 import 'screens/home.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Manager App',
-      initialRoute: 'login',
+      initialRoute: '/',
       routes: _buildRoutes(context),
       theme: _builTheme(),
     );
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
 
   _buildRoutes(context) {
     return {
+      '/': (context) => Init(),
       'login': (context) => Login(),
       'home': (context) => Home(),
     };
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
 
   _builTheme() {
     return ThemeData(
+      scaffoldBackgroundColor: Colors.white,
       primaryColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
