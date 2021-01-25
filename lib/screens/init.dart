@@ -11,9 +11,9 @@ class Init extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'Bem vindo(a)!',
+              'Welcome!',
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: 30.0,
                 fontWeight: FontWeight.w800,
                 fontStyle: FontStyle.italic,
               ),
@@ -22,35 +22,40 @@ class Init extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  'Deseja Utilizar nosso App como:',
+                  'Do you want to use the App as...',
                   style: TextStyle(
-                    fontSize: 15.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Container(
+                  padding: EdgeInsets.only(top: 5),
                   width: 125,
                   child: RaisedButton(
                     child: Text('CEO'),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('login');
+                      Navigator.of(context)
+                          .pushReplacementNamed('login', arguments: 'ceo');
                     },
                   ),
                 ),
                 Container(
                   width: 125,
                   child: RaisedButton(
-                    child: Text('Funcionário(a)'),
+                    child: Text('Employee'),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('login');
+                      Navigator.of(context)
+                          .pushReplacementNamed('login', arguments: 'employee');
                     },
                   ),
                 ),
                 Container(
                   width: 125,
                   child: RaisedButton(
-                    child: Text('Cliente'),
-                    onPressed: () {},
+                    child: Text('Client'),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('home');
+                    },
                   ),
                 ),
               ],

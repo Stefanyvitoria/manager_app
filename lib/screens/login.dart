@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/constantes.dart';
+import 'package:manager_app/models/user.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,6 +10,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
+    User usuario = User(); //start current user.
+    usuario.type =
+        ModalRoute.of(context).settings.arguments; // recovery user type.
     return Scaffold(
         body: Center(
       child: Padding(
@@ -18,7 +22,7 @@ class _LoginState extends State<Login> {
           children: [
             ConstantesImages.sizedLogo,
             Text(
-              'Nome de usuário ou e-mail:',
+              'Username or email:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
@@ -26,10 +30,14 @@ class _LoginState extends State<Login> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextFormField(),
+              child: TextFormField(
+                onChanged: (text) {
+                  usuario.email = text;
+                },
+              ),
             ),
             Text(
-              'Senha:',
+              'Password:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
@@ -38,26 +46,35 @@ class _LoginState extends State<Login> {
             Padding(
               padding: const EdgeInsets.only(
                   left: 8.0, right: 8.0, top: 8.0, bottom: 0.0),
-              child: TextFormField(),
+              child: TextFormField(
+                obscureText: true,
+                onChanged: (text) {
+                  usuario.password = text;
+                },
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FlatButton(
-                  child: Text('Esqueci minha senha.'),
+                  padding: EdgeInsets.only(right: 25),
+                  child: Text('Forgot password'),
                   onPressed: () {},
                 ),
               ],
             ),
             Container(
-              width: 125,
+              width: 150,
               child: RaisedButton(
-                child: Text('Entrar'),
-                onPressed: () {},
+                child: Text('Login'),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed('home', arguments: usuario);
+                },
               ),
             ),
             FlatButton(
-              child: Text('Cadastre-se.'),
+              child: Text('Register.'),
               onPressed: () {},
             ),
           ],

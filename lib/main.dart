@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 
   _builTheme() {
     return ThemeData(
-      scaffoldBackgroundColor: Colors.blue[100],
+      scaffoldBackgroundColor: Colors.teal[100],
       primaryColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
