@@ -14,3 +14,11 @@ class ConstantesImages {
     ),
   );
 }
+
+class ConstantesSpaces {
+  static final spaceDivider = Container(
+    padding: EdgeInsets.only(top: 10, bottom: 10),
+    child: Divider(),
+  );
+  static final spacer = Container(height: 30);
+}
