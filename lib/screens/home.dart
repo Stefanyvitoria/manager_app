@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/user.dart';
+import 'package:manager_app/widgets/widgets_home.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,13 +12,16 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     User user = ModalRoute.of(context).settings.arguments;
     if (user == null) user = User();
+
     return Scaffold(
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {},
-          child: Text(user.type),
-        ),
-      ),
+      appBar: buildAppBarHomeCEO(user),
+      body: buildHomeBody(user),
     );
+  }
+
+  buildHomeBody(User user) {
+    if (user.type == "ceo") {
+      return buildHomebodyCEO();
+    }
   }
 }

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   _builTheme() {
     return ThemeData(
       scaffoldBackgroundColor: Colors.teal[100],
-      primaryColor: Colors.grey,
+      primaryColor: Colors.teal[300],
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(

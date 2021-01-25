@@ -10,8 +10,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    User usuario = User(); //start current user.
-    usuario.type =
+    User user = User(); //start current user.
+    user.type =
         ModalRoute.of(context).settings.arguments; // recovery user type.
     return Scaffold(
         body: Center(
@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onChanged: (text) {
-                  usuario.email = text;
+                  user.email = text;
                 },
               ),
             ),
@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
               child: TextFormField(
                 obscureText: true,
                 onChanged: (text) {
-                  usuario.password = text;
+                  user.password = text;
                 },
               ),
             ),
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
                 child: Text('Login'),
                 onPressed: () {
                   Navigator.of(context)
-                      .pushReplacementNamed('home', arguments: usuario);
+                      .pushReplacementNamed('home', arguments: user);
                 },
               ),
             ),
