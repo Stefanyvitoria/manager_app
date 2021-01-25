@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ConstantesImages {
-  static final AssetImage logo = AssetImage('images/logo.jpg');
-  static final AssetImage logoInvert = AssetImage('images/logo_invert.jpg');
+  static final AssetImage logo = AssetImage('images/logo.png');
+  //static final AssetImage logoInvert = AssetImage('images/logo_invert.jpg');
   static final Widget sizedLogo = Container(
     width: 300,
     height: 200,
