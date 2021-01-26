@@ -2,7 +2,7 @@ import 'package:manager_app/constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/user.dart';
 
-buildHomebodyCEO() {
+buildHomebodyCEO(BuildContext context) {
   return ListView(
     scrollDirection: Axis.vertical,
     padding: EdgeInsets.only(top: 50, left: 20, right: 20),
@@ -18,7 +18,10 @@ buildHomebodyCEO() {
       ),
       ConstantesSpaces.spaceDivider,
       ListTile(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(
+              context, 'finances'); //Navigator to go to finance's CEO page
+        },
         leading: Icon(Icons.account_balance_wallet),
         title: Text(
           'Finanças',
