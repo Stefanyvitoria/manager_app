@@ -15,13 +15,13 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: buildAppBarHomeCEO(user),
-      body: buildHomeBody(user),
+      body: buildHomeBody(user, context),
     );
   }
 
-  buildHomeBody(User user) {
+  buildHomeBody(User user, BuildContext context) {
     if (user.type == "ceo") {
-      return buildHomebodyCEO();
+      return buildHomebodyCEO(context);
     }
   }
 }
