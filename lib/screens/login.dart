@@ -60,8 +60,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.only(right: 25),
                   child: Text('Forgot password'),
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed('forgotPassword');
+                    Navigator.of(context).pushNamed('forgotPassword');
                   },
                 ),
               ],
@@ -71,14 +70,17 @@ class _LoginState extends State<Login> {
               child: RaisedButton(
                 child: Text('Login'),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed('home', arguments: user);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      'home', ModalRoute.withName('/'),
+                      arguments: user);
                 },
               ),
             ),
             FlatButton(
               child: Text('Register.'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed('register', arguments: user);
+              },
             ),
           ],
         ),

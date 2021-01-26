@@ -4,6 +4,7 @@ import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
+import 'package:manager_app/screens/register_user.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       'home': (context) => Home(),
       'productList': (context) => ClientListTile(),
       'forgotPassword': (context) => ForgotPassword(),
+      'register': (context) => Register()
     };
   }
 
