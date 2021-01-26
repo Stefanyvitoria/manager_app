@@ -1,5 +1,11 @@
 class Company {
-  String name, numberEmployee, nameCEO;
+  String name, nameCEO, telephone;
+  List employee;
 
-  Company({this.name = "company", this.nameCEO, this.numberEmployee});
+  Company({
+    this.name = "company",
+    this.nameCEO,
+    this.employee,
+    this.telephone,
+  });
 }

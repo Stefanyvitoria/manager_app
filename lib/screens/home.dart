@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/company.dart';
 import 'package:manager_app/models/user.dart';
 import 'package:manager_app/constantes.dart';
+import 'package:manager_app/models/product.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -54,7 +56,23 @@ class _HomeState extends State<Home> {
         ],
       );
     } else {
-      return null;
+      return AppBar(
+        title: Text(
+          'SR Manager - Consulta',
+          style: TextStyle(fontSize: 20),
+        ),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.black54,
+            ),
+          ),
+        ],
+      );
     }
   }
 
@@ -143,13 +161,6 @@ class _HomeState extends State<Home> {
             ),
           ),
           ConstantesSpaces.spacer,
-          Container(
-            width: 200,
-            height: 300,
-            color: Colors.grey[400],
-            child: Center(child: Text("Algum gráfico?")),
-          ),
-          ConstantesSpaces.spacer,
         ],
       );
     } else if (user.type == "employee") {
@@ -161,7 +172,7 @@ class _HomeState extends State<Home> {
             title: Text(
               '${user.email}\n${user.name}', //Text(user.company.name) *****,
               style: TextStyle(
-                fontSize: 30.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.w800,
                 fontStyle: FontStyle.italic,
               ),
@@ -235,7 +246,55 @@ class _HomeState extends State<Home> {
         ],
       );
     } else {
-      return null;
+      //String product;
+      List<Product> productsList = [
+        Product(
+          name: 'Product 01',
+          company: Company(name: 'Company 01'),
+        ),
+        Product(
+          name: 'Product 02',
+          company: Company(name: 'Company 02'),
+        ),
+        Product(
+          name: 'Product 03',
+          company: Company(name: 'Company 03'),
+        ),
+      ];
+      return ListView(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+        children: [
+          Center(
+            child: Text(
+              'Insira o nome do produto:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          TextFormField(
+            onChanged: (text) {
+              //product = text;
+              //print(product);
+            },
+          ),
+          Align(
+            child: Container(
+              width: 150,
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(
+                    'productList',
+                    arguments: productsList,
+                  );
+                },
+                child: Text('Consultar'),
+              ),
+            ),
+          ),
+        ],
+      );
     }
   }
 }

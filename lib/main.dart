@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/init.dart';
 import 'screens/login.dart';
 import 'screens/home.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       '/': (context) => Init(),
       'login': (context) => Login(),
       'home': (context) => Home(),
+      'productList': (context) => ClientListTile(),
     };
   }
 
