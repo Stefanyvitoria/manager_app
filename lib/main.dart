@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/expenses.dart';
 import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
-import 'screens/login.dart';
-import 'screens/home.dart';
+import 'package:manager_app/screens/login.dart';
+import 'package:manager_app/screens/home.dart';
+import 'package:manager_app/screens/forgot_password.dart';
+import 'package:manager_app/screens/register_user.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
       '/': (context) => Init(),
       'login': (context) => Login(),
       'home': (context) => Home(),
+      'productList': (context) => ClientListTile(),
+      'forgotPassword': (context) => ForgotPassword(),
+      'register': (context) => Register(),
       'finances': (context) => Finances(),
       'expenses': (context) => Expenses(),
     };

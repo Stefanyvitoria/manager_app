@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ConstantesImages {
   static final AssetImage logo = AssetImage('images/logo.png');
-  //static final AssetImage logoInvert = AssetImage('images/logo_invert.jpg');
+  static final AssetImage pLogo = AssetImage('images/m_logo.png');
   static final Widget sizedLogo = Container(
     width: 300,
     height: 200,
@@ -21,4 +21,5 @@ class ConstantesSpaces {
     child: Divider(),
   );
   static final spacer = Container(height: 30);
+  static final spacermin = Container(height: 15);
 }

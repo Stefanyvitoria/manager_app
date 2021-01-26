@@ -54,7 +54,7 @@ class Init extends StatelessWidget {
                   child: RaisedButton(
                     child: Text('Client'),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('home');
+                      Navigator.of(context).pushNamed('home');
                     },
                   ),
                 ),
