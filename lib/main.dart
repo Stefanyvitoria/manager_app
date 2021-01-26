@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
+import 'package:manager_app/screens/expenses.dart';
+import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
       'home': (context) => Home(),
       'productList': (context) => ClientListTile(),
       'forgotPassword': (context) => ForgotPassword(),
-      'register': (context) => Register()
+      'register': (context) => Register(),
+      'finances': (context) => Finances(),
+      'expenses': (context) => Expenses(),
     };
   }
 
