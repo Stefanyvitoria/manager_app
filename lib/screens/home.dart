@@ -81,7 +81,9 @@ class _HomeState extends State<Home> {
           ),
           ConstantesSpaces.spaceDivider,
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'finances');
+            },
             leading: Icon(Icons.account_balance_wallet),
             title: Text(
               'Finanças',
