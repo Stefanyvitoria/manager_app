@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
 import 'screens/login.dart';
 import 'screens/home.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       '/': (context) => Init(),
       'login': (context) => Login(),
       'home': (context) => Home(),
+      'finances': (context) => Finances(),
     };
   }
 
