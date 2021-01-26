@@ -18,17 +18,6 @@ class _ClientListTileState extends State<ClientListTile> {
           'SR Manager - Consulta',
           style: TextStyle(fontSize: 20),
         ),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.black54,
-            ),
-          ),
-        ],
       ),
       body: ListView.builder(
         itemCount: productsList.length,

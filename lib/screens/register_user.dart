@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/constantes.dart';
 
-class ForgotPassword extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailControler = TextEditingController();
-    TextEditingController emailControler2 = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recover Password'),
+        title: Text('Register'),
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: [
           Center(
             child: Text(
-              'Insira seu email:',
+              'Name:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
@@ -28,14 +26,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
           ),
           Container(
-            child: TextFormField(
-              controller: emailControler,
-            ),
+            child: TextFormField(),
           ),
-          ConstantesSpaces.spacer,
+          ConstantesSpaces.spacermin,
           Center(
             child: Text(
-              'Confirmar email:',
+              'Email:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
@@ -43,23 +39,47 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
           ),
           Container(
-            child: TextFormField(
-              controller: emailControler2,
+            child: TextFormField(),
+          ),
+          ConstantesSpaces.spacermin,
+          Center(
+            child: Text(
+              'Password:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+              ),
             ),
+          ),
+          Container(
+            child: TextFormField(),
+          ),
+          ConstantesSpaces.spacermin,
+          Center(
+            child: Text(
+              'confirm password:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Container(
+            child: TextFormField(),
           ),
           Align(
             child: Container(
               padding: EdgeInsets.only(top: 7),
               width: 150,
               child: RaisedButton(
-                child: Text('Confirmar email'),
+                child: Text('Register'),
                 onPressed: () {
                   //Validate
                   _buildPopup(context);
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -70,8 +90,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Nova senha enviada por email.'),
-          content: Text('Faça login com sua senha atualizada.'),
+          title: Text('Success.'),
           actions: [
             FlatButton(
               child: Text('Ok'),

@@ -21,4 +21,5 @@ class ConstantesSpaces {
     child: Divider(),
   );
   static final spacer = Container(height: 30);
+  static final spacermin = Container(height: 15);
 }
