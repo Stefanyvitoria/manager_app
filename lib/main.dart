@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/init.dart';
-import 'screens/login.dart';
-import 'screens/home.dart';
+import 'package:manager_app/screens/login.dart';
+import 'package:manager_app/screens/home.dart';
+import 'package:manager_app/screens/forgot_password.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       'login': (context) => Login(),
       'home': (context) => Home(),
       'productList': (context) => ClientListTile(),
+      'forgotPassword': (context) => ForgotPassword(),
     };
   }
 
