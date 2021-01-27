@@ -94,7 +94,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "employees");
+            },
             leading: Icon(Icons.people),
             title: Text(
               'Funcionários',

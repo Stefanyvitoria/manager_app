@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
+import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/screens/expenses.dart';
 import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
       'sales': (context) => Sales(),
       'editSale': (context) => EditSale(),
       'addSale': (context) => AddSale(),
+      'employees': (context) => Employees(),
+      'addEmployee': (context) => AddEmployee(),
+      'editEmployee': (context) => EditEmployee(),
     };
   }
 
