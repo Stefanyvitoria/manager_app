@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
+import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/screens/expenses.dart';
 import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
@@ -7,7 +8,11 @@ import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
 import 'package:manager_app/screens/profile.dart';
+import 'package:manager_app/screens/notes.dart';
+import 'package:manager_app/screens/products.dart';
+import 'package:manager_app/screens/ranking.dart';
 import 'package:manager_app/screens/register_user.dart';
+import 'package:manager_app/screens/sales.dart';
 import 'package:manager_app/screens/settings.dart';
 
 void main() {
@@ -38,6 +43,17 @@ class MyApp extends StatelessWidget {
       'register': (context) => Register(),
       'finances': (context) => Finances(),
       'expenses': (context) => Expenses(),
+      'sales': (context) => Sales(),
+      'editSale': (context) => EditSale(),
+      'addSale': (context) => AddSale(),
+      'employees': (context) => Employees(),
+      'addEmployee': (context) => AddEmployee(),
+      'editEmployee': (context) => EditEmployee(),
+      'products': (context) => Products(),
+      'addProduct': (context) => AddProduct(),
+      'editProduct': (context) => EditProduct(),
+      'ranking': (context) => Ranking(),
+      'notes': (context) => Notes(),
       'settings': (context) => Settings(),
       'profile': (context) => Profile(),
     };

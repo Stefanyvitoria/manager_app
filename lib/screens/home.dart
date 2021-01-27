@@ -100,7 +100,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "employees");
+            },
             leading: Icon(Icons.people),
             title: Text(
               'Employees',
@@ -111,7 +113,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "products");
+            },
             leading: Icon(Icons.inbox_rounded),
             title: Text(
               'Products',
@@ -122,7 +126,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'sales', arguments: user);
+            },
             leading: Icon(Icons.attach_money),
             title: Text(
               'Sales',
@@ -180,7 +186,9 @@ class _HomeState extends State<Home> {
           ),
           ConstantesSpaces.spaceDivider,
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "ranking");
+            },
             leading: Icon(
               Icons.star,
               color: Colors.black54,
@@ -194,7 +202,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "sales", arguments: user);
+            },
             leading: Icon(
               Icons.attach_money,
               color: Colors.black54,
@@ -208,7 +218,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'notes');
+            },
             leading: Icon(Icons.book),
             title: Text(
               'Notes',
