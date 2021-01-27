@@ -7,6 +7,7 @@ import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
+import 'package:manager_app/screens/profile.dart';
 import 'package:manager_app/screens/notes.dart';
 import 'package:manager_app/screens/products.dart';
 import 'package:manager_app/screens/ranking.dart';
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: _buildRoutes(context),
       theme: _builThemeLigth(),
+      darkTheme: _builThemeDark(),
+      themeMode: ThemeMode.light,
     );
   }
 
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
       'notes': (context) => Notes(),
       'settings': (context) => Settings(),
       'statistics': (context) => Statistics(),
+      'profile': (context) => Profile(),
     };
   }
 
@@ -62,6 +66,22 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.teal[100],
       primaryColor: Colors.teal[300],
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(
+            5.0,
+          ),
+        ),
+        contentPadding: EdgeInsets.all(16.0),
+      ),
+    );
+  }
+
+  _builThemeDark() {
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: Colors.grey[700],
+      primaryColor: Colors.grey[850],
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(

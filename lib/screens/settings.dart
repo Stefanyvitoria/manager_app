@@ -35,7 +35,9 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              _buildPopup(context, 'Change Password');
+            },
             title: Text(
               'Change Password',
               style: TextStyle(
@@ -45,7 +47,9 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              _buildPopup(context, 'Delete Account');
+            },
             title: Text(
               'Delete Account',
               style: TextStyle(
@@ -55,7 +59,9 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              _buildPopup(context, 'Support');
+            },
             title: Text(
               'Support',
               style: TextStyle(
@@ -65,7 +71,9 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              _buildPopup(context, 'About');
+            },
             title: Text(
               'About',
               style: TextStyle(
@@ -76,6 +84,26 @@ class _SettingsState extends State<Settings> {
           ),
         ],
       ),
+    );
+  }
+
+  _buildPopup(context, txt) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$txt'),
+          content: Text('(missing add functionality)'),
+          actions: [
+            FlatButton(
+              child: Text('Confirm'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

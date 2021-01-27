@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/product.dart';
 
 class ClientListTile extends StatefulWidget {
+  //Screen that displays the list with the consulted product.
   @override
   _ClientListTileState createState() => _ClientListTileState();
 }
@@ -15,7 +16,7 @@ class _ClientListTileState extends State<ClientListTile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'SR Manager - Consulta',
+          'SR Manager',
           style: TextStyle(fontSize: 20),
         ),
       ),
