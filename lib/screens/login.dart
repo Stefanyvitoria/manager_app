@@ -58,7 +58,7 @@ class _LoginState extends State<Login> {
               children: [
                 FlatButton(
                   padding: EdgeInsets.only(right: 25),
-                  child: Text('Forgot password'),
+                  child: Text('Forgot password.'),
                   onPressed: () {
                     Navigator.of(context).pushNamed('forgotPassword');
                   },

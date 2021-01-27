@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Finances extends StatefulWidget {
-  String liquidMoney = "1000.00 *only demonstrative*";
+  final String liquidMoney = "1000.00 *only demonstrative*";
   @override
   _FinancesState createState() => _FinancesState();
 }

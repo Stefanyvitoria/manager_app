@@ -7,6 +7,7 @@ import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
 import 'package:manager_app/screens/register_user.dart';
+import 'package:manager_app/screens/settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Manager App',
       initialRoute: '/',
       routes: _buildRoutes(context),
-      theme: _builTheme(),
+      theme: _builThemeLigth(),
     );
   }
 
@@ -34,11 +35,13 @@ class MyApp extends StatelessWidget {
       'register': (context) => Register(),
       'finances': (context) => Finances(),
       'expenses': (context) => Expenses(),
+      'settings': (context) => Settings(),
     };
   }
 
-  _builTheme() {
+  _builThemeLigth() {
     return ThemeData(
+      brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.teal[100],
       primaryColor: Colors.teal[300],
       inputDecorationTheme: InputDecorationTheme(
