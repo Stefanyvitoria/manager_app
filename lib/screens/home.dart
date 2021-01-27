@@ -22,6 +22,9 @@ class _HomeState extends State<Home> {
   }
 
   _builAppBarHome(User user) {
+    //Returns the CEO bar app if user.type equals 'ceo'.
+    // Returns the employee bar app if user.type equals 'employee'.
+    // Returns the client bar app if user.type equals 'client'.
     if (user.type == "ceo") {
       return AppBar(
         title: Text('User.name'),
@@ -66,6 +69,9 @@ class _HomeState extends State<Home> {
   }
 
   _builBodyHome(User user) {
+    //Returns the CEO body if user.type equals 'ceo'.
+    //Returns the staff if user.type is equal to 'employee'.
+    //Returns the customer body if user.type is equal to 'customer'.
     if (user.type == "ceo") {
       return ListView(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),

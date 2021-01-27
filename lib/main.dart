@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: _buildRoutes(context),
       theme: _builThemeLigth(),
+      darkTheme: _builThemeDark(),
+      themeMode: ThemeMode.light,
     );
   }
 
@@ -46,6 +48,22 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.teal[100],
       primaryColor: Colors.teal[300],
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(
+            5.0,
+          ),
+        ),
+        contentPadding: EdgeInsets.all(16.0),
+      ),
+    );
+  }
+
+  _builThemeDark() {
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: Colors.grey[700],
+      primaryColor: Colors.grey[850],
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(

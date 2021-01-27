@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/product.dart';
 
 class ClientListTile extends StatefulWidget {
+  //Screen that displays the list with the consulted product.
   @override
   _ClientListTileState createState() => _ClientListTileState();
 }

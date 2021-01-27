@@ -22,6 +22,7 @@ class _ProfileState extends State<Profile> {
   }
 
   _buildBodyProfileCEO(User user) {
+    //Returns the CEO body if user.type equals 'ceo'.
     return ListView(
       padding: EdgeInsets.only(top: 25),
       children: [
@@ -171,6 +172,7 @@ class _ProfileState extends State<Profile> {
   }
 
   _buildBodyProfileEmployee(User user) {
+    //Returns the staff if user.type is equal to 'employee'.
     return ListView(
       padding: EdgeInsets.only(top: 25),
       children: [
