@@ -1,0 +1,252 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class Products extends StatefulWidget {
+  @override
+  _ProductsState createState() => _ProductsState();
+}
+
+class _ProductsState extends State<Products> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Products",
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, 'addProduct');
+        },
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+        backgroundColor: Colors.teal[300],
+      ),
+      body: ListView(
+        //will be a listview.builder stream
+        children: [
+          Dismissible(
+            onDismissed: (direction) {},
+            child: ListTile(
+                leading: Icon(Icons.point_of_sale),
+                title: Text("Product1"),
+                subtitle: Text("Company: company1"),
+                trailing: FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'editProduct');
+                  },
+                  child: Icon(Icons.edit),
+                ),
+                onTap: () {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            AlertDialog(
+                              titlePadding: EdgeInsets.only(
+                                  top: 40, bottom: 20, left: 30, right: 10),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ],
+                              title: Text(
+                                "Product1\ncompany: company1\nvalue: R\$ 10,00",
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                }),
+            key: Key("3"),
+            background: Container(
+              color: Colors.red[300],
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsets.only(left: 40, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.delete),
+                    Icon(Icons.delete),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EditProduct extends StatefulWidget {
+  @override
+  _EditProductState createState() => _EditProductState();
+}
+
+class _EditProductState extends State<EditProduct> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Edit Product",
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width, //size of screen
+          height: MediaQuery.of(context).size.height, //size of screen
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Name:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Company:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Value:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 150,
+                  height: 40,
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Confirm',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddProduct extends StatefulWidget {
+  @override
+  _AddProductState createState() => _AddProductState();
+}
+
+class _AddProductState extends State<AddProduct> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "New Product",
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width, //size of screen
+          height: MediaQuery.of(context).size.height, //size of screen
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Name:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Company:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Value:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 150,
+                  height: 40,
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Confirm',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

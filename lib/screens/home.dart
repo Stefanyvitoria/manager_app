@@ -107,7 +107,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "products");
+            },
             leading: Icon(Icons.inbox_rounded),
             title: Text(
               'Produtos',
