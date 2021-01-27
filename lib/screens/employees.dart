@@ -68,7 +68,7 @@ class _EmployeesState extends State<Employees> {
                                 ),
                               ],
                               title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\n",
+                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
                                 style: TextStyle(color: Colors.grey[800]),
                               ),
                             ),
@@ -127,7 +127,7 @@ class _EmployeesState extends State<Employees> {
                                 ),
                               ],
                               title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\n",
+                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
                                 style: TextStyle(color: Colors.grey[800]),
                               ),
                             ),
@@ -186,7 +186,7 @@ class _EmployeesState extends State<Employees> {
                                 ),
                               ],
                               title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\n",
+                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
                                 style: TextStyle(color: Colors.grey[800]),
                               ),
                             ),
@@ -432,7 +432,7 @@ class DataSearchEmployee extends SearchDelegate<String> {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {},
-        leading: Icon(Icons.money),
+        leading: Icon(Icons.person),
         title: RichText(
           text: TextSpan(
             text: suggestionList[index].substring(0, query.length),
