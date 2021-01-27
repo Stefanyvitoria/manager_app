@@ -236,7 +236,7 @@ buildAppbarSales(User user, BuildContext context) {
         actions: [
           FlatButton(
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
+              showSearch(context: context, delegate: DataSearchSale());
             },
             child: Icon(Icons.search),
           ),
@@ -249,7 +249,7 @@ buildAppbarSales(User user, BuildContext context) {
         actions: [
           FlatButton(
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
+              showSearch(context: context, delegate: DataSearchSale());
             },
             child: Icon(Icons.search),
           ),
@@ -697,7 +697,7 @@ buildBodySales(User user, BuildContext context) {
   }
 }
 
-class DataSearch extends SearchDelegate<String> {
+class DataSearchSale extends SearchDelegate<String> {
   //function to search bar on sales page
   final sales = [
     "Sale1",

@@ -11,10 +11,17 @@ class _ProductsState extends State<Products> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Products",
-        ),
-      ),
+          title: Text(
+            "Products",
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearchProduct());
+              },
+              child: Icon(Icons.search),
+            ),
+          ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, 'addProduct');
@@ -247,6 +254,81 @@ class _AddProductState extends State<AddProduct> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DataSearchProduct extends SearchDelegate<String> {
+  //function to search bar on sales page
+  final sales = [
+    "Product1",
+    "Product2",
+    "Product3",
+    "Product4",
+    "Product5",
+  ];
+  final recentSales = [
+    "Product1",
+    "Product2",
+    "Product3",
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //button to erase the search bar words
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //a button to close search bar
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // go to the function when press a option
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show a list of suggestions
+    final suggestionList = query.isEmpty
+        ? recentSales
+        : sales.where((p) => p.startsWith(query)).toList();
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {},
+        leading: Icon(Icons.money),
+        title: RichText(
+          text: TextSpan(
+            text: suggestionList[index].substring(0, query.length),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(
+                  text: suggestionList[index].substring(query.length),
+                  style: TextStyle(color: Colors.grey))
+            ],
+          ),
+        ),
+      ),
+      itemCount: suggestionList.length,
     );
   }
 }
