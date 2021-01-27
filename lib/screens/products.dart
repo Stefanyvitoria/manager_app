@@ -315,7 +315,7 @@ class DataSearchProduct extends SearchDelegate<String> {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {},
-        leading: Icon(Icons.money),
+        leading: Icon(Icons.indeterminate_check_box),
         title: RichText(
           text: TextSpan(
             text: suggestionList[index].substring(0, query.length),
