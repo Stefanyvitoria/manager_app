@@ -3,6 +3,7 @@ import 'package:manager_app/models/company.dart';
 import 'package:manager_app/models/user.dart';
 import 'package:manager_app/constantes.dart';
 import 'package:manager_app/models/product.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -68,7 +69,7 @@ class _HomeState extends State<Home> {
   _builBodyHome(User user) {
     if (user.type == "ceo") {
       return ListView(
-        padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
           Container(
             width: double.maxFinite,
@@ -126,6 +127,19 @@ class _HomeState extends State<Home> {
             leading: Icon(Icons.attach_money),
             title: Text(
               'Vendas',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'statistics', arguments: user);
+            },
+            leading: Icon(FontAwesomeIcons.chartArea),
+            title: Text(
+              'Statistics',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,

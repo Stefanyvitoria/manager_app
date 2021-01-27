@@ -13,6 +13,7 @@ import 'package:manager_app/screens/ranking.dart';
 import 'package:manager_app/screens/register_user.dart';
 import 'package:manager_app/screens/sales.dart';
 import 'package:manager_app/screens/settings.dart';
+import 'package:manager_app/screens/statistics.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
       'ranking': (context) => Ranking(),
       'notes': (context) => Notes(),
       'settings': (context) => Settings(),
+      'statistics': (context) => Statistics(),
     };
   }
 
