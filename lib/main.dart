@@ -7,6 +7,7 @@ import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
+import 'package:manager_app/screens/notes.dart';
 import 'package:manager_app/screens/products.dart';
 import 'package:manager_app/screens/ranking.dart';
 import 'package:manager_app/screens/register_user.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
       'addProduct': (context) => AddProduct(),
       'editProduct': (context) => EditProduct(),
       'ranking': (context) => Ranking(),
+      'notes': (context) => Notes(),
     };
   }
 

@@ -209,7 +209,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'notes');
+            },
             leading: Icon(Icons.book),
             title: Text(
               'Anotações',
