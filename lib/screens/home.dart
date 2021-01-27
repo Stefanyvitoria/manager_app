@@ -116,7 +116,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, 'sales');
+            },
             leading: Icon(Icons.attach_money),
             title: Text(
               'Vendas',
