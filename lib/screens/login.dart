@@ -77,9 +77,8 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(right: 25),
                 child: Text('Forgot password.'),
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'forgotPassword', ModalRoute.withName('/'),
-                      arguments: user);
+                  Navigator.of(context)
+                      .pushNamed('forgotPassword', arguments: user);
                 },
               ),
             ],
