@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'sales');
+              Navigator.pushNamed(context, 'sales', arguments: user);
             },
             leading: Icon(Icons.attach_money),
             title: Text(
@@ -191,7 +191,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "sales", arguments: user);
+            },
             leading: Icon(
               Icons.attach_money,
               color: Colors.black54,

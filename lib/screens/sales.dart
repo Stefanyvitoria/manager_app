@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/user.dart';
 
 class Sales extends StatefulWidget {
   @override
@@ -9,262 +10,12 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
+    User user = ModalRoute.of(context).settings.arguments;
+    if (user == null) user = User();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Sales",
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'addSale');
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-        backgroundColor: Colors.teal[300],
-      ),
-      body: ListView(
-        //will be a listview.builder stream
-        children: [
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Sale1"),
-                subtitle: Text("Value: R\$ 9999"),
-                trailing: FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editSale');
-                  },
-                  child: Icon(Icons.edit),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("1"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Sale1"),
-                subtitle: Text("Value: R\$ 9999"),
-                trailing: FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editSale');
-                  },
-                  child: Icon(Icons.edit),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("1"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Sale1"),
-                subtitle: Text("Value: R\$ 9999"),
-                trailing: FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editSale');
-                  },
-                  child: Icon(Icons.edit),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("1"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Sale1"),
-                subtitle: Text("Value: R\$ 9999"),
-                trailing: FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editSale');
-                  },
-                  child: Icon(Icons.edit),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("1"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        appBar: buildAppbarSales(user, context),
+        floatingActionButton: buildFloatingButtonSales(user, context),
+        body: buildBodySales(user, context));
   }
 }
 
@@ -472,6 +223,549 @@ class _AddSale extends State<AddSale> {
           ),
         ),
       ),
+    );
+  }
+}
+
+buildAppbarSales(User user, BuildContext context) {
+  if (user.type == "ceo") {
+    return AppBar(
+        title: Text(
+          "Sales",
+        ),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
+            child: Icon(Icons.search),
+          ),
+        ]);
+  } else if (user.type == "employee") {
+    return AppBar(
+        title: Text(
+          "My Sales",
+        ),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
+            child: Icon(Icons.search),
+          ),
+        ]);
+  }
+}
+
+buildFloatingButtonSales(User user, BuildContext context) {
+  if (user.type == "ceo") {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, 'addSale');
+      },
+      tooltip: 'Increment',
+      child: Icon(Icons.add),
+      backgroundColor: Colors.teal[300],
+    );
+  } else {}
+}
+
+buildBodySales(User user, BuildContext context) {
+  if (user.type == "ceo") {
+    return ListView(
+      //will be a listview.builder stream
+      children: [
+        Dismissible(
+          onDismissed: (direction) {},
+          child: ListTile(
+              leading: Icon(Icons.point_of_sale),
+              title: Text("Sale1"),
+              subtitle: Text("Value: R\$ 9999"),
+              trailing: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'editSale');
+                },
+                child: Icon(Icons.edit),
+              ),
+              onTap: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          AlertDialog(
+                            titlePadding: EdgeInsets.only(
+                                top: 40, bottom: 20, left: 30, right: 10),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
+                              ),
+                            ],
+                            title: Text(
+                              "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                              style: TextStyle(color: Colors.grey[800]),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              }),
+          key: Key("1"),
+          background: Container(
+            color: Colors.red[300],
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.delete),
+                  Icon(Icons.delete),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Dismissible(
+          onDismissed: (direction) {},
+          child: ListTile(
+              leading: Icon(Icons.point_of_sale),
+              title: Text("Sale1"),
+              subtitle: Text("Value: R\$ 9999"),
+              trailing: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'editSale');
+                },
+                child: Icon(Icons.edit),
+              ),
+              onTap: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          AlertDialog(
+                            titlePadding: EdgeInsets.only(
+                                top: 40, bottom: 20, left: 30, right: 10),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
+                              ),
+                            ],
+                            title: Text(
+                              "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                              style: TextStyle(color: Colors.grey[800]),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              }),
+          key: Key("1"),
+          background: Container(
+            color: Colors.red[300],
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.delete),
+                  Icon(Icons.delete),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Dismissible(
+          onDismissed: (direction) {},
+          child: ListTile(
+              leading: Icon(Icons.point_of_sale),
+              title: Text("Sale1"),
+              subtitle: Text("Value: R\$ 9999"),
+              trailing: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'editSale');
+                },
+                child: Icon(Icons.edit),
+              ),
+              onTap: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          AlertDialog(
+                            titlePadding: EdgeInsets.only(
+                                top: 40, bottom: 20, left: 30, right: 10),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
+                              ),
+                            ],
+                            title: Text(
+                              "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                              style: TextStyle(color: Colors.grey[800]),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              }),
+          key: Key("1"),
+          background: Container(
+            color: Colors.red[300],
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.delete),
+                  Icon(Icons.delete),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Dismissible(
+          onDismissed: (direction) {},
+          child: ListTile(
+              leading: Icon(Icons.point_of_sale),
+              title: Text("Sale1"),
+              subtitle: Text("Value: R\$ 9999"),
+              trailing: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'editSale');
+                },
+                child: Icon(Icons.edit),
+              ),
+              onTap: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          AlertDialog(
+                            titlePadding: EdgeInsets.only(
+                                top: 40, bottom: 20, left: 30, right: 10),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
+                              ),
+                            ],
+                            title: Text(
+                              "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                              style: TextStyle(color: Colors.grey[800]),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              }),
+          key: Key("1"),
+          background: Container(
+            color: Colors.red[300],
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.delete),
+                  Icon(Icons.delete),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  } else if (user.type == "employee") {
+    return ListView(
+      //will be a listview.builder stream
+      children: [
+        ListTile(
+            leading: Icon(Icons.point_of_sale),
+            title: Text("Sale1"),
+            subtitle: Text("Value: R\$ 9999"),
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                          title: Text(
+                            "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                            style: TextStyle(color: Colors.grey[800]),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }),
+        ListTile(
+            leading: Icon(Icons.point_of_sale),
+            title: Text("Sale1"),
+            subtitle: Text("Value: R\$ 9999"),
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                          title: Text(
+                            "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                            style: TextStyle(color: Colors.grey[800]),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }),
+        ListTile(
+            leading: Icon(Icons.point_of_sale),
+            title: Text("Sale1"),
+            subtitle: Text("Value: R\$ 9999"),
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                          title: Text(
+                            "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                            style: TextStyle(color: Colors.grey[800]),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }),
+        ListTile(
+            leading: Icon(Icons.point_of_sale),
+            title: Text("Sale1"),
+            subtitle: Text("Value: R\$ 9999"),
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                          title: Text(
+                            "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                            style: TextStyle(color: Colors.grey[800]),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }),
+        ListTile(
+            leading: Icon(Icons.point_of_sale),
+            title: Text("Sale1"),
+            subtitle: Text("Value: R\$ 9999"),
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                          title: Text(
+                            "Sale1\nvalue: R\$9999\ndate: 99/99/99\nseller: robert\nproduct: chocolate\nquantity: 99\n",
+                            style: TextStyle(color: Colors.grey[800]),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            }),
+      ],
+    );
+  }
+}
+
+class DataSearch extends SearchDelegate<String> {
+  //function to search bar on sales page
+  final sales = [
+    "Sale1",
+    "Sale2",
+    "Sale3",
+    "Sale4",
+    "Sale5",
+  ];
+  final recentSales = [
+    "Sale1",
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //button to erase the search bar words
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //a button to close search bar
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // go to the function when press a option
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show a list of suggestions
+    final suggestionList = query.isEmpty
+        ? recentSales
+        : sales.where((p) => p.startsWith(query)).toList();
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {},
+        leading: Icon(Icons.money),
+        title: RichText(
+          text: TextSpan(
+            text: suggestionList[index].substring(0, query.length),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(
+                  text: suggestionList[index].substring(query.length),
+                  style: TextStyle(color: Colors.grey))
+            ],
+          ),
+        ),
+      ),
+      itemCount: suggestionList.length,
     );
   }
 }
