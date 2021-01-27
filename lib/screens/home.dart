@@ -177,7 +177,9 @@ class _HomeState extends State<Home> {
           ),
           ConstantesSpaces.spaceDivider,
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, "ranking");
+            },
             leading: Icon(
               Icons.star,
               color: Colors.black54,
