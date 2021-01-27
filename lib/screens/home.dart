@@ -127,7 +127,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('profile', arguments: user);
+            },
             leading: Icon(
               Icons.account_box,
             ),
@@ -211,7 +213,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('profile', arguments: user);
+            },
             leading: Icon(
               Icons.account_box,
             ),

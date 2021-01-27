@@ -1,5 +1,5 @@
 class Company {
-  String name, nameCEO, telephone;
+  String name, nameCEO, telephone, adress;
   List employee;
 
   Company({
@@ -7,5 +7,6 @@ class Company {
     this.nameCEO,
     this.employee,
     this.telephone,
+    this.adress,
   });
 }

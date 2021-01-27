@@ -6,6 +6,7 @@ import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
 import 'package:manager_app/screens/home.dart';
 import 'package:manager_app/screens/forgot_password.dart';
+import 'package:manager_app/screens/profile.dart';
 import 'package:manager_app/screens/register_user.dart';
 import 'package:manager_app/screens/settings.dart';
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       'finances': (context) => Finances(),
       'expenses': (context) => Expenses(),
       'settings': (context) => Settings(),
+      'profile': (context) => Profile(),
     };
   }
 
