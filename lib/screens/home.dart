@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   _builAppBarHome(User user) {
     if (user.type == "ceo") {
       return AppBar(
-        title: Text('${user.name[0].toUpperCase()}${user.name.substring(1)}'),
+        title: Text('User.name'),
         actions: [
           FlatButton(
             onPressed: () {
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
     } else {
       return AppBar(
         title: Text(
-          'SR Manager - Consulta',
+          'SR Manager ',
           style: TextStyle(fontSize: 20),
         ),
       );
@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
             },
             leading: Icon(Icons.account_balance_wallet),
             title: Text(
-              'Finanças',
+              'Finances',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(Icons.people),
             title: Text(
-              'Funcionários',
+              'Employees',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -108,7 +108,7 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(Icons.inbox_rounded),
             title: Text(
-              'Produtos',
+              'Products',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(Icons.attach_money),
             title: Text(
-              'Vendas',
+              'Sales',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -134,7 +134,7 @@ class _HomeState extends State<Home> {
               Icons.account_box,
             ),
             title: Text(
-              'Perfil',
+              'Profile',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -147,7 +147,7 @@ class _HomeState extends State<Home> {
             },
             leading: Icon(Icons.settings),
             title: Text(
-              'Configurações',
+              'Settings',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -164,7 +164,7 @@ class _HomeState extends State<Home> {
           ListTile(
             leading: Image(image: ConstantesImages.pLogo),
             title: Text(
-              '${user.email}\n${user.name}', //Text(user.company.name) *****,
+              'User.name\nUser.email', //Text(user.company.name) *****,
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w800,
@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
               color: Colors.black54,
             ),
             title: Text(
-              'Vendas',
+              'Sales',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -205,7 +205,7 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(Icons.book),
             title: Text(
-              'Anotações',
+              'Notes',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -220,7 +220,7 @@ class _HomeState extends State<Home> {
               Icons.account_box,
             ),
             title: Text(
-              'Perfil',
+              'Profile',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -233,7 +233,7 @@ class _HomeState extends State<Home> {
             },
             leading: Icon(Icons.settings),
             title: Text(
-              'Configurações',
+              'Settings',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
@@ -263,7 +263,7 @@ class _HomeState extends State<Home> {
         children: [
           Center(
             child: Text(
-              'Insira o nome do produto:',
+              'Enter product name:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
@@ -286,7 +286,7 @@ class _HomeState extends State<Home> {
                     arguments: productsList,
                   );
                 },
-                child: Text('Consultar'),
+                child: Text('Consult'),
               ),
             ),
           ),

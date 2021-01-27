@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:manager_app/constantes.dart';
 import 'package:manager_app/models/user.dart';
 
@@ -14,58 +15,77 @@ class _LoginState extends State<Login> {
     user.type =
         ModalRoute.of(context).settings.arguments; // recovery user type.
     return Scaffold(
-        body: Center(
-      child: Padding(
-        padding:
-            const EdgeInsets.only(top: 100, left: 10, right: 10, bottom: 20),
-        child: Column(
+      appBar: AppBar(
+        title: Row(
           children: [
-            ConstantesImages.sizedLogo,
-            Text(
-              'Username or email:',
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed('/');
+              },
+            ),
+            Container(width: 20),
+            Text('Login'),
+          ],
+        ),
+      ),
+      body: ListView(
+        padding: EdgeInsets.only(top: 90, left: 15, right: 15),
+        children: [
+          ConstantesImages.sizedLogo,
+          Center(
+            child: Text(
+              'Email:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                onChanged: (text) {
-                  user.email = text;
-                },
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (text) {
+                user.email = text;
+              },
             ),
-            Text(
+          ),
+          Center(
+            child: Text(
               'Password:',
               style: TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 8.0, right: 8.0, top: 8.0, bottom: 0.0),
-              child: TextFormField(
-                obscureText: true,
-                onChanged: (text) {
-                  user.password = text;
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 8.0, right: 8.0, top: 8.0, bottom: 0.0),
+            child: TextFormField(
+              obscureText: true,
+              onChanged: (text) {
+                user.password = text;
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FlatButton(
+                padding: EdgeInsets.only(right: 25),
+                child: Text('Forgot password.'),
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      'forgotPassword', ModalRoute.withName('/'),
+                      arguments: user);
                 },
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FlatButton(
-                  padding: EdgeInsets.only(right: 25),
-                  child: Text('Forgot password.'),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('forgotPassword');
-                  },
-                ),
-              ],
-            ),
-            Container(
+            ],
+          ),
+          Align(
+            child: Container(
               width: 150,
               child: RaisedButton(
                 child: Text('Login'),
@@ -76,15 +96,15 @@ class _LoginState extends State<Login> {
                 },
               ),
             ),
-            FlatButton(
-              child: Text('Register.'),
-              onPressed: () {
-                Navigator.of(context).pushNamed('register', arguments: user);
-              },
-            ),
-          ],
-        ),
+          ),
+          FlatButton(
+            child: Text('Register.'),
+            onPressed: () {
+              Navigator.of(context).pushNamed('register', arguments: user);
+            },
+          ),
+        ],
       ),
-    ));
+    );
   }
 }

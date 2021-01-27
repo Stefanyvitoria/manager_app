@@ -15,7 +15,7 @@ class _ClientListTileState extends State<ClientListTile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'SR Manager - Consulta',
+          'SR Manager',
           style: TextStyle(fontSize: 20),
         ),
       ),

@@ -276,10 +276,13 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
           title: Text('Change ${listTile[i]}'),
-          content: TextFormField(
-            initialValue: attrName,
-            onChanged: (txt) {},
+          content: Container(
+            child: TextFormField(
+              initialValue: '(missing add functionality)',
+              onChanged: (txt) {},
+            ),
           ),
           actions: [
             FlatButton(
