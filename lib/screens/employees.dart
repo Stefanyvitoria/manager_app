@@ -85,6 +85,124 @@ class _EmployeesState extends State<Employees> {
               ),
             ),
           ),
+          Dismissible(
+            onDismissed: (direction) {},
+            child: ListTile(
+                leading: Icon(Icons.point_of_sale),
+                title: Text("Employee1"),
+                subtitle: Text("Occupation: seller"),
+                trailing: FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'editEmployee');
+                  },
+                  child: Icon(Icons.edit),
+                ),
+                onTap: () {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            AlertDialog(
+                              titlePadding: EdgeInsets.only(
+                                  top: 40, bottom: 20, left: 30, right: 10),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ],
+                              title: Text(
+                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\n",
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                }),
+            key: Key("2"),
+            background: Container(
+              color: Colors.red[300],
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsets.only(left: 40, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.delete),
+                    Icon(Icons.delete),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Dismissible(
+            onDismissed: (direction) {},
+            child: ListTile(
+                leading: Icon(Icons.point_of_sale),
+                title: Text("Employee1"),
+                subtitle: Text("Occupation: seller"),
+                trailing: FlatButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'editEmployee');
+                  },
+                  child: Icon(Icons.edit),
+                ),
+                onTap: () {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            AlertDialog(
+                              titlePadding: EdgeInsets.only(
+                                  top: 40, bottom: 20, left: 30, right: 10),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ],
+                              title: Text(
+                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\n",
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                }),
+            key: Key("2"),
+            background: Container(
+              color: Colors.red[300],
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsets.only(left: 40, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.delete),
+                    Icon(Icons.delete),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
