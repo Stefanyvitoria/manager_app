@@ -136,7 +136,6 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(
               Icons.account_box,
-              color: Colors.black54,
             ),
             title: Text(
               'Perfil',
@@ -147,7 +146,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('settings');
+            },
             leading: Icon(Icons.settings),
             title: Text(
               'Configurações',
@@ -225,7 +226,6 @@ class _HomeState extends State<Home> {
             onTap: () {},
             leading: Icon(
               Icons.account_box,
-              color: Colors.black54,
             ),
             title: Text(
               'Perfil',
@@ -236,7 +236,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('settings');
+            },
             leading: Icon(Icons.settings),
             title: Text(
               'Configurações',

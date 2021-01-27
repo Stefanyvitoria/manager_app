@@ -12,6 +12,7 @@ import 'package:manager_app/screens/products.dart';
 import 'package:manager_app/screens/ranking.dart';
 import 'package:manager_app/screens/register_user.dart';
 import 'package:manager_app/screens/sales.dart';
+import 'package:manager_app/screens/settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Manager App',
       initialRoute: '/',
       routes: _buildRoutes(context),
-      theme: _builTheme(),
+      theme: _builThemeLigth(),
     );
   }
 
@@ -50,11 +51,13 @@ class MyApp extends StatelessWidget {
       'editProduct': (context) => EditProduct(),
       'ranking': (context) => Ranking(),
       'notes': (context) => Notes(),
+      'settings': (context) => Settings(),
     };
   }
 
-  _builTheme() {
+  _builThemeLigth() {
     return ThemeData(
+      brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.teal[100],
       primaryColor: Colors.teal[300],
       inputDecorationTheme: InputDecorationTheme(
