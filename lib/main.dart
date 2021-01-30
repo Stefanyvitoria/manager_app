@@ -64,15 +64,24 @@ class MyApp extends StatelessWidget {
   _builThemeLigth() {
     return ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.teal[100],
-      primaryColor: Colors.teal[300],
+      scaffoldBackgroundColor: Colors.white,
+      accentColor: Colors.white,
+      primaryColor: Colors.teal,
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(
             5.0,
           ),
         ),
-        contentPadding: EdgeInsets.all(16.0),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusColor: Colors.white,
+        labelStyle: TextStyle(color: Colors.white),
+        suffixStyle: TextStyle(color: Colors.white),
+        contentPadding: EdgeInsets.all(12.0),
       ),
     );
   }
@@ -83,7 +92,8 @@ class MyApp extends StatelessWidget {
       scaffoldBackgroundColor: Colors.grey[700],
       primaryColor: Colors.grey[850],
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(
             5.0,
           ),
