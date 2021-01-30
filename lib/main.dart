@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
         focusedBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusColor: Colors.white,
