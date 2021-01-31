@@ -83,6 +83,13 @@ class MyApp extends StatelessWidget {
         suffixStyle: TextStyle(color: Colors.white),
         contentPadding: EdgeInsets.all(12.0),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            Colors.teal,
+          ),
+        ),
+      ),
     );
   }
 

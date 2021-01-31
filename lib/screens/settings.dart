@@ -95,7 +95,7 @@ class _SettingsState extends State<Settings> {
           title: Text('$txt'),
           content: Text('(missing add functionality)'),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Confirm'),
               onPressed: () {
                 Navigator.pop(context);

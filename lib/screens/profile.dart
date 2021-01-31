@@ -287,7 +287,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Confirm'),
               onPressed: () {
                 Navigator.pop(context);

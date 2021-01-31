@@ -51,7 +51,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             child: Container(
               padding: EdgeInsets.only(top: 7),
               width: 150,
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text('Confirmar email'),
                 onPressed: () {
                   //Validate
@@ -73,7 +73,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           title: Text('Nova senha enviada por email.'),
           content: Text('Faça login com sua senha atualizada.'),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.pop(context);

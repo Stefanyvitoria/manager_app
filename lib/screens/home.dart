@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
       return AppBar(
         title: Text('User.name'),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
           style: TextStyle(fontSize: 23),
         ),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
             height: 100,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: ConstantesImages.logo,
+              image: ConstantesImages.logo1,
               scale: 0.1,
             )),
           ),
@@ -311,7 +311,7 @@ class _HomeState extends State<Home> {
           Align(
             child: Container(
               width: 150,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(
                     'productList',
