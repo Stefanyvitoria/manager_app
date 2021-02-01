@@ -34,7 +34,7 @@ class _NotesState extends State<Notes> {
                     titlePadding: EdgeInsets.only(
                         top: 20, bottom: 20, left: 30, right: 10),
                     actions: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -94,7 +94,7 @@ class _NotesState extends State<Notes> {
         itemBuilder: (context, index) => Dismissible(
           onDismissed: (direction) {},
           child: ListTile(
-            trailing: FlatButton(
+            trailing: TextButton(
                 onPressed: () {
                   showDialog(
                     barrierDismissible: false,
@@ -109,7 +109,7 @@ class _NotesState extends State<Notes> {
                             titlePadding: EdgeInsets.only(
                                 top: 20, bottom: 20, left: 30, right: 10),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -161,7 +161,7 @@ class _NotesState extends State<Notes> {
                     },
                   );
                 },
-                child: Icon(Icons.edit)),
+                child: Icon(Icons.edit, color: Colors.grey)),
             leading: Icon(Icons.book),
             title: Text(suggestionList[index][0]),
             isThreeLine: true,

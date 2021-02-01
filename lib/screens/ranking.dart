@@ -15,7 +15,7 @@ class _RankingState extends State<Ranking> {
           "Best Sellers",
         ),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () {
               showSearch(context: context, delegate: DataSearchRanking());
             },
@@ -41,7 +41,7 @@ class _RankingState extends State<Ranking> {
                         titlePadding: EdgeInsets.only(
                             top: 40, bottom: 20, left: 30, right: 10),
                         actions: [
-                          FlatButton(
+                          TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -78,7 +78,7 @@ class _RankingState extends State<Ranking> {
                         titlePadding: EdgeInsets.only(
                             top: 40, bottom: 20, left: 30, right: 10),
                         actions: [
-                          FlatButton(
+                          TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -115,7 +115,7 @@ class _RankingState extends State<Ranking> {
                         titlePadding: EdgeInsets.only(
                             top: 40, bottom: 20, left: 30, right: 10),
                         actions: [
-                          FlatButton(
+                          TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -152,7 +152,7 @@ class _RankingState extends State<Ranking> {
                         titlePadding: EdgeInsets.only(
                             top: 40, bottom: 20, left: 30, right: 10),
                         actions: [
-                          FlatButton(
+                          TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -222,7 +222,6 @@ class DataSearchRanking extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 

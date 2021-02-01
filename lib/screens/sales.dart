@@ -105,7 +105,7 @@ class _EditSaleState extends State<EditSale> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -209,7 +209,7 @@ class _AddSale extends State<AddSale> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -234,11 +234,11 @@ buildAppbarSales(User user, BuildContext context) {
           "Sales",
         ),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () {
               showSearch(context: context, delegate: DataSearchSale());
             },
-            child: Icon(Icons.search),
+            child: Icon(Icons.search, color: Colors.white),
           ),
         ]);
   } else if (user.type == "employee") {
@@ -247,11 +247,11 @@ buildAppbarSales(User user, BuildContext context) {
           "My Sales",
         ),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: () {
               showSearch(context: context, delegate: DataSearchSale());
             },
-            child: Icon(Icons.search),
+            child: Icon(Icons.search, color: Colors.white),
           ),
         ]);
   }
@@ -281,11 +281,11 @@ buildBodySales(User user, BuildContext context) {
               leading: Icon(Icons.point_of_sale),
               title: Text("Sale1"),
               subtitle: Text("Value: R\$ 9999"),
-              trailing: FlatButton(
+              trailing: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'editSale');
                 },
-                child: Icon(Icons.edit),
+                child: Icon(Icons.edit, color: Colors.grey),
               ),
               onTap: () {
                 showDialog(
@@ -299,7 +299,7 @@ buildBodySales(User user, BuildContext context) {
                             titlePadding: EdgeInsets.only(
                                 top: 40, bottom: 20, left: 30, right: 10),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -340,11 +340,11 @@ buildBodySales(User user, BuildContext context) {
               leading: Icon(Icons.point_of_sale),
               title: Text("Sale1"),
               subtitle: Text("Value: R\$ 9999"),
-              trailing: FlatButton(
+              trailing: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'editSale');
                 },
-                child: Icon(Icons.edit),
+                child: Icon(Icons.edit, color: Colors.grey),
               ),
               onTap: () {
                 showDialog(
@@ -358,7 +358,7 @@ buildBodySales(User user, BuildContext context) {
                             titlePadding: EdgeInsets.only(
                                 top: 40, bottom: 20, left: 30, right: 10),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -399,11 +399,11 @@ buildBodySales(User user, BuildContext context) {
               leading: Icon(Icons.point_of_sale),
               title: Text("Sale1"),
               subtitle: Text("Value: R\$ 9999"),
-              trailing: FlatButton(
+              trailing: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'editSale');
                 },
-                child: Icon(Icons.edit),
+                child: Icon(Icons.edit, color: Colors.grey),
               ),
               onTap: () {
                 showDialog(
@@ -417,7 +417,7 @@ buildBodySales(User user, BuildContext context) {
                             titlePadding: EdgeInsets.only(
                                 top: 40, bottom: 20, left: 30, right: 10),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -458,11 +458,11 @@ buildBodySales(User user, BuildContext context) {
               leading: Icon(Icons.point_of_sale),
               title: Text("Sale1"),
               subtitle: Text("Value: R\$ 9999"),
-              trailing: FlatButton(
+              trailing: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'editSale');
                 },
-                child: Icon(Icons.edit),
+                child: Icon(Icons.edit, color: Colors.grey),
               ),
               onTap: () {
                 showDialog(
@@ -476,7 +476,7 @@ buildBodySales(User user, BuildContext context) {
                             titlePadding: EdgeInsets.only(
                                 top: 40, bottom: 20, left: 30, right: 10),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -533,7 +533,7 @@ buildBodySales(User user, BuildContext context) {
                           titlePadding: EdgeInsets.only(
                               top: 40, bottom: 20, left: 30, right: 10),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -568,7 +568,7 @@ buildBodySales(User user, BuildContext context) {
                           titlePadding: EdgeInsets.only(
                               top: 40, bottom: 20, left: 30, right: 10),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -603,7 +603,7 @@ buildBodySales(User user, BuildContext context) {
                           titlePadding: EdgeInsets.only(
                               top: 40, bottom: 20, left: 30, right: 10),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -638,7 +638,7 @@ buildBodySales(User user, BuildContext context) {
                           titlePadding: EdgeInsets.only(
                               top: 40, bottom: 20, left: 30, right: 10),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -673,7 +673,7 @@ buildBodySales(User user, BuildContext context) {
                           titlePadding: EdgeInsets.only(
                               top: 40, bottom: 20, left: 30, right: 10),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -739,7 +739,6 @@ class DataSearchSale extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 

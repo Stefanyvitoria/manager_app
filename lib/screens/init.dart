@@ -18,7 +18,7 @@ class Init extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            ConstantesImages.sizedLogo,
+            ConstantesImages.sizedLogo1,
             Column(
               children: [
                 Text(
@@ -31,7 +31,7 @@ class Init extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(top: 5),
                   width: 125,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text('CEO'),
                     onPressed: () {
                       Navigator.of(context)
@@ -41,7 +41,7 @@ class Init extends StatelessWidget {
                 ),
                 Container(
                   width: 125,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text('Employee'),
                     onPressed: () {
                       Navigator.of(context)
@@ -51,7 +51,7 @@ class Init extends StatelessWidget {
                 ),
                 Container(
                   width: 125,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text('Client'),
                     onPressed: () {
                       Navigator.of(context).pushNamed('home');

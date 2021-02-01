@@ -72,7 +72,7 @@ class _FinancesState extends State<Finances> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {},
                           child: Text("Filter"),
                         ),
@@ -103,8 +103,8 @@ class _FinancesState extends State<Finances> {
                       ),
                       subtitle: Text("Buy"),
                       leading: Icon(Icons.info_outline),
-                      trailing: FlatButton(
-                        child: Icon(Icons.expand_more),
+                      trailing: TextButton(
+                        child: Icon(Icons.expand_more, color: Colors.black),
                         onPressed: () {
                           buildDialogAlertFinances(context);
                         },
@@ -133,7 +133,7 @@ buildDialogAlertFinances(BuildContext context) {
               titlePadding:
                   EdgeInsets.only(top: 40, bottom: 20, left: 30, right: 10),
               actions: [
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },

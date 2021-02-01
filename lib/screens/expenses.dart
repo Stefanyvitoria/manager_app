@@ -80,7 +80,7 @@ class _ExpensesState extends State<Expenses> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },

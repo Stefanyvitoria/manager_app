@@ -71,7 +71,7 @@ class _RegisterState extends State<Register> {
             child: Container(
               padding: EdgeInsets.only(top: 7),
               width: 150,
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text('Register'),
                 onPressed: () {
                   //Validate
@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
         return AlertDialog(
           title: Text('Success.'),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.pop(context);

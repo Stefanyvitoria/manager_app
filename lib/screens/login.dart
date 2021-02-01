@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:manager_app/constantes.dart';
 import 'package:manager_app/models/user.dart';
 
@@ -30,11 +29,11 @@ class _LoginState extends State<Login> {
         ),
       ),
       body: ListView(
-          padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-          children: [
-            ConstantesImages.sizedLogo1,
-            LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
+        padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+        children: [
+          ConstantesImages.sizedLogo1,
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
                 height: MediaQuery.of(context).size.height / 1.828,
                 decoration: BoxDecoration(
@@ -77,8 +76,7 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        FlatButton(
-                          padding: EdgeInsets.only(right: 25),
+                        TextButton(
                           child: Text(
                             'Forgot password.',
                             style: TextStyle(color: Colors.white),
@@ -92,8 +90,8 @@ class _LoginState extends State<Login> {
                     ),
                     Align(
                       child: Container(
-                        width: 150,
-                        child: RaisedButton(
+                          width: 150,
+                          child: ElevatedButton(
                             child: Text(
                               'Login',
                               style: TextStyle(color: Colors.teal),
@@ -103,12 +101,13 @@ class _LoginState extends State<Login> {
                                   'home', ModalRoute.withName('/'),
                                   arguments: user);
                             },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )),
-                      ),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                            ),
+                          )),
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text('Register.',
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
@@ -119,8 +118,10 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               );
-            })
-          ]),
+            },
+          )
+        ],
+      ),
     );
   }
 }

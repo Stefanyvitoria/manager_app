@@ -15,11 +15,11 @@ class _ProductsState extends State<Products> {
             "Products",
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () {
                 showSearch(context: context, delegate: DataSearchProduct());
               },
-              child: Icon(Icons.search),
+              child: Icon(Icons.search, color: Colors.white),
             ),
           ]),
       floatingActionButton: FloatingActionButton(
@@ -39,11 +39,11 @@ class _ProductsState extends State<Products> {
                 leading: Icon(Icons.point_of_sale),
                 title: Text("Product1"),
                 subtitle: Text("Company: company1"),
-                trailing: FlatButton(
+                trailing: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'editProduct');
                   },
-                  child: Icon(Icons.edit),
+                  child: Icon(Icons.edit, color: Colors.grey),
                 ),
                 onTap: () {
                   showDialog(
@@ -57,7 +57,7 @@ class _ProductsState extends State<Products> {
                               titlePadding: EdgeInsets.only(
                                   top: 40, bottom: 20, left: 30, right: 10),
                               actions: [
-                                FlatButton(
+                                TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -160,7 +160,7 @@ class _EditProductState extends State<EditProduct> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -240,7 +240,7 @@ class _AddProductState extends State<AddProduct> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -302,7 +302,6 @@ class DataSearchProduct extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 

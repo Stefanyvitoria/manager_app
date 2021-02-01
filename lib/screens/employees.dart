@@ -15,11 +15,14 @@ class _EmployeesState extends State<Employees> {
             "Employees",
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () {
                 showSearch(context: context, delegate: DataSearchEmployee());
               },
-              child: Icon(Icons.search),
+              child: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
             ),
           ]),
       floatingActionButton: FloatingActionButton(
@@ -39,11 +42,14 @@ class _EmployeesState extends State<Employees> {
                 leading: Icon(Icons.point_of_sale),
                 title: Text("Employee1"),
                 subtitle: Text("Occupation: seller"),
-                trailing: FlatButton(
+                trailing: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'editEmployee');
                   },
-                  child: Icon(Icons.edit),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.grey,
+                  ),
                 ),
                 onTap: () {
                   showDialog(
@@ -57,7 +63,7 @@ class _EmployeesState extends State<Employees> {
                               titlePadding: EdgeInsets.only(
                                   top: 40, bottom: 20, left: 30, right: 10),
                               actions: [
-                                FlatButton(
+                                TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -98,11 +104,11 @@ class _EmployeesState extends State<Employees> {
                 leading: Icon(Icons.point_of_sale),
                 title: Text("Employee1"),
                 subtitle: Text("Occupation: seller"),
-                trailing: FlatButton(
+                trailing: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'editEmployee');
                   },
-                  child: Icon(Icons.edit),
+                  child: Icon(Icons.edit, color: Colors.grey),
                 ),
                 onTap: () {
                   showDialog(
@@ -116,7 +122,7 @@ class _EmployeesState extends State<Employees> {
                               titlePadding: EdgeInsets.only(
                                   top: 40, bottom: 20, left: 30, right: 10),
                               actions: [
-                                FlatButton(
+                                TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -157,11 +163,11 @@ class _EmployeesState extends State<Employees> {
                 leading: Icon(Icons.point_of_sale),
                 title: Text("Employee1"),
                 subtitle: Text("Occupation: seller"),
-                trailing: FlatButton(
+                trailing: TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'editEmployee');
                   },
-                  child: Icon(Icons.edit),
+                  child: Icon(Icons.edit, color: Colors.grey),
                 ),
                 onTap: () {
                   showDialog(
@@ -175,7 +181,7 @@ class _EmployeesState extends State<Employees> {
                               titlePadding: EdgeInsets.only(
                                   top: 40, bottom: 20, left: 30, right: 10),
                               actions: [
-                                FlatButton(
+                                TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -278,7 +284,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -358,7 +364,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                 SizedBox(
                   width: 150,
                   height: 40,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -419,7 +425,6 @@ class DataSearchEmployee extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 
