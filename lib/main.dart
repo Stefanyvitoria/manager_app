@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       title: 'Manager App',
       initialRoute: '/',
       routes: _buildRoutes(context),
-      theme: _builThemeLigth(),
-      darkTheme: _builThemeDark(),
+      theme: Themes()._lightTheme,
+      darkTheme: Themes()._darkTheme,
       themeMode: ThemeMode.light,
     );
   }
@@ -60,53 +60,59 @@ class MyApp extends StatelessWidget {
       'profile': (context) => Profile(),
     };
   }
+}
 
-  _builThemeLigth() {
-    return ThemeData(
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.white,
-      accentColor: Colors.white,
-      primaryColor: Colors.teal,
-      inputDecorationTheme: InputDecorationTheme(
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(
-            5.0,
-          ),
-        ),
-        enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-        focusedBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusColor: Colors.white,
-        labelStyle: TextStyle(color: Colors.white),
-        suffixStyle: TextStyle(color: Colors.white),
-        contentPadding: EdgeInsets.all(12.0),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Colors.teal,
-          ),
+class Themes {
+  final _darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: Colors.grey[700],
+    primaryColor: Colors.grey[850],
+    inputDecorationTheme: InputDecorationTheme(
+      border: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.circular(
+          5.0,
         ),
       ),
-    );
-  }
+      contentPadding: EdgeInsets.all(16.0),
+    ),
+  );
 
-  _builThemeDark() {
-    return ThemeData(
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: Colors.grey[700],
-      primaryColor: Colors.grey[850],
-      inputDecorationTheme: InputDecorationTheme(
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(
-            5.0,
-          ),
+  final _lightTheme = ThemeData(
+    colorScheme: ColorScheme.light(
+      primary: Colors.white,
+      secondary: Colors.grey[400],
+      primaryVariant: Colors.teal,
+      secondaryVariant: Colors.teal[600],
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.teal,
+        minimumSize: Size(60, 40),
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0),
         ),
-        contentPadding: EdgeInsets.all(16.0),
       ),
-    );
-  }
+    ),
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Colors.transparent,
+    accentColor: Colors.white,
+    primaryColor: Colors.teal,
+    inputDecorationTheme: InputDecorationTheme(
+      border: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.circular(
+          5.0,
+        ),
+      ),
+      enabledBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+      focusedBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+      focusColor: Colors.white,
+      labelStyle: TextStyle(color: Colors.white),
+      suffixStyle: TextStyle(color: Colors.white),
+      contentPadding: EdgeInsets.all(12.0),
+    ),
+  );
 }
