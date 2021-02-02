@@ -19,7 +19,7 @@ class _ThemebuilderState extends State<Themebuilder> {
   @override
   void initState() {
     super.initState();
-    _themeData = Themes.lightTheme;
+    _themeData = Themes.darkTheme; //Themes.lightTheme;
   }
 
   void changeTheme() {
@@ -38,9 +38,25 @@ class _ThemebuilderState extends State<Themebuilder> {
 
 class Themes {
   static final darkTheme = ThemeData(
+    colorScheme: ColorScheme.dark(
+      primary: Colors.black38,
+      secondary: Colors.blueGrey,
+      primaryVariant: Colors.teal,
+      secondaryVariant: Colors.teal[900],
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.teal,
+        minimumSize: Size(60, 40),
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0),
+        ),
+      ),
+    ),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.grey[700],
-    primaryColor: Colors.grey[850],
+    scaffoldBackgroundColor: Colors.transparent,
+    primaryColor: Colors.teal,
+    accentColor: Colors.white,
     inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
@@ -48,7 +64,14 @@ class Themes {
           5.0,
         ),
       ),
-      contentPadding: EdgeInsets.all(16.0),
+      enabledBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+      focusedBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+      focusColor: Colors.white,
+      labelStyle: TextStyle(color: Colors.white),
+      suffixStyle: TextStyle(color: Colors.white),
+      contentPadding: EdgeInsets.all(12.0),
     ),
   );
 

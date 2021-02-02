@@ -34,6 +34,7 @@ class _StatisticsState extends State<Statistics> {
         length: 3,
         child: Scaffold(
             appBar: AppBar(
+              flexibleSpace: ConstantesGradiente.gradientAppBar(context),
               title: Text("Statistics"),
               bottom: TabBar(
                 tabs: [
