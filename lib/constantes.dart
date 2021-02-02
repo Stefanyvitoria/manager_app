@@ -19,6 +19,16 @@ class ConstantesImages {
       ),
     ),
   );
+  static final Widget sizedLogo3 = Container(
+    width: 300,
+    height: 200,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: ConstantesImages.logo3,
+        scale: 0.3,
+      ),
+    ),
+  );
 }
 
 class ConstantesSpaces {
