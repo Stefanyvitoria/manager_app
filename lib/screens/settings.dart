@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/constantes.dart';
+import 'package:manager_app/theme.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _SettingsState extends State<Settings> {
                 activeColor: Theme.of(context).primaryColor,
                 value: valueSwitch,
                 onChanged: (value) {
+                  Themebuilder.of(context).changeTheme();
                   setState(
                     () {
                       valueSwitch = !valueSwitch;
