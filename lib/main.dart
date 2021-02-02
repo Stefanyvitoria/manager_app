@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       title: 'Manager App',
       initialRoute: '/',
       routes: _buildRoutes(context),
-      theme: Themes()._lightTheme,
-      darkTheme: Themes()._darkTheme,
+      theme: Themes._lightTheme,
+      darkTheme: Themes._darkTheme,
       themeMode: ThemeMode.light,
     );
   }
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Themes {
-  final _darkTheme = ThemeData(
+  static final _darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.grey[700],
     primaryColor: Colors.grey[850],
@@ -78,7 +78,7 @@ class Themes {
     ),
   );
 
-  final _lightTheme = ThemeData(
+  static final _lightTheme = ThemeData(
     colorScheme: ColorScheme.light(
       primary: Colors.white,
       secondary: Colors.grey[400],
@@ -96,7 +96,7 @@ class Themes {
     ),
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.transparent,
-    accentColor: Colors.white,
+    accentColor: Colors.black,
     primaryColor: Colors.teal,
     inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(

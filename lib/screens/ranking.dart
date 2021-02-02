@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/constantes.dart';
 
 class Ranking extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class _RankingState extends State<Ranking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           "Best Sellers",
         ),
@@ -23,157 +25,160 @@ class _RankingState extends State<Ranking> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          ListTile(
-            title: Text("My Name"),
-            leading: Text("#1"),
-            subtitle: Text("Sales quantity: 100"),
-            onTap: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Wrap(
-                    direction: Axis.vertical,
-                    children: [
-                      AlertDialog(
-                        titlePadding: EdgeInsets.only(
-                            top: 40, bottom: 20, left: 30, right: 10),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(color: Colors.grey[700]),
+      body: Container(
+        decoration: ConstantesGradiente.gradientContainer(context),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text("My Name"),
+              leading: Text("#1"),
+              subtitle: Text("Sales quantity: 100"),
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
                             ),
+                          ],
+                          title: Text(
+                            "MyName\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 100",
+                            style: TextStyle(color: Colors.grey[800]),
                           ),
-                        ],
-                        title: Text(
-                          "MyName\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 100",
-                          style: TextStyle(color: Colors.grey[800]),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Employee2"),
-            leading: Text("#2"),
-            subtitle: Text("Sales quantity: 99"),
-            onTap: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Wrap(
-                    direction: Axis.vertical,
-                    children: [
-                      AlertDialog(
-                        titlePadding: EdgeInsets.only(
-                            top: 40, bottom: 20, left: 30, right: 10),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(color: Colors.grey[700]),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Employee2"),
+              leading: Text("#2"),
+              subtitle: Text("Sales quantity: 99"),
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
                             ),
+                          ],
+                          title: Text(
+                            "Employee2\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
+                            style: TextStyle(color: Colors.grey[800]),
                           ),
-                        ],
-                        title: Text(
-                          "Employee2\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                          style: TextStyle(color: Colors.grey[800]),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Employee3"),
-            leading: Text("#3"),
-            subtitle: Text("Sales quantity: 99"),
-            onTap: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Wrap(
-                    direction: Axis.vertical,
-                    children: [
-                      AlertDialog(
-                        titlePadding: EdgeInsets.only(
-                            top: 40, bottom: 20, left: 30, right: 10),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(color: Colors.grey[700]),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Employee3"),
+              leading: Text("#3"),
+              subtitle: Text("Sales quantity: 99"),
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
                             ),
+                          ],
+                          title: Text(
+                            "Employee3\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
+                            style: TextStyle(color: Colors.grey[800]),
                           ),
-                        ],
-                        title: Text(
-                          "Employee3\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                          style: TextStyle(color: Colors.grey[800]),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Employee4"),
-            leading: Text("#4"),
-            subtitle: Text("Sales quantity: 99"),
-            onTap: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Wrap(
-                    direction: Axis.vertical,
-                    children: [
-                      AlertDialog(
-                        titlePadding: EdgeInsets.only(
-                            top: 40, bottom: 20, left: 30, right: 10),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(color: Colors.grey[700]),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Employee4"),
+              leading: Text("#4"),
+              subtitle: Text("Sales quantity: 99"),
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        AlertDialog(
+                          titlePadding: EdgeInsets.only(
+                              top: 40, bottom: 20, left: 30, right: 10),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
                             ),
+                          ],
+                          title: Text(
+                            "Employee4\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
+                            style: TextStyle(color: Colors.grey[800]),
                           ),
-                        ],
-                        title: Text(
-                          "Employee4\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                          style: TextStyle(color: Colors.grey[800]),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -231,23 +236,27 @@ class DataSearchRanking extends SearchDelegate<String> {
     final suggestionList = query.isEmpty
         ? recentSales
         : sales.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        leading: Text("#1"),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey))
-            ],
+    return Container(
+      decoration: ConstantesGradiente.gradientContainer(context),
+      child: ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+          onTap: () {},
+          leading: Text("#1"),
+          title: RichText(
+            text: TextSpan(
+              text: suggestionList[index].substring(0, query.length),
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                    text: suggestionList[index].substring(query.length),
+                    style: TextStyle(color: Colors.grey))
+              ],
+            ),
           ),
         ),
+        itemCount: suggestionList.length,
       ),
-      itemCount: suggestionList.length,
     );
   }
 }

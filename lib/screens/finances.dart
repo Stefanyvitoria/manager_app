@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/constantes.dart';
 
 class Finances extends StatefulWidget {
   final String liquidMoney = "1000.00 *only demonstrative*";
@@ -12,6 +13,7 @@ class _FinancesState extends State<Finances> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           "Finances",
         ),
@@ -25,6 +27,7 @@ class _FinancesState extends State<Finances> {
         ],
       ),
       body: Container(
+        decoration: ConstantesGradiente.gradientContainer(context),
         child: Column(
           children: [
             SizedBox(

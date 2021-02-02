@@ -11,76 +11,80 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text('Register'),
       ),
-      body: ListView(
-        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-        children: [
-          Center(
-            child: Text(
-              'Name:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
+      body: Container(
+        decoration: ConstantesGradiente.gradientContainer(context),
+        child: ListView(
+          padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+          children: [
+            Center(
+              child: Text(
+                'Name:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TextFormField(),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'Email:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
+            Container(
+              child: TextFormField(),
+            ),
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'Email:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TextFormField(),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'Password:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
+            Container(
+              child: TextFormField(),
+            ),
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'Password:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TextFormField(),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'confirm password:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
+            Container(
+              child: TextFormField(),
+            ),
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'confirm password:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TextFormField(),
-          ),
-          Align(
-            child: Container(
-              padding: EdgeInsets.only(top: 7),
-              width: 150,
-              child: ElevatedButton(
-                child: Text('Register'),
-                onPressed: () {
-                  //Validate
-                  _buildPopup(context);
-                },
+            Container(
+              child: TextFormField(),
+            ),
+            Align(
+              child: Container(
+                padding: EdgeInsets.only(top: 7),
+                width: 150,
+                child: ElevatedButton(
+                  child: Text('Register'),
+                  onPressed: () {
+                    //Validate
+                    _buildPopup(context);
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -93,7 +97,10 @@ class _RegisterState extends State<Register> {
           title: Text('Success.'),
           actions: [
             TextButton(
-              child: Text('Ok'),
+              child: Text(
+                'Ok',
+                style: TextStyle(color: Colors.black),
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.pop(context);

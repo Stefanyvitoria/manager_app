@@ -15,17 +15,7 @@ class _LoginState extends State<Login> {
         ModalRoute.of(context).settings.arguments; // recovery user type.
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Theme.of(context).colorScheme.secondaryVariant,
-                  Theme.of(context).colorScheme.primaryVariant
-                ]),
-          ),
-        ),
+        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Row(
           children: [
             IconButton(
@@ -40,15 +30,7 @@ class _LoginState extends State<Login> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Theme.of(context).colorScheme.primary,
-                Theme.of(context).colorScheme.secondary
-              ]),
-        ),
+        decoration: ConstantesGradiente.gradientContainer(context),
         child: ListView(
           padding: EdgeInsets.only(top: 10, left: 15, right: 15),
           children: [
