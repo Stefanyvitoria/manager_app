@@ -15,7 +15,7 @@ import 'package:manager_app/screens/register_user.dart';
 import 'package:manager_app/screens/sales.dart';
 import 'package:manager_app/screens/settings.dart';
 import 'package:manager_app/screens/statistics.dart';
-import 'package:manager_app/theme.dart';
+import 'package:manager_app/services/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,8 +32,6 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: _buildRoutes(context),
           theme: _themeData,
-          //darkTheme: Themes.darkTheme,
-          //themeMode: ThemeMode.light,
         );
       },
     );

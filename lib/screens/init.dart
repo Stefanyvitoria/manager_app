@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manager_app/constantes.dart';
+import 'package:manager_app/services/constantes.dart';
 
 class Init extends StatelessWidget {
   @override
@@ -57,7 +57,12 @@ class Init extends StatelessWidget {
                     padding: EdgeInsets.only(top: 5),
                     width: 125,
                     child: ElevatedButton(
-                      child: Text('CEO'),
+                      child: Text(
+                        'CEO',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.of(context)
                             .pushReplacementNamed('login', arguments: 'ceo');
@@ -67,7 +72,12 @@ class Init extends StatelessWidget {
                   Container(
                     width: 125,
                     child: ElevatedButton(
-                      child: Text('Employee'),
+                      child: Text(
+                        'Employee',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pushReplacementNamed('login',
                             arguments: 'employee');
@@ -77,7 +87,12 @@ class Init extends StatelessWidget {
                   Container(
                     width: 125,
                     child: ElevatedButton(
-                      child: Text('Client'),
+                      child: Text(
+                        'Client',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pushNamed('home');
                       },

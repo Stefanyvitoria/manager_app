@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/product.dart';
-import 'package:manager_app/constantes.dart';
+import 'package:manager_app/services/constantes.dart';
 
 class ClientListTile extends StatefulWidget {
   //Screen that displays the list with the consulted product.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/company.dart';
 import 'package:manager_app/models/user.dart';
-import 'package:manager_app/constantes.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -213,7 +213,6 @@ class _HomeState extends State<Home> {
               },
               leading: Icon(
                 Icons.star,
-                color: Colors.black54,
               ),
               title: Text(
                 'Ranking',
@@ -229,7 +228,6 @@ class _HomeState extends State<Home> {
               },
               leading: Icon(
                 Icons.attach_money,
-                color: Colors.black54,
               ),
               title: Text(
                 'Sales',

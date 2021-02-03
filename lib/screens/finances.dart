@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_app/constantes.dart';
+import 'package:manager_app/services/constantes.dart';
 
 class Finances extends StatefulWidget {
   final String liquidMoney = "1000.00 *only demonstrative*";

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manager_app/constantes.dart';
+import 'package:manager_app/services/constantes.dart';
 
 class Register extends StatefulWidget {
   @override

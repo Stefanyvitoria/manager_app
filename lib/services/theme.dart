@@ -19,7 +19,7 @@ class _ThemebuilderState extends State<Themebuilder> {
   @override
   void initState() {
     super.initState();
-    _themeData = Themes.darkTheme; //Themes.lightTheme;
+    _themeData = Themes.lightTheme;
   }
 
   void changeTheme() {
@@ -53,10 +53,14 @@ class Themes {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(style: ButtonStyle()),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.transparent,
     primaryColor: Colors.teal,
     accentColor: Colors.white,
+    textTheme: TextTheme(
+      bodyText2: TextStyle(color: Colors.white),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white),

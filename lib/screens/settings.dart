@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manager_app/constantes.dart';
-import 'package:manager_app/theme.dart';
+import 'package:manager_app/services/constantes.dart';
+import 'package:manager_app/services/theme.dart';
 
 class Settings extends StatefulWidget {
   @override
