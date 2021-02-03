@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "54056704534",
+    "project_id": "sr-manager-app",
+    "storage_bucket": "sr-manager-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54056704534:android:bf651d08a531fe18a3b337",
+        "android_client_info": {
+          "package_name": "com.dsi.managerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54056704534-e74gg0k6au9fhjpb33346qpgiqvs85oo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsi.managerapp",
+            "certificate_hash": "648e58c3c7d99a44f17e4ac7ecd11f47935975ea"
+          }
+        },
+        {
+          "client_id": "54056704534-g76q750q8s8h5nhchdg3s017413876i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqL-T6o00wpnJ8LnvEKBIrtgfu4vmIPHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54056704534-g76q750q8s8h5nhchdg3s017413876i3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
