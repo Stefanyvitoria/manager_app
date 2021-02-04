@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_app/services/constantes.dart';
 //import 'package:charts_flutter/flutter.dart' as charts;
 
 class Statistics extends StatefulWidget {
