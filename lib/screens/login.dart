@@ -31,7 +31,10 @@ class _LoginState extends State<Login> {
       body: ListView(
         padding: EdgeInsets.only(top: 10, left: 15, right: 15),
         children: [
-          ConstantesImages.sizedLogo1,
+          if (Theme.of(context).brightness == Brightness.light) ...[
+            ConstantesImages.sizedLogo1
+          ] else
+            ConstantesImages.sizedLogo3,
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(

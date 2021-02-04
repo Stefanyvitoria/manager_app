@@ -82,7 +82,9 @@ class _HomeState extends State<Home> {
             height: 100,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: ConstantesImages.logo1,
+              image: (Theme.of(context).brightness == Brightness.light)
+                  ? ConstantesImages.logo1
+                  : ConstantesImages.logo3,
               scale: 0.1,
             )),
           ),

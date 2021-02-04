@@ -56,7 +56,9 @@ class _FinancesState extends State<Finances> {
           SizedBox(height: 80),
           Container(
             width: MediaQuery.of(context).size.width,
-            color: Colors.blueGrey[200],
+            color: (Theme.of(context).brightness == Brightness.light)
+                ? Colors.blueGrey[200]
+                : Colors.blueGrey[800],
             child: Padding(
               padding: EdgeInsets.only(left: 5, right: 5),
               child: Column(
@@ -80,7 +82,9 @@ class _FinancesState extends State<Finances> {
                   Container(
                     height: 1,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blueGrey[400],
+                    color: (Theme.of(context).brightness == Brightness.light)
+                        ? Colors.blueGrey[400]
+                        : Colors.blueGrey[900],
                   )
                 ],
               ),
@@ -88,7 +92,9 @@ class _FinancesState extends State<Finances> {
           ),
           new Expanded(
             child: Container(
-              color: Colors.blueGrey[200],
+              color: (Theme.of(context).brightness == Brightness.light)
+                  ? Colors.blueGrey[200]
+                  : Colors.blueGrey[800],
               padding: EdgeInsets.only(left: 5, right: 5),
               child: ListView(
                 children: [
