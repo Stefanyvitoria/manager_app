@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/theme.dart';
 
-class Settings extends StatefulWidget {
+class SettingsApp extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsAppState createState() => _SettingsAppState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsAppState extends State<SettingsApp> {
   bool valueSwitch = false;
   @override
   Widget build(BuildContext context) {

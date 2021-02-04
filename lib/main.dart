@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/screens/expenses.dart';
@@ -16,6 +17,7 @@ import 'package:manager_app/screens/sales.dart';
 import 'package:manager_app/screens/settings.dart';
 import 'package:manager_app/screens/statistics.dart';
 import 'package:manager_app/services/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,14 +26,24 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Themebuilder(
-      builder: (context, _themeData) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Manager App',
-          initialRoute: '/',
-          routes: _buildRoutes(context),
-          theme: _themeData,
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting) {
+          return Loading();
+        }
+
+        return Themebuilder(
+          builder: (context, _themeData) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Manager App',
+              initialRoute: '/',
+              routes: _buildRoutes(context),
+              theme: _themeData,
+            );
+          },
         );
       },
     );
@@ -58,7 +70,7 @@ class MyApp extends StatelessWidget {
       'editProduct': (context) => EditProduct(),
       'ranking': (context) => Ranking(),
       'notes': (context) => Notes(),
-      'settings': (context) => Settings(),
+      'settings': (context) => SettingsApp(),
       'statistics': (context) => Statistics(),
       'profile': (context) => Profile(),
     };

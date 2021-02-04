@@ -42,6 +42,7 @@ android {
         applicationId "com.dsi.managerapp"
         minSdkVersion 16
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -63,4 +64,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation "androidx.multidex:multidex:2.0.1"
 }
