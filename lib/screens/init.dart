@@ -32,7 +32,7 @@ class Init extends StatelessWidget {
                 borderRadius: BorderRadius.circular(70),
                 color: Colors.teal,
               ),
-              child: ConstantesImages.sizedLogo3,
+              child: ConstantesImages.sizedLogo(ConstantesImages.logo3),
             ),
             Column(
               children: [

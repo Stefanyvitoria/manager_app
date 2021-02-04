@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
                 image: DecorationImage(
               image: (Theme.of(context).brightness == Brightness.light)
                   ? ConstantesImages.logo1
-                  : ConstantesImages.logo3,
+                  : ConstantesImages.logo4,
               scale: 0.1,
             )),
           ),

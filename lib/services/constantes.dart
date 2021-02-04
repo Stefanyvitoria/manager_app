@@ -9,26 +9,18 @@ class ConstantesImages {
   static final AssetImage logo6 = AssetImage('images/logo6.png');
   static final AssetImage pLogo = AssetImage('images/m_logo1.png');
 
-  static final Widget sizedLogo1 = Container(
-    width: 300,
-    height: 200,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: ConstantesImages.logo1,
-        scale: 0.3,
+  static Widget sizedLogo(AssetImage image) {
+    return Container(
+      width: 300,
+      height: 200,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: image,
+          scale: 0.3,
+        ),
       ),
-    ),
-  );
-  static final Widget sizedLogo3 = Container(
-    width: 300,
-    height: 200,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: ConstantesImages.logo3,
-        scale: 0.3,
-      ),
-    ),
-  );
+    );
+  }
 }
 
 class ConstantesSpaces {
