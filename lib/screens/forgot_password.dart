@@ -13,58 +13,54 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     TextEditingController emailControler2 = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text('Recover Password'),
       ),
-      body: Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: ListView(
-          padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-          children: [
-            Center(
-              child: Text(
-                'Insira seu email:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
+      body: ListView(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+        children: [
+          Center(
+            child: Text(
+              'Insira seu email:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            Container(
-              child: TextFormField(
-                controller: emailControler,
+          ),
+          Container(
+            child: TextFormField(
+              controller: emailControler,
+            ),
+          ),
+          ConstantesSpaces.spacer,
+          Center(
+            child: Text(
+              'Confirmar email:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ConstantesSpaces.spacer,
-            Center(
-              child: Text(
-                'Confirmar email:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          Container(
+            child: TextFormField(
+              controller: emailControler2,
+            ),
+          ),
+          Align(
+            child: Container(
+              padding: EdgeInsets.only(top: 7),
+              width: 150,
+              child: ElevatedButton(
+                child: Text('Confirmar email'),
+                onPressed: () {
+                  //Validate
+                  _buildPopup(context);
+                },
               ),
             ),
-            Container(
-              child: TextFormField(
-                controller: emailControler2,
-              ),
-            ),
-            Align(
-              child: Container(
-                padding: EdgeInsets.only(top: 7),
-                width: 150,
-                child: ElevatedButton(
-                  child: Text('Confirmar email'),
-                  onPressed: () {
-                    //Validate
-                    _buildPopup(context);
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -16,25 +16,21 @@ class _ClientListTileState extends State<ClientListTile> {
     productsList = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           'SR Manager',
           style: TextStyle(fontSize: 20),
         ),
       ),
-      body: Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: ListView.builder(
-          itemCount: productsList.length,
-          itemBuilder: (context, ind) {
-            Product productC = productsList[ind];
-            return ListTile(
-              title: Text(productC.name),
-              subtitle: Text(productsList[ind].company.name),
-              onTap: () {},
-            );
-          },
-        ),
+      body: ListView.builder(
+        itemCount: productsList.length,
+        itemBuilder: (context, ind) {
+          Product productC = productsList[ind];
+          return ListTile(
+            title: Text(productC.name),
+            subtitle: Text(productsList[ind].company.name),
+            onTap: () {},
+          );
+        },
       ),
     );
   }

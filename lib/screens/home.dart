@@ -28,7 +28,6 @@ class _HomeState extends State<Home> {
     // Returns the client bar app if user.type equals 'client'.
     if (user.type == "ceo") {
       return AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text('User.name'),
         actions: [
           TextButton(
@@ -44,7 +43,6 @@ class _HomeState extends State<Home> {
       );
     } else if (user.type == "employee") {
       return AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           'SR Manager',
           style: TextStyle(fontSize: 23),
@@ -63,7 +61,6 @@ class _HomeState extends State<Home> {
       );
     } else {
       return AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           'SR Manager ',
           style: TextStyle(fontSize: 20),
@@ -77,209 +74,203 @@ class _HomeState extends State<Home> {
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
     if (user.type == "ceo") {
-      return Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: ListView(
-          padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-          children: <Widget>[
-            Container(
-              width: double.maxFinite,
-              height: 100,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: ConstantesImages.logo1,
-                scale: 0.1,
-              )),
-            ),
-            ConstantesSpaces.spaceDivider,
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, 'finances');
-              },
-              leading: Icon(Icons.account_balance_wallet),
-              title: Text(
-                'Finances',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+      return ListView(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+        children: <Widget>[
+          Container(
+            width: double.maxFinite,
+            height: 100,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: ConstantesImages.logo1,
+              scale: 0.1,
+            )),
+          ),
+          ConstantesSpaces.spaceDivider,
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'finances');
+            },
+            leading: Icon(Icons.account_balance_wallet),
+            title: Text(
+              'Finances',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, "employees");
-              },
-              leading: Icon(Icons.people),
-              title: Text(
-                'Employees',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "employees");
+            },
+            leading: Icon(Icons.people),
+            title: Text(
+              'Employees',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, "products");
-              },
-              leading: Icon(Icons.inbox_rounded),
-              title: Text(
-                'Products',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "products");
+            },
+            leading: Icon(Icons.inbox_rounded),
+            title: Text(
+              'Products',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, 'sales', arguments: user);
-              },
-              leading: Icon(Icons.attach_money),
-              title: Text(
-                'Sales',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'sales', arguments: user);
+            },
+            leading: Icon(Icons.attach_money),
+            title: Text(
+              'Sales',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, 'statistics', arguments: user);
-              },
-              leading: Icon(FontAwesomeIcons.chartArea),
-              title: Text(
-                'Statistics',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'statistics', arguments: user);
+            },
+            leading: Icon(FontAwesomeIcons.chartArea),
+            title: Text(
+              'Statistics',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed('profile', arguments: user);
-              },
-              leading: Icon(
-                Icons.account_box,
-              ),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('profile', arguments: user);
+            },
+            leading: Icon(
+              Icons.account_box,
+            ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed('settings');
-              },
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('settings');
+            },
+            leading: Icon(Icons.settings),
+            title: Text(
+              'Settings',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ConstantesSpaces.spacer,
-          ],
-        ),
+          ),
+          ConstantesSpaces.spacer,
+        ],
       );
     } else if (user.type == "employee") {
-      return Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: ListView(
-          padding: EdgeInsets.only(top: 50, left: 20, right: 20),
-          children: <Widget>[
-            ListTile(
-              leading: Image(image: ConstantesImages.pLogo),
-              title: Text(
-                'User.name\nUser.email', //Text(user.company.name) *****,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w800,
-                  fontStyle: FontStyle.italic,
-                ),
+      return ListView(
+        padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+        children: <Widget>[
+          ListTile(
+            leading: Image(image: ConstantesImages.pLogo),
+            title: Text(
+              'User.name\nUser.email', //Text(user.company.name) *****,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w800,
+                fontStyle: FontStyle.italic,
               ),
             ),
-            ConstantesSpaces.spaceDivider,
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, "ranking");
-              },
-              leading: Icon(
-                Icons.star,
-              ),
-              title: Text(
-                'Ranking',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ConstantesSpaces.spaceDivider,
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "ranking");
+            },
+            leading: Icon(
+              Icons.star,
+            ),
+            title: Text(
+              'Ranking',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, "sales", arguments: user);
-              },
-              leading: Icon(
-                Icons.attach_money,
-              ),
-              title: Text(
-                'Sales',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "sales", arguments: user);
+            },
+            leading: Icon(
+              Icons.attach_money,
+            ),
+            title: Text(
+              'Sales',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, 'notes');
-              },
-              leading: Icon(Icons.book),
-              title: Text(
-                'Notes',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'notes');
+            },
+            leading: Icon(Icons.book),
+            title: Text(
+              'Notes',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed('profile', arguments: user);
-              },
-              leading: Icon(
-                Icons.account_box,
-              ),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('profile', arguments: user);
+            },
+            leading: Icon(
+              Icons.account_box,
+            ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushNamed('settings');
-              },
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed('settings');
+            },
+            leading: Icon(Icons.settings),
+            title: Text(
+              'Settings',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     } else {
       //String product;
@@ -297,42 +288,39 @@ class _HomeState extends State<Home> {
           company: Company(name: 'Company 03'),
         ),
       ];
-      return Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: ListView(
-          padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-          children: [
-            Center(
-              child: Text(
-                'Enter product name:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
+      return ListView(
+        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+        children: [
+          Center(
+            child: Text(
+              'Enter product name:',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            TextFormField(
-              onChanged: (text) {
-                //product = text;
-                //print(product);
-              },
-            ),
-            Align(
-              child: Container(
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      'productList',
-                      arguments: productsList,
-                    );
-                  },
-                  child: Text('Consult'),
-                ),
+          ),
+          TextFormField(
+            onChanged: (text) {
+              //product = text;
+              //print(product);
+            },
+          ),
+          Align(
+            child: Container(
+              width: 150,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    'productList',
+                    arguments: productsList,
+                  );
+                },
+                child: Text('Consult'),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
   }

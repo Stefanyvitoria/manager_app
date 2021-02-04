@@ -13,7 +13,6 @@ class _FinancesState extends State<Finances> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text(
           "Finances",
         ),
@@ -26,99 +25,96 @@ class _FinancesState extends State<Finances> {
           ),
         ],
       ),
-      body: Container(
-        decoration: ConstantesGradiente.gradientContainer(context),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Text(
-                      "Liquidity:",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text(
+                    "Liquidity:",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Text(
-                      "    R\$ ${widget.liquidMoney}",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Text(
+                    "    R\$ ${widget.liquidMoney}",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(height: 80),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.blueGrey[200],
-              child: Padding(
-                padding: EdgeInsets.only(left: 5, right: 5),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          "Action History",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text("Filter"),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 1,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.blueGrey[400],
-                    )
-                  ],
-                ),
-              ),
-            ),
-            new Expanded(
-              child: Container(
-                color: Colors.blueGrey[200],
-                padding: EdgeInsets.only(left: 5, right: 5),
-                child: ListView(
-                  children: [
-                    ListTile(
-                      title: Text(
-                        "action1",
+          ),
+          SizedBox(height: 80),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            color: Colors.blueGrey[200],
+            child: Padding(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Action History",
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      subtitle: Text("Buy"),
-                      leading: Icon(Icons.info_outline),
-                      trailing: TextButton(
-                        child: Icon(Icons.expand_more, color: Colors.black),
-                        onPressed: () {
-                          buildDialogAlertFinances(context);
-                        },
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Filter"),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 1,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.blueGrey[400],
+                  )
+                ],
+              ),
+            ),
+          ),
+          new Expanded(
+            child: Container(
+              color: Colors.blueGrey[200],
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: ListView(
+                children: [
+                  ListTile(
+                    title: Text(
+                      "action1",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ],
-                ),
+                    subtitle: Text("Buy"),
+                    leading: Icon(Icons.info_outline),
+                    trailing: TextButton(
+                      child: Icon(Icons.expand_more, color: Colors.black),
+                      onPressed: () {
+                        buildDialogAlertFinances(context);
+                      },
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

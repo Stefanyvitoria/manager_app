@@ -28,32 +28,28 @@ class _StatisticsState extends State<Statistics> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: ConstantesGradiente.gradientContainer(context),
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            appBar: AppBar(
-              flexibleSpace: ConstantesGradiente.gradientAppBar(context),
-              title: Text("Statistics"),
-              bottom: TabBar(
-                tabs: [
-                  Tab(
-                    icon: Icon(Icons.person),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.monetization_on),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.point_of_sale),
-                  ),
-                ],
-              ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text("Statistics"),
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.person),
+                ),
+                Tab(
+                  icon: Icon(Icons.monetization_on),
+                ),
+                Tab(
+                  icon: Icon(Icons.point_of_sale),
+                ),
+              ],
             ),
-            body: TabBarView(
-              children: containers,
-            )),
-      ),
+          ),
+          body: TabBarView(
+            children: containers,
+          )),
     );
   }
 }

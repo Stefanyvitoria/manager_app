@@ -38,12 +38,6 @@ class _ThemebuilderState extends State<Themebuilder> {
 
 class Themes {
   static final darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(
-      primary: Colors.black38,
-      secondary: Colors.blueGrey,
-      primaryVariant: Colors.teal,
-      secondaryVariant: Colors.teal[900],
-    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: Colors.teal,
@@ -55,7 +49,7 @@ class Themes {
     ),
     textButtonTheme: TextButtonThemeData(style: ButtonStyle()),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.transparent,
+    scaffoldBackgroundColor: Colors.blueGrey[900],
     primaryColor: Colors.teal,
     accentColor: Colors.white,
     textTheme: TextTheme(
@@ -80,12 +74,6 @@ class Themes {
   );
 
   static final lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(
-      primary: Colors.white,
-      secondary: Colors.grey[400],
-      primaryVariant: Colors.teal,
-      secondaryVariant: Colors.teal[600],
-    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: Colors.teal,
@@ -96,7 +84,7 @@ class Themes {
       ),
     ),
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.transparent,
+    scaffoldBackgroundColor: Colors.white,
     accentColor: Colors.black,
     primaryColor: Colors.teal,
     inputDecorationTheme: InputDecorationTheme(

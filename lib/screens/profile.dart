@@ -13,7 +13,6 @@ class _ProfileState extends State<Profile> {
     UserApp user = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: ConstantesGradiente.gradientAppBar(context),
         title: Text('Profile'),
       ),
       body: user.type == 'ceo'
@@ -24,249 +23,243 @@ class _ProfileState extends State<Profile> {
 
   _buildBodyProfileCEO(UserApp user) {
     //Returns the CEO body if user.type equals 'ceo'.
-    return Container(
-      decoration: ConstantesGradiente.gradientContainer(context),
-      child: ListView(
-        padding: EdgeInsets.only(top: 25),
-        children: [
-          Center(
-            child: Text(
-              'User Profile',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+    return ListView(
+      padding: EdgeInsets.only(top: 25),
+      children: [
+        Center(
+          child: Text(
+            'User Profile',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          Divider(),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '1');
-            },
-            leading: Icon(
-              Icons.account_box,
-            ),
-            title: Text(
-              'user.name',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        Divider(),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '1');
+          },
+          leading: Icon(
+            Icons.account_box,
+          ),
+          title: Text(
+            'user.name',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '2');
-            },
-            leading: Icon(
-              Icons.email,
-            ),
-            title: Text(
-              'user.email',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '2');
+          },
+          leading: Icon(
+            Icons.email,
+          ),
+          title: Text(
+            'user.email',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '3');
-            },
-            leading: Icon(
-              Icons.phone,
-            ),
-            title: Text(
-              'telephone',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '3');
+          },
+          leading: Icon(
+            Icons.phone,
+          ),
+          title: Text(
+            'telephone',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ConstantesSpaces.spacer,
-          Center(
-            child: Text(
-              'Company Profile',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ConstantesSpaces.spacer,
+        Center(
+          child: Text(
+            'Company Profile',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          Divider(),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '4');
-            },
-            leading: Icon(
-              Icons.account_balance,
-            ),
-            title: Text(
-              'user.company.name',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        Divider(),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '4');
+          },
+          leading: Icon(
+            Icons.account_balance,
+          ),
+          title: Text(
+            'user.company.name',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              //employees page
-            },
-            leading: Icon(
-              Icons.people,
-            ),
-            title: Text(
-              'emplyees',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            //employees page
+          },
+          leading: Icon(
+            Icons.people,
+          ),
+          title: Text(
+            'emplyees',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '6');
-            },
-            leading: Icon(
-              Icons.email,
-            ),
-            title: Text(
-              'company.email',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '6');
+          },
+          leading: Icon(
+            Icons.email,
+          ),
+          title: Text(
+            'company.email',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '7');
-            },
-            leading: Icon(
-              Icons.phone,
-            ),
-            title: Text(
-              'company.telephone',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '7');
+          },
+          leading: Icon(
+            Icons.phone,
+          ),
+          title: Text(
+            'company.telephone',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '8');
-            },
-            leading: Icon(
-              Icons.add_location_sharp,
-            ),
-            title: Text(
-              'company.adress',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '8');
+          },
+          leading: Icon(
+            Icons.add_location_sharp,
+          ),
+          title: Text(
+            'company.adress',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   _buildBodyProfileEmployee(UserApp user) {
     //Returns the staff if user.type is equal to 'employee'.
-    return Container(
-      decoration: ConstantesGradiente.gradientContainer(context),
-      child: ListView(
-        padding: EdgeInsets.only(top: 25),
-        children: [
-          Center(
-            child: Text(
-              'User Profile',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+    return ListView(
+      padding: EdgeInsets.only(top: 25),
+      children: [
+        Center(
+          child: Text(
+            'User Profile',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          Divider(),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '1');
-            },
-            leading: Icon(
-              Icons.account_box,
-            ),
-            title: Text(
-              'user.name',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        Divider(),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '1');
+          },
+          leading: Icon(
+            Icons.account_box,
+          ),
+          title: Text(
+            'user.name',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '2');
-            },
-            leading: Icon(
-              Icons.email,
-            ),
-            title: Text(
-              'user.email',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '2');
+          },
+          leading: Icon(
+            Icons.email,
+          ),
+          title: Text(
+            'user.email',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '3');
-            },
-            leading: Icon(
-              Icons.phone,
-            ),
-            title: Text(
-              'telephone',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '3');
+          },
+          leading: Icon(
+            Icons.phone,
+          ),
+          title: Text(
+            'telephone',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, user.name, '8');
-            },
-            leading: Icon(
-              Icons.add_location_sharp,
-            ),
-            title: Text(
-              'adress',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {
+            _buildPopup(context, user.name, '8');
+          },
+          leading: Icon(
+            Icons.add_location_sharp,
+          ),
+          title: Text(
+            'adress',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          ListTile(
-            onTap: () {},
-            leading: Icon(
-              Icons.account_balance,
-            ),
-            title: Text(
-              'user.company.name',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
+        ),
+        ListTile(
+          onTap: () {},
+          leading: Icon(
+            Icons.account_balance,
+          ),
+          title: Text(
+            'user.company.name',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

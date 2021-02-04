@@ -39,33 +39,3 @@ class ConstantesSpaces {
   static final spacer = Container(height: 30);
   static final spacermin = Container(height: 15);
 }
-
-class ConstantesGradiente {
-  static BoxDecoration gradientContainer(context) {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [
-          Theme.of(context).colorScheme.primary,
-          Theme.of(context).colorScheme.secondary,
-        ],
-      ),
-    );
-  }
-
-  static gradientAppBar(context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Theme.of(context).colorScheme.secondaryVariant,
-            Theme.of(context).colorScheme.primaryVariant
-          ],
-        ),
-      ),
-    );
-  }
-}
