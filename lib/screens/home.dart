@@ -13,8 +13,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    User user = ModalRoute.of(context).settings.arguments;
-    if (user == null) user = User();
+    UserApp user = ModalRoute.of(context).settings.arguments;
+    if (user == null) user = UserApp();
 
     return Scaffold(
       appBar: _builAppBarHome(user),
@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _builAppBarHome(User user) {
+  _builAppBarHome(UserApp user) {
     //Returns the CEO bar app if user.type equals 'ceo'.
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _builBodyHome(User user) {
+  _builBodyHome(UserApp user) {
     //Returns the CEO body if user.type equals 'ceo'.
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.

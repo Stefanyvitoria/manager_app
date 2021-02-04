@@ -10,7 +10,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    User user = ModalRoute.of(context).settings.arguments;
+    UserApp user = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: ConstantesGradiente.gradientAppBar(context),
@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  _buildBodyProfileCEO(User user) {
+  _buildBodyProfileCEO(UserApp user) {
     //Returns the CEO body if user.type equals 'ceo'.
     return Container(
       decoration: ConstantesGradiente.gradientContainer(context),
@@ -175,7 +175,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  _buildBodyProfileEmployee(User user) {
+  _buildBodyProfileEmployee(UserApp user) {
     //Returns the staff if user.type is equal to 'employee'.
     return Container(
       decoration: ConstantesGradiente.gradientContainer(context),

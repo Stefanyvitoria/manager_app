@@ -11,8 +11,8 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
-    User user = ModalRoute.of(context).settings.arguments;
-    if (user == null) user = User();
+    UserApp user = ModalRoute.of(context).settings.arguments;
+    if (user == null) user = UserApp();
     return Scaffold(
         appBar: buildAppbarSales(user, context),
         floatingActionButton: buildFloatingButtonSales(user, context),
@@ -236,7 +236,7 @@ class _AddSale extends State<AddSale> {
   }
 }
 
-buildAppbarSales(User user, BuildContext context) {
+buildAppbarSales(UserApp user, BuildContext context) {
   if (user.type == "ceo") {
     return AppBar(
         flexibleSpace: ConstantesGradiente.gradientAppBar(context),
@@ -268,7 +268,7 @@ buildAppbarSales(User user, BuildContext context) {
   }
 }
 
-buildFloatingButtonSales(User user, BuildContext context) {
+buildFloatingButtonSales(UserApp user, BuildContext context) {
   if (user.type == "ceo") {
     return FloatingActionButton(
       onPressed: () {
@@ -281,7 +281,7 @@ buildFloatingButtonSales(User user, BuildContext context) {
   } else {}
 }
 
-buildBodySales(User user, BuildContext context) {
+buildBodySales(UserApp user, BuildContext context) {
   if (user.type == "ceo") {
     return Container(
       decoration: ConstantesGradiente.gradientContainer(context),

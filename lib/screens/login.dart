@@ -10,7 +10,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    User user = User(); //start current user.
+    UserApp user = UserApp(); //start current user.
     user.type =
         ModalRoute.of(context).settings.arguments; // recovery user type.
     return Scaffold(
