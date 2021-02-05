@@ -85,6 +85,7 @@ class _RegisterState extends State<Register> {
             ),
             Container(
               child: TextFormField(
+                obscureText: true,
                 validator: (String value) {
                   return value.isEmpty
                       ? 'Required field.'
@@ -110,6 +111,7 @@ class _RegisterState extends State<Register> {
             ),
             Container(
               child: TextFormField(
+                obscureText: true,
                 validator: (String value) {
                   return value.isEmpty
                       ? 'Required field.'
