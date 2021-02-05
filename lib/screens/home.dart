@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:manager_app/services/database_service.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,9 +13,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Ceo _user;
   @override
   Widget build(BuildContext context) {
     String _type = ModalRoute.of(context).settings.arguments;
+
+    DatabaseService()
+        .getUser(uid: FirebaseAuth.instance.currentUser.uid, type: _type)
+        .then((Ceo ceoResult) {
+      print(ceoResult);
+      _user = ceoResult;
+      return;
+    }); //*****
 
     return Scaffold(
       appBar: _builAppBarHome(_type),
@@ -26,7 +38,7 @@ class _HomeState extends State<Home> {
     // Returns the client bar app if user.type equals 'client'.
     if (type == "ceo") {
       return AppBar(
-        title: Text('User.name'),
+        title: Text('user.name'),
         actions: [
           TextButton(
             onPressed: () {
@@ -89,6 +101,8 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
+              print(_user.email);
+              print(_user.name);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),
