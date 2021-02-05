@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/services/constantes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:manager_app/services/database_service.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -12,102 +15,144 @@ class _RegisterState extends State<Register> {
   TextEditingController _passWord1Controler = TextEditingController();
   TextEditingController _passWord2Controler = TextEditingController();
 
+  final _formkey = GlobalKey<FormState>();
+  final auth = FirebaseAuth.instance;
+  Ceo ceo;
+
   @override
   Widget build(BuildContext context) {
+    ceo = Ceo();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
       ),
-      body: ListView(
-        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-        children: [
-          Center(
-            child: Text(
-              'Name:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
+      body: Form(
+        key: _formkey,
+        child: ListView(
+          padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+          children: [
+            Center(
+              child: Text(
+                'Name:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TextFormField(
-              onSaved: (text) {
-                _nameContoler.text = text;
-              },
-              controller: _nameContoler,
-            ),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'Email:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Container(
-            child: TextFormField(
-              onSaved: (text) {
-                _emailControler.text = text;
-              },
-              controller: _emailControler,
-            ),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'Password:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Container(
-            child: TextFormField(
-              onSaved: (text) {
-                _passWord1Controler.text = text;
-              },
-              controller: _passWord1Controler,
-            ),
-          ),
-          ConstantesSpaces.spacermin,
-          Center(
-            child: Text(
-              'confirm password:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Container(
-            child: TextFormField(
-              onSaved: (text) {
-                _passWord2Controler.text = text;
-              },
-              controller: _passWord2Controler,
-            ),
-          ),
-          Align(
-            child: Container(
-              padding: EdgeInsets.only(top: 7),
-              width: 150,
-              child: ElevatedButton(
-                child: Text('Register'),
-                onPressed: () {
-                  //Validate
-                  _buildPopup(context);
+            Container(
+              child: TextFormField(
+                validator: (String value) {
+                  return value.isEmpty ? 'Required field.' : null;
                 },
+                onSaved: (text) {
+                  _nameContoler.text = text;
+                },
+                controller: _nameContoler,
               ),
             ),
-          ),
-        ],
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'Email:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Container(
+              child: TextFormField(
+                validator: (String value) {
+                  return value.isEmpty ? 'Required field.' : null;
+                },
+                onSaved: (text) {
+                  _emailControler.text = text;
+                },
+                controller: _emailControler,
+              ),
+            ),
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'Password:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Container(
+              child: TextFormField(
+                validator: (String value) {
+                  return value.isEmpty
+                      ? 'Required field.'
+                      : value != _passWord2Controler.text
+                          ? 'incompatible passwords.'
+                          : null;
+                },
+                onSaved: (text) {
+                  _passWord1Controler.text = text;
+                },
+                controller: _passWord1Controler,
+              ),
+            ),
+            ConstantesSpaces.spacermin,
+            Center(
+              child: Text(
+                'confirm password:',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Container(
+              child: TextFormField(
+                validator: (String value) {
+                  return value.isEmpty
+                      ? 'Required field.'
+                      : value != _passWord1Controler.text
+                          ? 'incompatible passwords.'
+                          : null;
+                },
+                onSaved: (text) {
+                  _passWord2Controler.text = text;
+                },
+                controller: _passWord2Controler,
+              ),
+            ),
+            Align(
+              child: Container(
+                padding: EdgeInsets.only(top: 7),
+                width: 150,
+                child: ElevatedButton(
+                  child: Text('Register'),
+                  onPressed: () async {
+                    if (!_validate()) return;
+                    await DatabaseService.register(ceo.email, ceo.password);
+                    ceo.uid = auth.currentUser.uid; //*****
+                    ceoControler.createCeo(ceo);
+                    _buildPopup(context);
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (_formkey.currentState.validate()) {
+      ceo.password = _passWord1Controler.text;
+      ceo.name = _nameContoler.text;
+      ceo.email = _emailControler.text;
+      return true;
+    }
+    return false;
   }
 
   _buildPopup(context) {

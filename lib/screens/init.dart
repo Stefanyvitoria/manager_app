@@ -48,7 +48,7 @@ class Init extends StatelessWidget {
                   width: 125,
                   child: ElevatedButton(
                     child: Text(
-                      'Ceo',
+                      'CEO',
                       style: TextStyle(
                         color: Colors.white,
                       ),

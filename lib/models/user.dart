@@ -1,7 +1,7 @@
 import 'package:manager_app/models/company.dart';
 
 class UserApp {
-  String name, email, password, type, phone;
+  String name, email, password, type, phone, uid;
   Company company;
   UserApp({
     this.name = "client",
@@ -10,5 +10,6 @@ class UserApp {
     this.type = "client",
     this.phone,
     this.company,
+    this.uid,
   });
 }
