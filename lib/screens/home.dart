@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/company.dart';
-import 'package:manager_app/models/user.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,20 +12,19 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    UserApp user = ModalRoute.of(context).settings.arguments;
-    if (user == null) user = UserApp();
+    String _type = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: _builAppBarHome(user),
-      body: _builBodyHome(user),
+      appBar: _builAppBarHome(_type),
+      body: _builBodyHome(_type),
     );
   }
 
-  _builAppBarHome(UserApp user) {
+  _builAppBarHome(String type) {
     //Returns the CEO bar app if user.type equals 'ceo'.
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
-    if (user.type == "ceo") {
+    if (type == "ceo") {
       return AppBar(
         title: Text('User.name'),
         actions: [
@@ -41,7 +39,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       );
-    } else if (user.type == "employee") {
+    } else if (type == "employee") {
       return AppBar(
         title: Text(
           'SR Manager',
@@ -69,11 +67,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _builBodyHome(UserApp user) {
+  _builBodyHome(String type) {
     //Returns the CEO body if user.type equals 'ceo'.
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
-    if (user.type == "ceo") {
+    if (type == "ceo") {
       return ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
@@ -130,7 +128,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'sales', arguments: user);
+              Navigator.pushNamed(context, 'sales');
             },
             leading: Icon(Icons.attach_money),
             title: Text(
@@ -143,7 +141,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'statistics', arguments: user);
+              Navigator.pushNamed(context, 'statistics');
             },
             leading: Icon(FontAwesomeIcons.chartArea),
             title: Text(
@@ -156,7 +154,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile', arguments: user);
+              Navigator.of(context).pushNamed('profile');
             },
             leading: Icon(
               Icons.account_box,
@@ -185,14 +183,14 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spacer,
         ],
       );
-    } else if (user.type == "employee") {
+    } else if (type == "employee") {
       return ListView(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         children: <Widget>[
           ListTile(
             leading: Image(image: ConstantesImages.pLogo),
             title: Text(
-              'User.name\nUser.email', //Text(user.company.name) *****,
+              'User.name\nUser.email',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w800,
@@ -218,7 +216,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "sales", arguments: user);
+              Navigator.pushNamed(context, "sales");
             },
             leading: Icon(
               Icons.attach_money,
@@ -246,7 +244,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile', arguments: user);
+              Navigator.of(context).pushNamed('profile');
             },
             leading: Icon(
               Icons.account_box,
@@ -303,10 +301,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           TextFormField(
-            onChanged: (text) {
-              //product = text;
-              //print(product);
-            },
+            onChanged: (text) {},
           ),
           Align(
             child: Container(

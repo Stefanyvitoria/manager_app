@@ -5,7 +5,6 @@ class Ceo {
   String name;
   String email;
   String password;
-  String type;
   String phone;
   String company;
   String uid;
@@ -14,7 +13,6 @@ class Ceo {
       {this.name,
       this.email,
       this.password,
-      this.type,
       this.phone,
       this.company,
       this.uid});
@@ -23,7 +21,6 @@ class Ceo {
     name = json['name'];
     email = json['email'];
     password = json['password'];
-    type = json['type'];
     phone = json['phone'];
     company = json['company'];
     uid = json['uid'];
@@ -34,7 +31,6 @@ class Ceo {
     data['name'] = this.name;
     data['email'] = this.email;
     data['password'] = this.password;
-    data['type'] = this.type;
     data['phone'] = this.phone;
     data['company'] = this.company;
     data['uid'] = this.uid;

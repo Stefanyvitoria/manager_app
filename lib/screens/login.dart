@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/services/constantes.dart';
-import 'package:manager_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manager_app/services/database_service.dart';
 
@@ -18,9 +17,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    UserApp user = UserApp(); //start current user. *****
-    user.type =
-        ModalRoute.of(context).settings.arguments; // recovery user type. *****
+    String _type =
+        ModalRoute.of(context).settings.arguments; // recovery user type.
 
     return Scaffold(
       appBar: AppBar(
@@ -92,9 +90,6 @@ class _LoginState extends State<Login> {
                             return value.isEmpty ? 'Required field.' : null;
                           },
                           obscureText: true,
-                          onChanged: (text) {
-                            user.password = text;
-                          },
                           decoration: const InputDecoration(
                               labelText: 'Password:',
                               suffixIcon: Icon(
@@ -112,8 +107,7 @@ class _LoginState extends State<Login> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed('forgotPassword', arguments: user);
+                              Navigator.of(context).pushNamed('forgotPassword');
                             },
                           ),
                         ],
@@ -126,14 +120,14 @@ class _LoginState extends State<Login> {
                                 'Login',
                                 style: TextStyle(color: Colors.teal),
                               ),
-                              onPressed: () async {
+                              onPressed: () {
                                 if (!_validate()) return;
 
                                 DatabaseService.login(_emailController.text,
                                     _passWController.text);
                                 Navigator.of(context).pushReplacementNamed(
                                     'home',
-                                    arguments: user); //*****
+                                    arguments: _type);
                               },
                               style: ButtonStyle(
                                 backgroundColor:
@@ -141,13 +135,13 @@ class _LoginState extends State<Login> {
                               ),
                             )),
                       ),
-                      if (user.type == 'ceo') ...[
+                      if (_type == 'ceo') ...[
                         TextButton(
                           child: Text('Register.',
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
                             Navigator.of(context)
-                                .pushNamed('register', arguments: user);
+                                .pushNamed('register', arguments: _type);
                           },
                         ),
                       ]
