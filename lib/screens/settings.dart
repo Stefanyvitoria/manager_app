@@ -55,8 +55,8 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
-              DatabaseServiceFirestore()
-                  .deleteCeo(FirebaseAuth.instance.currentUser.uid);
+              // DatabaseServiceFirestore()
+              //     .deleteCeo(FirebaseAuth.instance.currentUser.uid);
               _buildPopup(context, 'Delete Account');
             },
             title: Text(

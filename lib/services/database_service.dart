@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:manager_app/models/ceo.dart';
-import 'package:manager_app/models/employee.dart';
 
 class DatabaseServiceAuth {
   static Future register(String email, String passw) async {
@@ -24,22 +23,21 @@ class DatabaseServiceFirestore {
         .set(ceo.toJson());
   }
 
-  Future<Ceo> getCeo({String uid, String type}) async {
-    DocumentSnapshot doc;
-    doc = await FirebaseFirestore.instance.collection('ceo').doc(uid).get();
-    Ceo user = Ceo.fromJson(doc.data());
-    return user;
+  List<Ceo> ceoFromFirestore(QuerySnapshot snapshot) {
+    if (snapshot != null) {
+      return snapshot.docs.map(
+        (e) {
+          return Ceo.fromJson(e.data());
+        },
+      );
+    }
   }
 
-  Future<Employee> getEmployee({String uid, String type}) async {
-    DocumentSnapshot doc;
-    doc =
-        await FirebaseFirestore.instance.collection('employee').doc(uid).get();
-    Employee user = Employee.fromJson(doc.data());
-    return user;
-  }
-
-  Future deleteCeo(String uid) async {
-    await FirebaseFirestore.instance.collection('ceo').doc(uid).delete();
+  Stream<List<Ceo>> listCeo(uid) {
+    return FirebaseFirestore.instance
+        .collection('ceo')
+        .where(uid)
+        .snapshots()
+        .map(ceoFromFirestore);
   }
 }

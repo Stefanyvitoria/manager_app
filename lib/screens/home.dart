@@ -19,19 +19,19 @@ class _HomeState extends State<Home> {
   var user;
   String _type;
 
-  Future awaitUser() async {
-    await DatabaseServiceFirestore()
-        .getCeo(uid: _currentUser.uid, type: _type)
-        .then((userResult) {
-      user = userResult;
-    });
-  }
+  // Future awaitUser() async {
+  //   await DatabaseServiceFirestore()
+  //       .getCeo(uid: _currentUser.uid, type: _type)
+  //       .then((userResult) {
+  //     user = userResult;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments;
 
-    awaitUser();
+    //awaitUser();
 
     return Scaffold(
       appBar: _builAppBarHome(),
