@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_app/models/ceo.dart';
+//import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
@@ -13,18 +13,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Ceo _user;
+  var _currentUser = FirebaseAuth.instance.currentUser;
+  var _user;
+  String _type;
+
+  Future awaitUser() async {
+    await DatabaseServiceFirestore()
+        .getCeo(uid: _currentUser.uid, type: _type)
+        .then((userResult) {
+      _user = userResult;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    String _type = ModalRoute.of(context).settings.arguments;
+    _type = ModalRoute.of(context).settings.arguments;
 
-    DatabaseService()
-        .getUser(uid: FirebaseAuth.instance.currentUser.uid, type: _type)
-        .then((Ceo ceoResult) {
-      print(ceoResult);
-      _user = ceoResult;
-      return;
-    }); //*****
+    awaitUser();
 
     return Scaffold(
       appBar: _builAppBarHome(_type),
@@ -32,13 +37,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _builAppBarHome(String type) {
+  AppBar _builAppBarHome(String type) {
     //Returns the CEO bar app if user.type equals 'ceo'.
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
     if (type == "ceo") {
       return AppBar(
-        title: Text('user.name'),
+        title: Text('{_user.name}'),
         actions: [
           TextButton(
             onPressed: () {
@@ -79,7 +84,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _builBodyHome(String type) {
+  Widget _builBodyHome(String type) {
     //Returns the CEO body if user.type equals 'ceo'.
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
@@ -101,8 +106,9 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
-              print(_user.email);
+              print(_user.email); //*****
               print(_user.name);
+              print(_user.phone);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),

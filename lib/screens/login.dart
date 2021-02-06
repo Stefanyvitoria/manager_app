@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                               onPressed: () {
                                 if (!_validate()) return;
 
-                                DatabaseService.login(_emailController.text,
+                                DatabaseServiceAuth.login(_emailController.text,
                                     _passWController.text);
                                 Navigator.of(context).pushReplacementNamed(
                                     'home',

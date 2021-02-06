@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Ceo {
   String name;
   String email;
@@ -35,16 +32,5 @@ class Ceo {
     data['company'] = this.company;
     data['uid'] = this.uid;
     return data;
-  }
-}
-
-CeoControler ceoControler = CeoControler();
-
-class CeoControler {
-  final CollectionReference ceoCollection =
-      FirebaseFirestore.instance.collection('ceo');
-
-  FutureOr createCeo(Ceo ceo) async {
-    await ceoCollection.doc(ceo.uid).set(ceo.toJson());
   }
 }

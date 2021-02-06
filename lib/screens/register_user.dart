@@ -133,9 +133,9 @@ class _RegisterState extends State<Register> {
                   child: Text('Register'),
                   onPressed: () async {
                     if (!_validate()) return;
-                    await DatabaseService.register(ceo.email, ceo.password);
+                    await DatabaseServiceAuth.register(ceo.email, ceo.password);
                     ceo.uid = auth.currentUser.uid; //*****
-                    ceoControler.createCeo(ceo);
+                    DatabaseServiceFirestore().setCeo(ceo);
                     _buildPopup(context);
                   },
                 ),
