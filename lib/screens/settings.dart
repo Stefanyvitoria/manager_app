@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/services/database_service.dart';
 import 'package:manager_app/services/theme.dart';
 
 class SettingsApp extends StatefulWidget {
@@ -8,8 +10,10 @@ class SettingsApp extends StatefulWidget {
 
 class _SettingsAppState extends State<SettingsApp> {
   bool valueSwitch = false;
+
   @override
   Widget build(BuildContext context) {
+    //var user = ModalRoute.of(context).settings.arguments; //*****
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -51,6 +55,8 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
+              DatabaseServiceFirestore()
+                  .deleteCeo(FirebaseAuth.instance.currentUser.uid);
               _buildPopup(context, 'Delete Account');
             },
             title: Text(

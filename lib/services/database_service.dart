@@ -38,4 +38,8 @@ class DatabaseServiceFirestore {
     Employee user = Employee.fromJson(doc.data());
     return user;
   }
+
+  Future deleteCeo(String uid) async {
+    await FirebaseFirestore.instance.collection('ceo').doc(uid).delete();
+  }
 }

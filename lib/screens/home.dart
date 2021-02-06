@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
+import 'package:manager_app/screens/Loading.dart';
+import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,14 +16,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var _currentUser = FirebaseAuth.instance.currentUser;
-  var _user;
+  var user;
   String _type;
 
   Future awaitUser() async {
     await DatabaseServiceFirestore()
         .getCeo(uid: _currentUser.uid, type: _type)
         .then((userResult) {
-      _user = userResult;
+      user = userResult;
     });
   }
 
@@ -32,18 +34,18 @@ class _HomeState extends State<Home> {
     awaitUser();
 
     return Scaffold(
-      appBar: _builAppBarHome(_type),
-      body: _builBodyHome(_type),
+      appBar: _builAppBarHome(),
+      body: _builBodyHome(),
     );
   }
 
-  AppBar _builAppBarHome(String type) {
+  AppBar _builAppBarHome() {
     //Returns the CEO bar app if user.type equals 'ceo'.
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
-    if (type == "ceo") {
+    if (_type == "ceo") {
       return AppBar(
-        title: Text('{_user.name}'),
+        title: Text("Sr Manager"),
         actions: [
           TextButton(
             onPressed: () {
@@ -56,7 +58,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       );
-    } else if (type == "employee") {
+    } else if (_type == "employee") {
       return AppBar(
         title: Text(
           'SR Manager',
@@ -84,11 +86,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget _builBodyHome(String type) {
+  Widget _builBodyHome() {
     //Returns the CEO body if user.type equals 'ceo'.
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
-    if (type == "ceo") {
+    if (_type == "ceo") {
       return ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
@@ -106,9 +108,9 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
-              print(_user.email); //*****
-              print(_user.name);
-              print(_user.phone);
+              print(this.user.email); //*****
+              print(this.user.name);
+              print(this.user.phone);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),
@@ -189,7 +191,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings');
+              Navigator.of(context).pushNamed('settings', arguments: user);
             },
             leading: Icon(Icons.settings),
             title: Text(
@@ -203,7 +205,7 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spacer,
         ],
       );
-    } else if (type == "employee") {
+    } else if (_type == "employee") {
       return ListView(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         children: <Widget>[
