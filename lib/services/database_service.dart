@@ -23,21 +23,7 @@ class DatabaseServiceFirestore {
         .set(ceo.toJson());
   }
 
-  List<Ceo> ceoFromFirestore(QuerySnapshot snapshot) {
-    if (snapshot != null) {
-      return snapshot.docs.map(
-        (e) {
-          return Ceo.fromJson(e.data());
-        },
-      );
-    }
-  }
-
-  Stream<List<Ceo>> listCeo(uid) {
-    return FirebaseFirestore.instance
-        .collection('ceo')
-        .where(uid)
-        .snapshots()
-        .map(ceoFromFirestore);
+  Stream<DocumentSnapshot> getCeo({String uid}) {
+    return FirebaseFirestore.instance.collection('ceo').doc(uid).snapshots();
   }
 }

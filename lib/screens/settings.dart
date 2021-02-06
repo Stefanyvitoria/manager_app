@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_app/services/database_service.dart';
 import 'package:manager_app/services/theme.dart';
 
 class SettingsApp extends StatefulWidget {

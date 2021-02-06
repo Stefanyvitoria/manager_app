@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
 import 'package:manager_app/screens/Loading.dart';
-import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,36 +14,34 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var _currentUser = FirebaseAuth.instance.currentUser;
-  var user;
   String _type;
-
-  // Future awaitUser() async {
-  //   await DatabaseServiceFirestore()
-  //       .getCeo(uid: _currentUser.uid, type: _type)
-  //       .then((userResult) {
-  //     user = userResult;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments;
 
-    //awaitUser();
-
-    return Scaffold(
-      appBar: _builAppBarHome(),
-      body: _builBodyHome(),
+    return StreamBuilder(
+      stream: DatabaseServiceFirestore().getCeo(uid: _currentUser.uid),
+      builder: (context, snapshot) {
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting) {
+          return Loading();
+        }
+        return Scaffold(
+          appBar: _builAppBarHome(snapshot),
+          body: _builBodyHome(snapshot),
+        );
+      },
     );
   }
 
-  AppBar _builAppBarHome() {
+  AppBar _builAppBarHome(AsyncSnapshot snapshot) {
     //Returns the CEO bar app if user.type equals 'ceo'.
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
     if (_type == "ceo") {
       return AppBar(
-        title: Text("Sr Manager"),
+        title: Text("${snapshot.data['name']}"),
         actions: [
           TextButton(
             onPressed: () {
@@ -86,7 +82,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget _builBodyHome() {
+  Widget _builBodyHome(AsyncSnapshot snapshot) {
     //Returns the CEO body if user.type equals 'ceo'.
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
@@ -108,9 +104,6 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
-              print(this.user.email); //*****
-              print(this.user.name);
-              print(this.user.phone);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),
@@ -191,7 +184,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings', arguments: user);
+              Navigator.of(context).pushNamed('settings'); //, arguments: user);
             },
             leading: Icon(Icons.settings),
             title: Text(
@@ -295,7 +288,6 @@ class _HomeState extends State<Home> {
         ],
       );
     } else {
-      //String product;
       List<Product> productsList = [
         Product(
           name: 'Product 01',
