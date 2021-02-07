@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/services/theme.dart';
+import 'package:manager_app/services/database_service.dart';
 
 class SettingsApp extends StatefulWidget {
   @override
@@ -52,8 +54,9 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
-              // DatabaseServiceFirestore()
-              //     .deleteCeo(FirebaseAuth.instance.currentUser.uid);
+              DatabaseServiceAuth.deleteuser(FirebaseAuth.instance.currentUser);
+              DatabaseServiceFirestore()
+                  .deleteCeo(FirebaseAuth.instance.currentUser.uid);
               _buildPopup(context, 'Delete Account');
             },
             title: Text(

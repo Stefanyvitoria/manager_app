@@ -17,6 +17,10 @@ class DatabaseServiceAuth {
   static Future logOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  static Future deleteuser(user) async {
+    await user.delete();
+  }
 }
 
 class DatabaseServiceFirestore {
@@ -29,5 +33,9 @@ class DatabaseServiceFirestore {
 
   Stream<DocumentSnapshot> getCeo({String uid}) {
     return FirebaseFirestore.instance.collection('ceo').doc(uid).snapshots();
+  }
+
+  FutureOr deleteCeo(String uid) {
+    FirebaseFirestore.instance.collection('ceo').doc(uid).delete();
   }
 }
