@@ -13,6 +13,10 @@ class DatabaseServiceAuth {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email.trim(), password: passw);
   }
+
+  static Future logOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
 
 class DatabaseServiceFirestore {

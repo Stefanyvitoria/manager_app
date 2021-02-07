@@ -19,8 +19,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     String _type =
         ModalRoute.of(context).settings.arguments; // recovery user type.
-    _emailController.text = 'ste@gmail.com';
-    _passWController.text = '123456';
 
     return Scaffold(
       appBar: AppBar(
@@ -69,6 +67,9 @@ class _LoginState extends State<Login> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          onSaved: (txt) {
+                            _emailController.text = txt;
+                          },
                           controller: _emailController,
                           validator: (String value) {
                             return value.isEmpty ? 'Required field.' : null;
@@ -87,6 +88,9 @@ class _LoginState extends State<Login> {
                         padding: const EdgeInsets.only(
                             left: 8.0, right: 8.0, top: 8.0, bottom: 0.0),
                         child: TextFormField(
+                          onSaved: (txt) {
+                            _passWController.text = txt;
+                          },
                           controller: _passWController,
                           validator: (String value) {
                             return value.isEmpty ? 'Required field.' : null;
@@ -122,10 +126,11 @@ class _LoginState extends State<Login> {
                                 'Login',
                                 style: TextStyle(color: Colors.teal),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (!_validate()) return;
 
-                                DatabaseServiceAuth.login(_emailController.text,
+                                await DatabaseServiceAuth.login(
+                                    _emailController.text,
                                     _passWController.text);
                                 Navigator.of(context).pushReplacementNamed(
                                     'home',

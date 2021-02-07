@@ -41,10 +41,12 @@ class _HomeState extends State<Home> {
     // Returns the client bar app if user.type equals 'client'.
     if (_type == "ceo") {
       return AppBar(
-        title: Text("${snapshot.data['name']}"),
+        title: Text("${snapshot.data['name']}".substring(0, 1).toUpperCase() +
+            "${snapshot.data['name']}".substring(1)),
         actions: [
           TextButton(
             onPressed: () {
+              DatabaseServiceAuth.logOut();
               Navigator.of(context).pushReplacementNamed('/');
             },
             child: Icon(
@@ -104,6 +106,7 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
+              //print(snapshot.data['name']);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),

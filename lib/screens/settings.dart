@@ -11,7 +11,6 @@ class _SettingsAppState extends State<SettingsApp> {
 
   @override
   Widget build(BuildContext context) {
-    //var user = ModalRoute.of(context).settings.arguments; //*****
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
