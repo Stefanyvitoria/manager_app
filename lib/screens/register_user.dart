@@ -64,6 +64,7 @@ class _RegisterState extends State<Register> {
             ),
             Container(
               child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 validator: (String value) {
                   return value.isEmpty ? 'Required field.' : null;
                 },
@@ -135,7 +136,8 @@ class _RegisterState extends State<Register> {
                     if (!_validate()) return;
                     await DatabaseServiceAuth.register(ceo.email, ceo.password);
                     ceo.uid = auth.currentUser.uid; //*****
-                    DatabaseServiceFirestore().setCeo(ceo);
+                    DatabaseServiceFirestore().setCeo(
+                        uid: ceo.uid, collectionName: 'ceo', instance: ceo);
                     _buildPopup(context);
                   },
                 ),

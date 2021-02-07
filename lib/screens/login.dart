@@ -11,15 +11,17 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final auth = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
+  String _type;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passWController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    String _type =
-        ModalRoute.of(context).settings.arguments; // recovery user type.
+    _type = ModalRoute.of(context).settings.arguments; // recovery user type.
 
+    _emailController.text = 'senhae123456@gmail.com';
+    _passWController.text = '123456';
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -67,6 +69,7 @@ class _LoginState extends State<Login> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           onSaved: (txt) {
                             _emailController.text = txt;
                           },
@@ -132,9 +135,17 @@ class _LoginState extends State<Login> {
                                 await DatabaseServiceAuth.login(
                                     _emailController.text,
                                     _passWController.text);
-                                Navigator.of(context).pushReplacementNamed(
-                                    'home',
-                                    arguments: _type);
+                                if (await _validatelogin(
+                                    FirebaseAuth.instance.currentUser.uid)) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                      'home',
+                                      arguments: _type);
+                                } else {
+                                  Navigator.of(context).pushReplacementNamed(
+                                      'home',
+                                      arguments:
+                                          _type == 'ceo' ? 'employee' : 'ceo');
+                                }
                               },
                               style: ButtonStyle(
                                 backgroundColor:
@@ -168,5 +179,12 @@ class _LoginState extends State<Login> {
       return true;
     }
     return false;
+  }
+
+  _validatelogin(uid) async {
+    var result = await DatabaseServiceFirestore()
+        .validatelogin(uid: uid, collectiom: _type);
+
+    return result;
   }
 }

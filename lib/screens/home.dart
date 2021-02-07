@@ -21,7 +21,8 @@ class _HomeState extends State<Home> {
     _type = ModalRoute.of(context).settings.arguments;
 
     return StreamBuilder(
-      stream: DatabaseServiceFirestore().getCeo(uid: _currentUser.uid),
+      stream: DatabaseServiceFirestore()
+          .getCeo(uid: _currentUser.uid, collectionName: _type),
       builder: (context, snapshot) {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting) {

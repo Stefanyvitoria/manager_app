@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:manager_app/models/ceo.dart';
+//import 'package:manager_app/models/ceo.dart';
 
 class DatabaseServiceAuth {
   static Future register(String email, String passw) async {
@@ -24,15 +24,30 @@ class DatabaseServiceAuth {
 }
 
 class DatabaseServiceFirestore {
-  FutureOr setCeo(Ceo ceo) async {
-    await FirebaseFirestore.instance
-        .collection('ceo')
-        .doc(ceo.uid)
-        .set(ceo.toJson());
+  validatelogin({String collectiom, uid}) async {
+    var result = false;
+    await FirebaseFirestore.instance.collection(collectiom).doc(uid).get().then(
+      (DocumentSnapshot value) {
+        if (value.exists) {
+          result = true;
+        }
+      },
+    );
+    return result;
   }
 
-  Stream<DocumentSnapshot> getCeo({String uid}) {
-    return FirebaseFirestore.instance.collection('ceo').doc(uid).snapshots();
+  FutureOr setCeo({String uid, String collectionName, instance}) async {
+    await FirebaseFirestore.instance
+        .collection('ceo')
+        .doc(uid)
+        .set(instance.toJson());
+  }
+
+  Stream<DocumentSnapshot> getCeo({String uid, String collectionName}) {
+    return FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(uid)
+        .snapshots();
   }
 
   FutureOr deleteCeo(String uid) {
