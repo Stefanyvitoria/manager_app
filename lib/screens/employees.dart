@@ -12,8 +12,10 @@ class Employees extends StatefulWidget {
 }
 
 class _EmployeesState extends State<Employees> {
+  Ceo ceo;
   @override
   Widget build(BuildContext context) {
+    ceo = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -32,7 +34,7 @@ class _EmployeesState extends State<Employees> {
           ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'addEmployee');
+          Navigator.pushNamed(context, 'addEmployee', arguments: ceo);
         },
         tooltip: 'Increment',
         child: Icon(
@@ -71,7 +73,8 @@ class _EmployeesState extends State<Employees> {
                     subtitle: Text("Occupation: seller"),
                     trailing: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, 'editEmployee');
+                        Navigator.pushNamed(context, 'editEmployee',
+                            arguments: listEmployees[index]);
                       },
                       child: Icon(
                         Icons.edit,
@@ -140,8 +143,14 @@ class EditEmployee extends StatefulWidget {
 }
 
 class _EditEmployeeState extends State<EditEmployee> {
+  final _formKey = GlobalKey<FormState>();
+
+  Employee employee;
+
   @override
   Widget build(BuildContext context) {
+    employee = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -154,63 +163,116 @@ class _EditEmployeeState extends State<EditEmployee> {
           height: MediaQuery.of(context).size.height, //size of screen
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Name:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Occupation:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.datetime,
-                  decoration: const InputDecoration(
-                    labelText: 'Admission date:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    initialValue: employee.name,
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
                     },
-                    child: Text(
-                      'Confirm',
+                    onChanged: (txt) {
+                      employee.name = txt;
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Name:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    initialValue: employee.email,
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onChanged: (txt) {
+                      employee.email = txt.trim();
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    initialValue: employee.occupation,
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onChanged: (txt) {
+                      employee.occupation = txt;
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Occupation:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    initialValue: employee.admissionDate,
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onChanged: (txt) {
+                      employee.admissionDate = txt;
+                    },
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: 'Admission date:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (!_validate()) return;
+                        DatabaseServiceFirestore().setDoc(
+                          collectionName: 'employee',
+                          uid: employee.uid,
+                          instance: employee,
+                        );
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Confirm',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (_formKey.currentState.validate()) {
+      return true;
+    }
+    return false;
   }
 }
 
