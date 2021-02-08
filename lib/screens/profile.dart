@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/services/constantes.dart';
-import 'package:manager_app/models/user.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -10,18 +11,18 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    UserApp user = ModalRoute.of(context).settings.arguments;
+    var user = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
-      body: user.type == 'ceo'
+      body: user.toString() == "Instance of 'Ceo'"
           ? _buildBodyProfileCEO(user)
           : _buildBodyProfileEmployee(user),
     );
   }
 
-  _buildBodyProfileCEO(UserApp user) {
+  _buildBodyProfileCEO(Ceo user) {
     //Returns the CEO body if user.type equals 'ceo'.
     return ListView(
       padding: EdgeInsets.only(top: 25),
@@ -44,7 +45,7 @@ class _ProfileState extends State<Profile> {
             Icons.account_box,
           ),
           title: Text(
-            'user.name',
+            '${user.name}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -59,7 +60,7 @@ class _ProfileState extends State<Profile> {
             Icons.email,
           ),
           title: Text(
-            'user.email',
+            '${user.email}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -74,7 +75,7 @@ class _ProfileState extends State<Profile> {
             Icons.phone,
           ),
           title: Text(
-            'telephone',
+            '${user.phone}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -100,7 +101,7 @@ class _ProfileState extends State<Profile> {
             Icons.account_balance,
           ),
           title: Text(
-            'user.company.name',
+            'user.company.name', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -115,7 +116,7 @@ class _ProfileState extends State<Profile> {
             Icons.people,
           ),
           title: Text(
-            'emplyees',
+            'emplyees', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -130,7 +131,7 @@ class _ProfileState extends State<Profile> {
             Icons.email,
           ),
           title: Text(
-            'company.email',
+            'company.email', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -145,7 +146,7 @@ class _ProfileState extends State<Profile> {
             Icons.phone,
           ),
           title: Text(
-            'company.telephone',
+            'company.telephone', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -160,7 +161,7 @@ class _ProfileState extends State<Profile> {
             Icons.add_location_sharp,
           ),
           title: Text(
-            'company.adress',
+            'company.adress', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -171,7 +172,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  _buildBodyProfileEmployee(UserApp user) {
+  _buildBodyProfileEmployee(Employee user) {
     //Returns the staff if user.type is equal to 'employee'.
     return ListView(
       padding: EdgeInsets.only(top: 25),
@@ -194,7 +195,7 @@ class _ProfileState extends State<Profile> {
             Icons.account_box,
           ),
           title: Text(
-            'user.name',
+            '${user.name}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -209,7 +210,7 @@ class _ProfileState extends State<Profile> {
             Icons.email,
           ),
           title: Text(
-            'user.email',
+            '${user.email}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -224,7 +225,7 @@ class _ProfileState extends State<Profile> {
             Icons.phone,
           ),
           title: Text(
-            'telephone',
+            '${user.phone}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -239,7 +240,7 @@ class _ProfileState extends State<Profile> {
             Icons.add_location_sharp,
           ),
           title: Text(
-            'adress',
+            '${user.adress}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,
@@ -252,7 +253,7 @@ class _ProfileState extends State<Profile> {
             Icons.account_balance,
           ),
           title: Text(
-            'user.company.name',
+            'user.company.name', // ***** a implementar
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w400,

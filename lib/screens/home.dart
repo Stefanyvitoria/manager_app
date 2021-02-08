@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
+import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
@@ -22,7 +24,7 @@ class _HomeState extends State<Home> {
 
     return StreamBuilder(
       stream: DatabaseServiceFirestore()
-          .getCeo(uid: _currentUser.uid, collectionName: _type),
+          .getUser(uid: _currentUser.uid, collectionName: _type),
       builder: (context, snapshot) {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting) {
@@ -41,9 +43,10 @@ class _HomeState extends State<Home> {
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
     if (_type == "ceo") {
+      Ceo ceo = Ceo.fromSnapshot(snapshot);
       return AppBar(
-        title: Text("${snapshot.data['name']}".substring(0, 1).toUpperCase() +
-            "${snapshot.data['name']}".substring(1)),
+        title: Text("${ceo.name}".substring(0, 1).toUpperCase() +
+            "${ceo.name}".substring(1)),
         actions: [
           TextButton(
             onPressed: () {
@@ -90,6 +93,7 @@ class _HomeState extends State<Home> {
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
     if (_type == "ceo") {
+      Ceo ceo = Ceo.fromSnapshot(snapshot);
       return ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
@@ -107,7 +111,6 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
-              //print(snapshot.data['name']);
               Navigator.pushNamed(context, 'finances');
             },
             leading: Icon(Icons.account_balance_wallet),
@@ -121,7 +124,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "employees");
+              Navigator.pushNamed(context, "employees", arguments: ceo);
             },
             leading: Icon(Icons.people),
             title: Text(
@@ -173,7 +176,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile');
+              Navigator.of(context).pushNamed('profile', arguments: ceo);
             },
             leading: Icon(
               Icons.account_box,
@@ -188,7 +191,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings'); //, arguments: user);
+              Navigator.of(context).pushNamed('settings', arguments: _type);
             },
             leading: Icon(Icons.settings),
             title: Text(
@@ -203,13 +206,14 @@ class _HomeState extends State<Home> {
         ],
       );
     } else if (_type == "employee") {
+      Employee employee = Employee.fromSnapshot(snapshot);
       return ListView(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         children: <Widget>[
           ListTile(
             leading: Image(image: ConstantesImages.pLogo),
             title: Text(
-              'User.name\nUser.email',
+              '${employee.name}\n${employee.email}',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w800,
@@ -263,7 +267,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile');
+              Navigator.of(context).pushNamed('profile', arguments: employee);
             },
             leading: Icon(
               Icons.account_box,
@@ -278,7 +282,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings');
+              Navigator.of(context).pushNamed('settings', arguments: _type);
             },
             leading: Icon(Icons.settings),
             title: Text(

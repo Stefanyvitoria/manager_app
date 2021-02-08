@@ -1,5 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/screens/Loading.dart';
+import 'package:manager_app/services/database_service.dart';
+import 'package:manager_app/models/employee.dart';
 
 class Employees extends StatefulWidget {
   @override
@@ -35,190 +40,93 @@ class _EmployeesState extends State<Employees> {
         ),
         backgroundColor: Colors.teal,
       ),
-      body: ListView(
-        //will be a listview.builder stream
-        children: [
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.grey,
+      body: StreamBuilder(
+        stream: DatabaseServiceFirestore()
+            .getDocs(collectioNnamed: 'employee', company: "companySte"),
+        builder: (context, AsyncSnapshot snapshot) {
+          while (snapshot.hasError ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
+          if (!snapshot.hasData) {
+            return Loading(); //widget loading
+          }
+          List listEmployees = snapshot.data.docs.map(
+            //map elements into object product
+            (DocumentSnapshot e) {
+              return Employee.fromJson(e.data());
+            },
+          ).toList();
+
+          return ListView.builder(
+            itemCount: listEmployees.length,
+            itemBuilder: (context, int index) {
+              return Dismissible(
+                onDismissed: (direction) {},
+                child: ListTile(
+                    leading: Icon(Icons.point_of_sale),
+                    title: Text("${listEmployees[index].name}"),
+                    subtitle: Text("Occupation: seller"),
+                    trailing: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editEmployee');
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                AlertDialog(
+                                  titlePadding: EdgeInsets.only(
+                                      top: 40, bottom: 20, left: 30, right: 10),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'OK',
+                                        style:
+                                            TextStyle(color: Colors.grey[700]),
+                                      ),
+                                    ),
+                                  ],
+                                  title: Text(
+                                    "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
+                                    style: TextStyle(color: Colors.grey[800]),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    }),
+                key: Key("2"),
+                background: Container(
+                  color: Colors.red[300],
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.delete),
+                        Icon(Icons.delete),
+                      ],
+                    ),
                   ),
                 ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(Icons.edit, color: Colors.grey),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(Icons.edit, color: Colors.grey),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -310,8 +218,19 @@ class AddEmployee extends StatefulWidget {
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _ocupacionController = TextEditingController();
+  TextEditingController _admissionDateController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  Employee employee = Employee();
+  Ceo ceo;
+
   @override
   Widget build(BuildContext context) {
+    ceo = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -324,63 +243,143 @@ class _AddEmployeeState extends State<AddEmployee> {
           height: MediaQuery.of(context).size.height, //size of screen
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Name:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Occupation:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.datetime,
-                  decoration: const InputDecoration(
-                    labelText: 'Admission date:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
                     },
-                    child: Text(
-                      'Confirm',
+                    onSaved: (txt) {
+                      _nameController.text = txt;
+                    },
+                    controller: _nameController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Name:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _emailController.text = txt;
+                    },
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    obscureText: true,
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _passwordController.text = txt;
+                    },
+                    controller: _passwordController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Password:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _ocupacionController.text = txt;
+                    },
+                    controller: _ocupacionController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Occupation:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _admissionDateController.text = txt;
+                    },
+                    controller: _admissionDateController,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: 'Admission date:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (!_validate()) return;
+                        await DatabaseServiceAuth.register(
+                            employee.email, employee.password);
+                        employee.uid = FirebaseAuth.instance.currentUser.uid;
+                        DatabaseServiceFirestore().setUser(
+                            collectionName: 'employee',
+                            instance: employee,
+                            uid: employee.uid);
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Confirm',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (_formKey.currentState.validate()) {
+      //employee.company = ceo.company; *****
+      employee.admissionDate = _admissionDateController.text;
+      employee.name = _nameController.text;
+      employee.occupation = _ocupacionController.text;
+      employee.email = _emailController.text.trim();
+      employee.password = _passwordController.text;
+      return true;
+    }
+    return false;
   }
 }
 

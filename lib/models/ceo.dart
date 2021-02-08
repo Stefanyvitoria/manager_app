@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 class Ceo {
   String name;
   String email;
   String password;
   String phone;
-  String company;
+  String company; //DocumentReference company;
   String uid;
+  List<DocumentReference> employees;
 
   Ceo(
       {this.name,
@@ -12,6 +16,7 @@ class Ceo {
       this.password,
       this.phone,
       this.company,
+      this.employees,
       this.uid});
 
   Ceo.fromJson(Map<String, dynamic> json) {
@@ -20,6 +25,7 @@ class Ceo {
     password = json['password'];
     phone = json['phone'];
     company = json['company'];
+    employees = json['employees'];
     uid = json['uid'];
   }
 
@@ -30,7 +36,18 @@ class Ceo {
     data['password'] = this.password;
     data['phone'] = this.phone;
     data['company'] = this.company;
+    data['employees'] = this.employees;
     data['uid'] = this.uid;
     return data;
+  }
+
+  Ceo.fromSnapshot(AsyncSnapshot<dynamic> snapshot) {
+    name = snapshot.data['name'];
+    email = snapshot.data['email'];
+    password = snapshot.data['password'];
+    phone = snapshot.data['phone'];
+    company = snapshot.data['company'];
+    employees = snapshot.data['employees'];
+    uid = snapshot.data['uid'];
   }
 }

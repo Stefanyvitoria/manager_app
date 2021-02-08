@@ -20,7 +20,7 @@ class DatabaseServiceAuth {
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future deleteuser(user) async {
+  static Future deleteUser(user) async {
     await user.delete();
   }
 }
@@ -38,22 +38,30 @@ class DatabaseServiceFirestore {
     return result;
   }
 
-  FutureOr setCeo({String uid, String collectionName, instance}) async {
+  FutureOr setUser({String uid, String collectionName, instance}) async {
     await FirebaseFirestore.instance
-        .collection('ceo')
+        .collection(collectionName)
         .doc(uid)
         .set(instance.toJson());
   }
 
-  Stream<DocumentSnapshot> getCeo({String uid, String collectionName}) {
+  Stream<DocumentSnapshot> getUser({String uid, String collectionName}) {
     return FirebaseFirestore.instance
         .collection(collectionName)
         .doc(uid)
         .snapshots();
   }
 
-  FutureOr deleteCeo(String uid) {
-    FirebaseFirestore.instance.collection('ceo').doc(uid).delete();
+  FutureOr deleteUser({String uid, String collectionName}) {
+    FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
+  }
+
+  Stream getDocs({String collectioNnamed, company}) {
+    // ***** altered the company
+    return FirebaseFirestore.instance
+        .collection(collectioNnamed)
+        .where('company', isEqualTo: company)
+        .snapshots();
   }
 
   Stream<QuerySnapshot> listGenerate(String collectionname, String uid) {
