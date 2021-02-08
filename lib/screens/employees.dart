@@ -46,7 +46,7 @@ class _EmployeesState extends State<Employees> {
         stream: DatabaseServiceFirestore().getDocs(
             collectioNnamed: 'employee',
             field: "company",
-            resultfield: "companySte"),
+            resultfield: ceo.company),
         builder: (context, AsyncSnapshot snapshot) {
           while (snapshot.hasError ||
               snapshot.connectionState == ConnectionState.waiting) {
@@ -105,7 +105,7 @@ class _EmployeesState extends State<Employees> {
                                 ),
                               ],
                               title: Text(
-                                "Name: ${employee.name}\nOccupation: ${employee.occupation}\nAdmissionDate: 99/99/99\nQuantity of Sales: 99", //****** a terminar
+                                "Name: ${employee.name}\nOccupation: ${employee.occupation}\nAdmissionDate: ${employee.admissionDate}\nQuantity of Sales: 99", //****** a terminar
                                 style: TextStyle(color: Colors.grey[800]),
                               ),
                             );
@@ -435,7 +435,7 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   bool _validate() {
     if (_formKey.currentState.validate()) {
-      //employee.company = ceo.company; *****
+      employee.company = ceo.company; //*****
       employee.admissionDate = _admissionDateController.text;
       employee.name = _nameController.text;
       employee.occupation = _ocupacionController.text;

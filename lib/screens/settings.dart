@@ -88,11 +88,25 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
-              DatabaseServiceAuth.deleteUser(FirebaseAuth.instance.currentUser);
-              DatabaseServiceFirestore().deleteDoc(
-                  uid: FirebaseAuth.instance.currentUser.uid,
-                  collectionName: _type);
-              _buildPopup(context, 'Delete Account');
+              ConstantesWidgets.dialog(
+                context: context,
+                title: Text('Delete Account'),
+                content: Text('Press confirm to delete the account.'),
+                actions: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      DatabaseServiceAuth.deleteUser(
+                          FirebaseAuth.instance.currentUser);
+                      DatabaseServiceFirestore().deleteDoc(
+                          uid: FirebaseAuth.instance.currentUser.uid,
+                          collectionName: _type);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/', (Route<dynamic> route) => false);
+                    });
+                  },
+                  child: Text('Confirm'),
+                ),
+              );
             },
             title: Text(
               'Delete Account',

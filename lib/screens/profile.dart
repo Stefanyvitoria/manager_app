@@ -268,7 +268,38 @@ class _ProfileState extends State<Profile> {
         ),
         Divider(),
         ListTile(
-          onTap: () {},
+          onTap: () {
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Name'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.name,
+                  onChanged: (txt) {
+                    user.name = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Name:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
+          },
           leading: Icon(
             Icons.account_box,
           ),
@@ -281,7 +312,38 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {},
+          onTap: () {
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Email'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.email,
+                  onChanged: (txt) {
+                    user.email = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Email:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
+          },
           leading: Icon(
             Icons.email,
           ),
@@ -294,7 +356,38 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {},
+          onTap: () {
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit phone'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.phone,
+                  onChanged: (txt) {
+                    user.phone = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Phone:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
+          },
           leading: Icon(
             Icons.phone,
           ),
@@ -307,7 +400,38 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {},
+          onTap: () {
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit adress'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.adress,
+                  onChanged: (txt) {
+                    user.adress = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Adress:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
+          },
           leading: Icon(
             Icons.add_location_sharp,
           ),
