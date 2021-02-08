@@ -13,6 +13,7 @@ class _SettingsAppState extends State<SettingsApp> {
 
   @override
   Widget build(BuildContext context) {
+    String _type = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -54,9 +55,10 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
-              DatabaseServiceAuth.deleteuser(FirebaseAuth.instance.currentUser);
-              DatabaseServiceFirestore()
-                  .deleteCeo(FirebaseAuth.instance.currentUser.uid);
+              DatabaseServiceAuth.deleteUser(FirebaseAuth.instance.currentUser);
+              DatabaseServiceFirestore().deleteUser(
+                  uid: FirebaseAuth.instance.currentUser.uid,
+                  collectionName: _type);
               _buildPopup(context, 'Delete Account');
             },
             title: Text(

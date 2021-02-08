@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/services/database_service.dart';
+import 'package:manager_app/models/employee.dart';
 
 class Employees extends StatefulWidget {
   @override
@@ -310,8 +313,19 @@ class AddEmployee extends StatefulWidget {
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _ocupacionController = TextEditingController();
+  TextEditingController _admissionDateController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  Employee employee = Employee();
+  Ceo ceo;
+
   @override
   Widget build(BuildContext context) {
+    ceo = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -324,63 +338,142 @@ class _AddEmployeeState extends State<AddEmployee> {
           height: MediaQuery.of(context).size.height, //size of screen
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Name:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Occupation:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.datetime,
-                  decoration: const InputDecoration(
-                    labelText: 'Admission date:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
                     },
-                    child: Text(
-                      'Confirm',
+                    onSaved: (txt) {
+                      _nameController.text = txt;
+                    },
+                    controller: _nameController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Name:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _emailController.text = txt;
+                    },
+                    controller: _emailController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Email:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _passwordController.text = txt;
+                    },
+                    controller: _passwordController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Password:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _ocupacionController.text = txt;
+                    },
+                    controller: _ocupacionController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Occupation:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    onSaved: (txt) {
+                      _admissionDateController.text = txt;
+                    },
+                    controller: _admissionDateController,
+                    keyboardType: TextInputType.datetime,
+                    decoration: const InputDecoration(
+                      labelText: 'Admission date:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (!_validate()) return;
+                        await DatabaseServiceAuth.register(
+                            employee.email, employee.password);
+                        employee.uid = FirebaseAuth.instance.currentUser.uid;
+                        DatabaseServiceFirestore().setUser(
+                            collectionName: 'employee',
+                            instance: employee,
+                            uid: employee.uid);
+
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Confirm',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    if (_formKey.currentState.validate()) {
+      //employee.company = ceo.company; *****
+      employee.admissionDate = _admissionDateController.text;
+      employee.name = _nameController.text;
+      employee.occupation = _ocupacionController.text;
+      employee.email = _emailController.text;
+      employee.password = _passwordController.text;
+      return true;
+    }
+    return false;
   }
 }
 

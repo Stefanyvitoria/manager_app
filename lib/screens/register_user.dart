@@ -136,7 +136,7 @@ class _RegisterState extends State<Register> {
                     if (!_validate()) return;
                     await DatabaseServiceAuth.register(ceo.email, ceo.password);
                     ceo.uid = auth.currentUser.uid; //*****
-                    DatabaseServiceFirestore().setCeo(
+                    DatabaseServiceFirestore().setUser(
                         uid: ceo.uid, collectionName: 'ceo', instance: ceo);
                     _buildPopup(context);
                   },
