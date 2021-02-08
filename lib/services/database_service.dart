@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:manager_app/models/product.dart';
 //import 'package:manager_app/models/ceo.dart';
 
@@ -56,19 +55,11 @@ class DatabaseServiceFirestore {
     FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
   }
 
-  Stream getDocs({String collectioNnamed, company}) {
+  Stream getDocs({String collectioNnamed, field, resultfield}) {
     // ***** altered the company
     return FirebaseFirestore.instance
         .collection(collectioNnamed)
-        .where('company', isEqualTo: company)
-        .snapshots();
-  }
-
-  Stream<QuerySnapshot> listGenerate(String collectionname, String uid) {
-    //return a list of documents
-    return FirebaseFirestore.instance
-        .collection(collectionname)
-        .where("refUID", isEqualTo: uid)
+        .where(field, isEqualTo: resultfield)
         .snapshots();
   }
 }

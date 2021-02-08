@@ -42,10 +42,10 @@ class _ProductsState extends State<Products> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         //will be a listview.builder stream
-        stream: DatabaseServiceFirestore().listGenerate(
-          "product",
-          _currentUser.uid,
-        ),
+        stream: DatabaseServiceFirestore().getDocs(
+            field: "refUID",
+            resultfield: _currentUser.uid,
+            collectioNnamed: 'product'),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Loading(); //widget loading

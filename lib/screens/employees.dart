@@ -41,8 +41,10 @@ class _EmployeesState extends State<Employees> {
         backgroundColor: Colors.teal,
       ),
       body: StreamBuilder(
-        stream: DatabaseServiceFirestore()
-            .getDocs(collectioNnamed: 'employee', company: "companySte"),
+        stream: DatabaseServiceFirestore().getDocs(
+            collectioNnamed: 'employee',
+            field: "company",
+            resultfield: "companySte"),
         builder: (context, AsyncSnapshot snapshot) {
           while (snapshot.hasError ||
               snapshot.connectionState == ConnectionState.waiting) {
