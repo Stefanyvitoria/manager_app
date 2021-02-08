@@ -37,21 +37,21 @@ class DatabaseServiceFirestore {
     return result;
   }
 
-  FutureOr setUser({String uid, String collectionName, instance}) async {
+  FutureOr setDoc({String uid, String collectionName, instance}) async {
     await FirebaseFirestore.instance
         .collection(collectionName)
         .doc(uid)
         .set(instance.toJson());
   }
 
-  Stream<DocumentSnapshot> getUser({String uid, String collectionName}) {
+  Stream<DocumentSnapshot> getDoc({String uid, String collectionName}) {
     return FirebaseFirestore.instance
         .collection(collectionName)
         .doc(uid)
         .snapshots();
   }
 
-  FutureOr deleteUser({String uid, String collectionName}) {
+  FutureOr deleteDoc({String uid, String collectionName}) {
     FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
   }
 

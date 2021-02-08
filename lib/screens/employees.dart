@@ -350,10 +350,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                         await DatabaseServiceAuth.register(
                             employee.email, employee.password);
                         employee.uid = FirebaseAuth.instance.currentUser.uid;
-                        DatabaseServiceFirestore().setUser(
+                        DatabaseServiceFirestore().setDoc(
                             collectionName: 'employee',
                             instance: employee,
                             uid: employee.uid);
+
+                        DatabaseServiceAuth.logOut();
 
                         Navigator.pop(context);
                       },

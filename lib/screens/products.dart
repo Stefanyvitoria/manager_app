@@ -14,11 +14,12 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  var _currentUser = FirebaseAuth.instance.currentUser;
+  //var _currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    print("ceo UID ${_currentUser.uid}");
+    //print("ceo UID ${_currentUser.uid}");
+    Ceo ceo = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -43,9 +44,7 @@ class _ProductsState extends State<Products> {
       body: StreamBuilder<QuerySnapshot>(
         //will be a listview.builder stream
         stream: DatabaseServiceFirestore().getDocs(
-            field: "refUID",
-            resultfield: _currentUser.uid,
-            collectioNnamed: 'product'),
+            field: "refUID", resultfield: ceo.uid, collectioNnamed: 'product'),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Loading(); //widget loading
