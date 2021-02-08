@@ -31,3 +31,21 @@ class ConstantesSpaces {
   static final spacer = Container(height: 30);
   static final spacermin = Container(height: 15);
 }
+
+class ConstantesWidgets {
+  static dialog({context, Widget title, Widget content, actions}) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 50,
+            ),
+            title: title,
+            content: content,
+            actions: [actions],
+          );
+        });
+  }
+}

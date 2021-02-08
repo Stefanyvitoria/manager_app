@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/theme.dart';
 import 'package:manager_app/services/database_service.dart';
 
@@ -13,7 +14,8 @@ class _SettingsAppState extends State<SettingsApp> {
 
   @override
   Widget build(BuildContext context) {
-    String _type = ModalRoute.of(context).settings.arguments;
+    dynamic user = ModalRoute.of(context).settings.arguments;
+    String _type = user.toString() == "Instance of 'Ceo'" ? "ceo" : "employee";
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -43,7 +45,38 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
-              _buildPopup(context, 'Change Password');
+              ConstantesWidgets.dialog(
+                context: context,
+                title: Text('Change password'),
+                content: Container(
+                  child: TextFormField(
+                    obscureText: true,
+                    initialValue: user.password,
+                    onChanged: (txt) {
+                      user.password = txt;
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Password:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: UnderlineInputBorder(),
+                    ),
+                  ),
+                ),
+                actions: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      DatabaseServiceFirestore().setDoc(
+                        collectionName: _type,
+                        instance: user,
+                        uid: user.uid,
+                      );
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text('Confirm'),
+                ),
+              );
+              //_buildPopup(context, 'Change Password');
             },
             title: Text(
               'Change Password',
