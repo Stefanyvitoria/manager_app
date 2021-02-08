@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:manager_app/models/product.dart';
 //import 'package:manager_app/models/ceo.dart';
 
 class DatabaseServiceAuth {
@@ -59,6 +61,14 @@ class DatabaseServiceFirestore {
     return FirebaseFirestore.instance
         .collection(collectioNnamed)
         .where('company', isEqualTo: company)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> listGenerate(String collectionname, String uid) {
+    //return a list of documents
+    return FirebaseFirestore.instance
+        .collection(collectionname)
+        .where("refUID", isEqualTo: uid)
         .snapshots();
   }
 }

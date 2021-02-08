@@ -1,5 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/product.dart';
+import 'package:manager_app/services/database_service.dart';
+
+import 'Loading.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -7,8 +14,11 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  var _currentUser = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
+    print("ceo UID ${_currentUser.uid}");
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -30,69 +40,89 @@ class _ProductsState extends State<Products> {
         child: Icon(Icons.add),
         backgroundColor: Colors.teal[300],
       ),
-      body: ListView(
+      body: StreamBuilder<QuerySnapshot>(
         //will be a listview.builder stream
-        children: [
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Product1"),
-                subtitle: Text("Company: company1"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editProduct');
-                  },
-                  child: Icon(Icons.edit, color: Colors.grey),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
+        stream: DatabaseServiceFirestore().listGenerate(
+          "product",
+          _currentUser.uid,
+        ),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Loading(); //widget loading
+          }
+          List products = snapshot.data.docs.map(
+            //map elements into object product
+            (DocumentSnapshot e) {
+              return Product.fromJson(e.data());
+            },
+          ).toList();
+
+          return ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              return Dismissible(
+                onDismissed: (direction) {},
+                child: ListTile(
+                    leading: Icon(Icons.point_of_sale),
+                    title: Text(products[index].name),
+                    subtitle: Text("value: ${products[index].value}"),
+                    trailing: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editProduct');
+                      },
+                      child: Icon(Icons.edit, color: Colors.grey),
+                    ),
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                AlertDialog(
+                                  titlePadding: EdgeInsets.only(
+                                      top: 40, bottom: 20, left: 30, right: 10),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'OK',
+                                        style:
+                                            TextStyle(color: Colors.grey[700]),
+                                      ),
+                                    ),
+                                  ],
+                                  title: Text(
+                                    "${products[index].name}\ncompany: ${products[index].company}\nvalue: R\$ ${products[index].value}",
+                                    style: TextStyle(color: Colors.grey[800]),
                                   ),
                                 ),
                               ],
-                              title: Text(
-                                "Product1\ncompany: company1\nvalue: R\$ 10,00",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("3"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
+                            );
+                          });
+                    }),
+                key: Key(products[index].id),
+                background: Container(
+                  color: Colors.red[300],
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.delete),
+                        Icon(Icons.delete),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ],
+              );
+            },
+          );
+        },
       ),
     );
   }
