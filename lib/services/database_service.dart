@@ -53,4 +53,12 @@ class DatabaseServiceFirestore {
   FutureOr deleteUser({String uid, String collectionName}) {
     FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
   }
+
+  Stream getDocs({String collectioNnamed, company}) {
+    // ***** altered the company
+    return FirebaseFirestore.instance
+        .collection(collectioNnamed)
+        .where('company', isEqualTo: company)
+        .snapshots();
+  }
 }

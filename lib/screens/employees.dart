@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/database_service.dart';
 import 'package:manager_app/models/employee.dart';
 
@@ -38,190 +40,93 @@ class _EmployeesState extends State<Employees> {
         ),
         backgroundColor: Colors.teal,
       ),
-      body: ListView(
-        //will be a listview.builder stream
-        children: [
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.grey,
+      body: StreamBuilder(
+        stream: DatabaseServiceFirestore()
+            .getDocs(collectioNnamed: 'employee', company: "companySte"),
+        builder: (context, AsyncSnapshot snapshot) {
+          while (snapshot.hasError ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
+          if (!snapshot.hasData) {
+            return Loading(); //widget loading
+          }
+          List listEmployees = snapshot.data.docs.map(
+            //map elements into object product
+            (DocumentSnapshot e) {
+              return Employee.fromJson(e.data());
+            },
+          ).toList();
+
+          return ListView.builder(
+            itemCount: listEmployees.length,
+            itemBuilder: (context, int index) {
+              return Dismissible(
+                onDismissed: (direction) {},
+                child: ListTile(
+                    leading: Icon(Icons.point_of_sale),
+                    title: Text("${listEmployees[index].name}"),
+                    subtitle: Text("Occupation: seller"),
+                    trailing: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editEmployee');
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                AlertDialog(
+                                  titlePadding: EdgeInsets.only(
+                                      top: 40, bottom: 20, left: 30, right: 10),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'OK',
+                                        style:
+                                            TextStyle(color: Colors.grey[700]),
+                                      ),
+                                    ),
+                                  ],
+                                  title: Text(
+                                    "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
+                                    style: TextStyle(color: Colors.grey[800]),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    }),
+                key: Key("2"),
+                background: Container(
+                  color: Colors.red[300],
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.delete),
+                        Icon(Icons.delete),
+                      ],
+                    ),
                   ),
                 ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(Icons.edit, color: Colors.grey),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Dismissible(
-            onDismissed: (direction) {},
-            child: ListTile(
-                leading: Icon(Icons.point_of_sale),
-                title: Text("Employee1"),
-                subtitle: Text("Occupation: seller"),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'editEmployee');
-                  },
-                  child: Icon(Icons.edit, color: Colors.grey),
-                ),
-                onTap: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                }),
-            key: Key("2"),
-            background: Container(
-              color: Colors.red[300],
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete),
-                    Icon(Icons.delete),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+              );
+            },
+          );
+        },
       ),
     );
   }

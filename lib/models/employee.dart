@@ -9,7 +9,7 @@ class Employee {
   String password;
   String occupation;
   String admissionDate;
-  DocumentReference company;
+  String company; //DocumentReference company;
   String uid;
 
   Employee({
@@ -60,5 +60,17 @@ class Employee {
     admissionDate = snapshot.data['admissionDate'];
     company = snapshot.data['company'];
     uid = snapshot.data['uid'];
+  }
+
+  Employee.fromQuerySnapshot(AsyncSnapshot<dynamic> snapshot, int index) {
+    name = snapshot.data.docs[index]['name'];
+    email = snapshot.data.docs[index]['email'];
+    phone = snapshot.data.docs[index]['phone'];
+    adress = snapshot.data.docs[index]['adress'];
+    password = snapshot.data.docs[index]['password'];
+    occupation = snapshot.data.docs[index]['occupation'];
+    admissionDate = snapshot.data.docs[index]['admissionDate'];
+    company = snapshot.data.docs[index]['company'];
+    uid = snapshot.data.docs[index]['uid'];
   }
 }
