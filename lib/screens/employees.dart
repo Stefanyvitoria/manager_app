@@ -41,8 +41,10 @@ class _EmployeesState extends State<Employees> {
         backgroundColor: Colors.teal,
       ),
       body: StreamBuilder(
-        stream: DatabaseServiceFirestore()
-            .getDocs(collectioNnamed: 'employee', company: "companySte"),
+        stream: DatabaseServiceFirestore().getDocs(
+            collectioNnamed: 'employee',
+            field: "company",
+            resultfield: "companySte"),
         builder: (context, AsyncSnapshot snapshot) {
           while (snapshot.hasError ||
               snapshot.connectionState == ConnectionState.waiting) {
@@ -348,10 +350,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                         await DatabaseServiceAuth.register(
                             employee.email, employee.password);
                         employee.uid = FirebaseAuth.instance.currentUser.uid;
-                        DatabaseServiceFirestore().setUser(
+                        DatabaseServiceFirestore().setDoc(
                             collectionName: 'employee',
                             instance: employee,
                             uid: employee.uid);
+
+                        DatabaseServiceAuth.logOut();
 
                         Navigator.pop(context);
                       },

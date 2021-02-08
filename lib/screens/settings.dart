@@ -56,7 +56,7 @@ class _SettingsAppState extends State<SettingsApp> {
           ListTile(
             onTap: () {
               DatabaseServiceAuth.deleteUser(FirebaseAuth.instance.currentUser);
-              DatabaseServiceFirestore().deleteUser(
+              DatabaseServiceFirestore().deleteDoc(
                   uid: FirebaseAuth.instance.currentUser.uid,
                   collectionName: _type);
               _buildPopup(context, 'Delete Account');

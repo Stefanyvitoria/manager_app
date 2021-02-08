@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:manager_app/models/product.dart';
 //import 'package:manager_app/models/ceo.dart';
 
@@ -38,37 +37,29 @@ class DatabaseServiceFirestore {
     return result;
   }
 
-  FutureOr setUser({String uid, String collectionName, instance}) async {
+  FutureOr setDoc({String uid, String collectionName, instance}) async {
     await FirebaseFirestore.instance
         .collection(collectionName)
         .doc(uid)
         .set(instance.toJson());
   }
 
-  Stream<DocumentSnapshot> getUser({String uid, String collectionName}) {
+  Stream<DocumentSnapshot> getDoc({String uid, String collectionName}) {
     return FirebaseFirestore.instance
         .collection(collectionName)
         .doc(uid)
         .snapshots();
   }
 
-  FutureOr deleteUser({String uid, String collectionName}) {
+  FutureOr deleteDoc({String uid, String collectionName}) {
     FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
   }
 
-  Stream getDocs({String collectioNnamed, company}) {
+  Stream getDocs({String collectioNnamed, field, resultfield}) {
     // ***** altered the company
     return FirebaseFirestore.instance
         .collection(collectioNnamed)
-        .where('company', isEqualTo: company)
-        .snapshots();
-  }
-
-  Stream<QuerySnapshot> listGenerate(String collectionname, String uid) {
-    //return a list of documents
-    return FirebaseFirestore.instance
-        .collection(collectionname)
-        .where("refUID", isEqualTo: uid)
+        .where(field, isEqualTo: resultfield)
         .snapshots();
   }
 }

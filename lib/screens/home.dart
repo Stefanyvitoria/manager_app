@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
 
     return StreamBuilder(
       stream: DatabaseServiceFirestore()
-          .getUser(uid: _currentUser.uid, collectionName: _type),
+          .getDoc(uid: _currentUser.uid, collectionName: _type),
       builder: (context, snapshot) {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting) {
@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "products");
+              Navigator.pushNamed(context, "products", arguments: ceo);
             },
             leading: Icon(Icons.inbox_rounded),
             title: Text(
