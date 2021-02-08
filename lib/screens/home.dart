@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
-//import 'package:manager_app/models/employee.dart';
+import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
@@ -176,7 +176,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile');
+              Navigator.of(context).pushNamed('profile', arguments: ceo);
             },
             leading: Icon(
               Icons.account_box,
@@ -206,14 +206,14 @@ class _HomeState extends State<Home> {
         ],
       );
     } else if (_type == "employee") {
-      //Employee employee = Employee.fromSnapshot(snapshot);
+      Employee employee = Employee.fromSnapshot(snapshot);
       return ListView(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         children: <Widget>[
           ListTile(
             leading: Image(image: ConstantesImages.pLogo),
             title: Text(
-              'User.name\nUser.email', //***** */
+              '${employee.name}\n${employee.email}',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w800,
@@ -267,7 +267,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('profile');
+              Navigator.of(context).pushNamed('profile', arguments: employee);
             },
             leading: Icon(
               Icons.account_box,

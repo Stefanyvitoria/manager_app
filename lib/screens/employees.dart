@@ -369,7 +369,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       _emailController.text = txt;
                     },
                     controller: _emailController,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: 'Email:',
                       labelStyle: TextStyle(fontSize: 15),
@@ -380,6 +380,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                     height: 10,
                   ),
                   TextFormField(
+                    obscureText: true,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
@@ -469,7 +470,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       employee.admissionDate = _admissionDateController.text;
       employee.name = _nameController.text;
       employee.occupation = _ocupacionController.text;
-      employee.email = _emailController.text;
+      employee.email = _emailController.text.trim();
       employee.password = _passwordController.text;
       return true;
     }
