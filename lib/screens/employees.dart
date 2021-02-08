@@ -65,12 +65,16 @@ class _EmployeesState extends State<Employees> {
           return ListView.builder(
             itemCount: listEmployees.length,
             itemBuilder: (context, int index) {
+              Employee employee = listEmployees[index];
               return Dismissible(
-                onDismissed: (direction) {},
+                onDismissed: (direction) {
+                  DatabaseServiceFirestore()
+                      .deleteDoc(collectionName: 'employee', uid: employee.uid);
+                },
                 child: ListTile(
                     leading: Icon(Icons.point_of_sale),
-                    title: Text("${listEmployees[index].name}"),
-                    subtitle: Text("Occupation: seller"),
+                    title: Text("${employee.name}"),
+                    subtitle: Text("Occupation: ${employee.occupation}"),
                     trailing: TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, 'editEmployee',
@@ -86,30 +90,24 @@ class _EmployeesState extends State<Employees> {
                           barrierDismissible: false,
                           context: context,
                           builder: (BuildContext context) {
-                            return Wrap(
-                              direction: Axis.vertical,
-                              children: [
-                                AlertDialog(
-                                  titlePadding: EdgeInsets.only(
-                                      top: 40, bottom: 20, left: 30, right: 10),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'OK',
-                                        style:
-                                            TextStyle(color: Colors.grey[700]),
-                                      ),
-                                    ),
-                                  ],
-                                  title: Text(
-                                    "Employee1\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 99",
-                                    style: TextStyle(color: Colors.grey[800]),
+                            return AlertDialog(
+                              titlePadding: EdgeInsets.only(
+                                  top: 40, bottom: 20, left: 30, right: 10),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.grey[700]),
                                   ),
                                 ),
                               ],
+                              title: Text(
+                                "Name: ${employee.name}\nOccupation: ${employee.occupation}\nAdmissionDate: 99/99/99\nQuantity of Sales: 99", //****** a terminar
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
                             );
                           });
                     }),
