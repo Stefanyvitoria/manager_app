@@ -5,7 +5,8 @@ class Sale {
   String product;
   String value;
   String productAmount;
-  String refUID;
+  String ceoid;
+  String employeeid;
   Sale({
     this.employee,
     this.product,
@@ -13,13 +14,13 @@ class Sale {
     this.value,
     this.productAmount,
     this.id,
-    this.refUID,
+    this.ceoid,
   });
 
   Sale.fromJson(Map<String, dynamic> json, uid) {
     employee = json['employee'];
     value = json['value'];
-    refUID = json['refUID'];
+    ceoid = json['refUID'];
     id = uid;
     productAmount = json['productAmount'];
     date = json['date'];
@@ -30,7 +31,8 @@ class Sale {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['product'] = this.product;
     data['value'] = this.value;
-    data['refUID'] = this.refUID;
+    data['ceoid'] = this.ceoid;
+    data['employeeid'] = this.employeeid;
     data['productAmount'] = this.productAmount;
     data['date'] = this.date;
     data['employee'] = this.employee;
