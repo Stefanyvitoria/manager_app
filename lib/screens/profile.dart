@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/services/constantes.dart';
+import 'package:manager_app/services/database_service.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -39,7 +40,36 @@ class _ProfileState extends State<Profile> {
         Divider(),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '1');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Name'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.name,
+                  onChanged: (txt) {
+                    user.name = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Name:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'ceo',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.account_box,
@@ -54,7 +84,36 @@ class _ProfileState extends State<Profile> {
         ),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '2');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Email'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.email,
+                  onChanged: (txt) {
+                    user.email = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Email:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'ceo',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.email,
@@ -69,7 +128,36 @@ class _ProfileState extends State<Profile> {
         ),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '3');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit phone'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.phone,
+                  onChanged: (txt) {
+                    user.phone = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Phone:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'ceo',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.phone,
@@ -94,9 +182,7 @@ class _ProfileState extends State<Profile> {
         ),
         Divider(),
         ListTile(
-          onTap: () {
-            _buildPopup(context, user.name, '4');
-          },
+          onTap: () {},
           leading: Icon(
             Icons.account_balance,
           ),
@@ -124,9 +210,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {
-            _buildPopup(context, user.name, '6');
-          },
+          onTap: () {},
           leading: Icon(
             Icons.email,
           ),
@@ -139,9 +223,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {
-            _buildPopup(context, user.name, '7');
-          },
+          onTap: () {},
           leading: Icon(
             Icons.phone,
           ),
@@ -154,9 +236,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         ListTile(
-          onTap: () {
-            _buildPopup(context, user.name, '8');
-          },
+          onTap: () {},
           leading: Icon(
             Icons.add_location_sharp,
           ),
@@ -189,7 +269,36 @@ class _ProfileState extends State<Profile> {
         Divider(),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '1');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Name'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.name,
+                  onChanged: (txt) {
+                    user.name = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Name:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.account_box,
@@ -204,7 +313,36 @@ class _ProfileState extends State<Profile> {
         ),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '2');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit Email'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.email,
+                  onChanged: (txt) {
+                    user.email = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Email:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.email,
@@ -219,7 +357,36 @@ class _ProfileState extends State<Profile> {
         ),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '3');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit phone'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.phone,
+                  onChanged: (txt) {
+                    user.phone = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Phone:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.phone,
@@ -234,7 +401,36 @@ class _ProfileState extends State<Profile> {
         ),
         ListTile(
           onTap: () {
-            _buildPopup(context, user.name, '8');
+            ConstantesWidgets.dialog(
+              context: context,
+              title: Text('Edit adress'),
+              content: Container(
+                child: TextFormField(
+                  initialValue: user.adress,
+                  onChanged: (txt) {
+                    user.adress = txt;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Adress:',
+                    labelStyle: TextStyle(fontSize: 15),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              actions: TextButton(
+                onPressed: () {
+                  setState(() {
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'employee',
+                      instance: user,
+                      uid: user.uid,
+                    );
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text('Confirm'),
+              ),
+            );
           },
           leading: Icon(
             Icons.add_location_sharp,
@@ -261,42 +457,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ],
-    );
-  }
-
-  final listTile = {
-    '1': 'name',
-    '2': 'email',
-    '3': 'phone',
-    '4': ' company name',
-    '6': 'company email',
-    '7': 'company phone',
-    '8': ' company adress',
-  };
-
-  _buildPopup(context, attrName, String i) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
-          title: Text('Change ${listTile[i]}'),
-          content: Container(
-            child: TextFormField(
-              initialValue: '(missing add functionality)',
-              onChanged: (txt) {},
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 }

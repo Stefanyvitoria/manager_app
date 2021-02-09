@@ -192,7 +192,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings', arguments: _type);
+              Navigator.of(context).pushNamed('settings', arguments: ceo);
             },
             leading: Icon(Icons.settings),
             title: Text(
@@ -284,7 +284,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('settings', arguments: _type);
+              Navigator.of(context).pushNamed('settings', arguments: employee);
             },
             leading: Icon(Icons.settings),
             title: Text(

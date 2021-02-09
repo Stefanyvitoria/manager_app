@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:manager_app/models/product.dart';
-//import 'package:manager_app/models/ceo.dart';
 
 class DatabaseServiceAuth {
   static Future register(String email, String passw) async {
