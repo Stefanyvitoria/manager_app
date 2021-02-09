@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Company {
   String name;
   String phone;
-  String expense;
+  DocumentReference finance;
   int nEmployees;
   String email;
   String adress;
@@ -12,7 +13,7 @@ class Company {
   Company({
     this.name,
     this.phone,
-    this.expense,
+    this.finance,
     this.nEmployees,
     this.email,
     this.adress,
@@ -22,7 +23,7 @@ class Company {
   Company.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     phone = json['phone'];
-    expense = json['expense'];
+    finance = json['finance'];
     nEmployees = json['nEmployees'];
     email = json['email'];
     adress = json['adress'];
@@ -33,7 +34,7 @@ class Company {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['phone'] = this.phone;
-    data['expense'] = this.expense;
+    data['finance'] = this.finance;
     data['nEmployees'] = this.nEmployees;
     data['email'] = this.email;
     data['adress'] = this.adress;
@@ -44,7 +45,7 @@ class Company {
   Company.fromSnapshot(AsyncSnapshot<dynamic> snapshot) {
     name = snapshot.data['name'];
     phone = snapshot.data['phone'];
-    expense = snapshot.data['expense'];
+    finance = snapshot.data['finance'];
     nEmployees = snapshot.data['nEmployees'];
     email = snapshot.data['email'];
     adress = snapshot.data['adress'];

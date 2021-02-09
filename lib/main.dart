@@ -3,7 +3,7 @@ import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/company.dart';
 import 'package:manager_app/screens/employees.dart';
-import 'package:manager_app/screens/expenses.dart';
+import 'package:manager_app/screens/action.dart';
 import 'package:manager_app/screens/finances.dart';
 import 'package:manager_app/screens/init.dart';
 import 'package:manager_app/screens/login.dart';
@@ -58,8 +58,8 @@ class MyApp extends StatelessWidget {
       'productList': (context) => ClientListTile(),
       'forgotPassword': (context) => ForgotPassword(),
       'register': (context) => Register(),
-      'finances': (context) => Finances(),
-      'expenses': (context) => Expenses(),
+      'finances': (context) => FinancesScreen(),
+      'action': (context) => ActionFinance(),
       'sales': (context) => Sales(),
       'editSale': (context) => EditSale(),
       'addSale': (context) => AddSale(),

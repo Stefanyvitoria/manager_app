@@ -42,6 +42,12 @@ class DatabaseServiceFirestore {
         .set(instance.toJson());
   }
 
+  Future<DocumentReference> addDoc({String collectionName, instance}) async {
+    return await FirebaseFirestore.instance
+        .collection(collectionName)
+        .add(instance.toJson());
+  }
+
   Stream<DocumentSnapshot> getDoc({String uid, String collectionName}) {
     return FirebaseFirestore.instance
         .collection(collectionName)

@@ -1,158 +1,276 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/finance.dart';
+//import 'package:manager_app/models/sale.dart';
+import 'package:manager_app/screens/Loading.dart';
+import 'package:manager_app/services/constantes.dart';
 
-class Finances extends StatefulWidget {
-  final String liquidMoney = "1000.00 *only demonstrative*";
+import 'package:manager_app/services/database_service.dart';
+
+class FinancesScreen extends StatefulWidget {
   @override
-  _FinancesState createState() => _FinancesState();
+  _FinancesScreenState createState() => _FinancesScreenState();
 }
 
-class _FinancesState extends State<Finances> {
+class _FinancesScreenState extends State<FinancesScreen> {
+  Ceo ceo;
+  Finances finance;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Finances",
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.pushNamed(context, 'expenses');
-            },
-          ),
-        ],
+    ceo = ModalRoute.of(context).settings.arguments;
+    return StreamBuilder(
+      stream: DatabaseServiceFirestore().getDoc(
+        collectionName: 'finance',
+        uid: ceo.uid,
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Text(
-                    "Liquidity:",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    "    R\$ ${widget.liquidMoney}",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
-                ],
-              ),
+      builder: (context, AsyncSnapshot snapshot) {
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return Loading();
+        }
+
+        finance = Finances.fromSnapshot(snapshot);
+        List lActions = finance.actions;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Finances",
             ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'action',
+                      arguments: [finance, ceo.uid]);
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 80),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: (Theme.of(context).brightness == Brightness.light)
-                ? Colors.blueGrey[200]
-                : Colors.blueGrey[800],
-            child: Padding(
-              padding: EdgeInsets.only(left: 5, right: 5),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+          body: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
                       Text(
-                        "Action History",
+                        "Liquidity:",
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text("Filter"),
-                      ),
+                      Text(
+                        "    \$ ${finance.liquidMoney}",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
                     ],
                   ),
-                  Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width,
-                    color: (Theme.of(context).brightness == Brightness.light)
-                        ? Colors.blueGrey[400]
-                        : Colors.blueGrey[900],
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-          new Expanded(
-            child: Container(
-              color: (Theme.of(context).brightness == Brightness.light)
-                  ? Colors.blueGrey[200]
-                  : Colors.blueGrey[800],
-              padding: EdgeInsets.only(left: 5, right: 5),
-              child: ListView(
-                children: [
-                  ListTile(
-                    title: Text(
-                      "action1",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
+              SizedBox(height: 80),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: (Theme.of(context).brightness == Brightness.light)
+                    ? Colors.blueGrey[200]
+                    : Colors.blueGrey[800],
+                child: Padding(
+                  padding: EdgeInsets.only(left: 5, right: 5),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "Action History",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    subtitle: Text("Buy"),
-                    leading: Icon(Icons.info_outline),
-                    trailing: TextButton(
-                      child: Icon(Icons.expand_more, color: Colors.black),
-                      onPressed: () {
-                        buildDialogAlertFinances(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-buildDialogAlertFinances(BuildContext context) {
-  showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return Wrap(
-          direction: Axis.vertical,
-          children: [
-            AlertDialog(
-              titlePadding:
-                  EdgeInsets.only(top: 40, bottom: 20, left: 30, right: 10),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: Colors.grey[700]),
+                      Container(
+                        height: 1,
+                        width: MediaQuery.of(context).size.width,
+                        color:
+                            (Theme.of(context).brightness == Brightness.light)
+                                ? Colors.blueGrey[400]
+                                : Colors.blueGrey[900],
+                      )
+                    ],
                   ),
                 ),
-              ],
-              title: Text(
-                "nothing yet",
-                style: TextStyle(color: Colors.red),
               ),
-            ),
-          ],
+              new Expanded(
+                child: Container(
+                  color: (Theme.of(context).brightness == Brightness.light)
+                      ? Colors.blueGrey[200]
+                      : Colors.blueGrey[800],
+                  padding: EdgeInsets.only(left: 5, right: 5),
+                  child: ListView.builder(
+                    itemCount: finance.actions.length,
+                    itemBuilder: (context, int index) {
+                      DocumentReference action = finance.actions[index];
+                      if (action.parent.id == 'sale') {
+                        return StreamBuilder(
+                          stream: DatabaseServiceFirestore().getDoc(
+                            collectionName: 'sale',
+                            uid: action.id,
+                          ),
+                          builder: (context, snapshot) {
+                            while (snapshot.hasError ||
+                                snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                              return LinearProgressIndicator();
+                            }
+                            return ListTile(
+                              title: Text(
+                                "Sale",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              subtitle: Text("\$ ${snapshot.data['value']}"),
+                              leading: Icon(Icons.info_outline),
+                              trailing: TextButton(
+                                child: Icon(Icons.expand_more,
+                                    color: Colors.black),
+                                onPressed: () {
+                                  ConstantesWidgets.dialog(
+                                    context: context,
+                                    title: Text('Sale'),
+                                    content: Wrap(
+                                      direction: Axis.vertical,
+                                      children: [
+                                        Text('Date: ${snapshot.data['date']}'),
+                                        Text(
+                                            'Value: \$ ${snapshot.data['value']}')
+                                      ],
+                                    ),
+                                    actions: Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            DatabaseServiceFirestore()
+                                                .deleteDoc(
+                                                    collectionName: 'sale',
+                                                    uid: snapshot.data.id);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('delete'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('ok'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return StreamBuilder(
+                          stream: DatabaseServiceFirestore().getDoc(
+                            collectionName: 'expense',
+                            uid: action.id,
+                          ),
+                          builder: (context, snapshot) {
+                            while (snapshot.hasError ||
+                                snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                              return LinearProgressIndicator();
+                            }
+                            return ListTile(
+                              title: Text(
+                                '${snapshot.data['value'] > 0 ? "Addition" : "Withdrawal"}',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: snapshot.data['value'] > 0
+                                      ? Colors.black
+                                      : Colors.red,
+                                ),
+                              ),
+                              subtitle: Text("\$ ${snapshot.data['value']}"),
+                              leading: Icon(Icons.info_outline),
+                              trailing: TextButton(
+                                child: Icon(Icons.expand_more,
+                                    color: Colors.black),
+                                onPressed: () {
+                                  ConstantesWidgets.dialog(
+                                    context: context,
+                                    title: Text('Expense'),
+                                    content: Wrap(
+                                      direction: Axis.vertical,
+                                      children: [
+                                        Text('Date: ${snapshot.data['date']}'),
+                                        Text(
+                                            'Value: \$ ${snapshot.data['value']}')
+                                      ],
+                                    ),
+                                    actions: Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            DatabaseServiceFirestore()
+                                                .deleteDoc(
+                                                    collectionName: 'expense',
+                                                    uid: snapshot.data.id);
+                                            lActions
+                                                .removeAt(lActions.length - 1);
+                                            finance.actions = lActions;
+                                            DatabaseServiceFirestore().setDoc(
+                                              collectionName: 'finance',
+                                              instance: finance,
+                                              uid: ceo.uid,
+                                            );
+
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('delete'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('ok'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         );
-      });
+      },
+    );
+  }
 }

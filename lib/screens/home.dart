@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
           ],
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'finances');
+              Navigator.pushNamed(context, 'finances', arguments: ceo);
             },
             leading: Icon(Icons.account_balance_wallet),
             title: Text(

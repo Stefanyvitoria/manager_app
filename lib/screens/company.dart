@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
+import 'package:manager_app/models/finance.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 
@@ -12,6 +13,8 @@ class CompanyScreen extends StatefulWidget {
 class _CompanyScreenState extends State<CompanyScreen> {
   Ceo ceo;
   Company company = Company(nEmployees: 0);
+  Finances finance = Finances(liquidMoney: 0, actions: []);
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -119,20 +122,42 @@ class _CompanyScreenState extends State<CompanyScreen> {
                     if (!_validate()) {
                       return null;
                     } else {
+                      //create finance
+                      await DatabaseServiceFirestore().setDoc(
+                        collectionName: 'finance',
+                        instance: finance,
+                        uid: ceo.uid,
+                      );
+                      // create company
                       await DatabaseServiceFirestore().setDoc(
                         collectionName: 'company',
                         instance: company,
                         uid: ceo.uid,
                       );
+
+                      finance.company = DatabaseServiceFirestore().getRef(
+                        collectionNamed: 'company',
+                        uid: ceo.uid,
+                      );
+                      //update finance
+                      await DatabaseServiceFirestore().setDoc(
+                        collectionName: 'finance',
+                        instance: finance,
+                        uid: ceo.uid,
+                      );
+
+                      //Company Ref
                       ceo.company = DatabaseServiceFirestore().getRef(
                         collectionNamed: 'company',
                         uid: ceo.uid,
                       );
+                      //update ceo
                       await DatabaseServiceFirestore().setDoc(
                         collectionName: 'ceo',
                         instance: ceo,
                         uid: ceo.uid,
                       );
+
                       ConstantesWidgets.dialog(
                         context: context,
                         title: Text('Sucess'),
