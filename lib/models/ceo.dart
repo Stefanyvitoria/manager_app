@@ -6,7 +6,7 @@ class Ceo {
   String email;
   String password;
   String phone;
-  String company; //DocumentReference company;
+  DocumentReference company;
   String uid;
   List<DocumentReference> employees;
 

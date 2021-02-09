@@ -109,6 +109,21 @@ class _HomeState extends State<Home> {
             )),
           ),
           ConstantesSpaces.spaceDivider,
+          if (ceo.company == null) ...[
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pushNamed('company', arguments: ceo);
+              },
+              leading: Icon(Icons.account_balance),
+              title: Text(
+                'Add Company',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, 'finances');
