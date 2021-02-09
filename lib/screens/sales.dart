@@ -245,7 +245,7 @@ buildBodySales(List obj, BuildContext context) {
     Ceo ceo = obj[1];
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
-          collectioNnamed: "sale", field: "ceoid", resultfield: ceo.uid),
+          collectionNamed: "sale", field: "ceoid", resultfield: ceo.uid),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Loading();
@@ -330,7 +330,7 @@ buildBodySales(List obj, BuildContext context) {
     Employee employee = obj[1];
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
-          collectioNnamed: "sale",
+          collectionNamed: "sale",
           field: "employeeid",
           resultfield: employee.uid),
       builder: (context, snapshot) {

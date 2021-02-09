@@ -15,6 +15,7 @@ class Sale {
     this.productAmount,
     this.id,
     this.ceoid,
+    this.employeeid,
   });
 
   Sale.fromJson(Map<String, dynamic> json, uid) {
@@ -25,6 +26,7 @@ class Sale {
     productAmount = json['productAmount'];
     date = json['date'];
     product = json['product'];
+    employeeid = json['employeeid'];
   }
 
   Map<String, dynamic> toJson() {
