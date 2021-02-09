@@ -271,7 +271,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'notes');
+              Navigator.pushNamed(context, 'notes', arguments: employee);
             },
             leading: Icon(Icons.book),
             title: Text(
