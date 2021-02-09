@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/screens/clien_product_list.dart';
+import 'package:manager_app/screens/company.dart';
 import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/screens/expenses.dart';
 import 'package:manager_app/screens/finances.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
       'settings': (context) => SettingsApp(),
       'statistics': (context) => Statistics(),
       'profile': (context) => Profile(),
+      'company': (context) => CompanyScreen(),
     };
   }
 }

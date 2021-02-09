@@ -53,11 +53,15 @@ class DatabaseServiceFirestore {
     FirebaseFirestore.instance.collection(collectionName).doc(uid).delete();
   }
 
-  Stream getDocs({String collectioNnamed, field, resultfield}) {
+  Stream getDocs({String collectionNamed, field, resultfield}) {
     // ***** altered the company
     return FirebaseFirestore.instance
-        .collection(collectioNnamed)
+        .collection(collectionNamed)
         .where(field, isEqualTo: resultfield)
         .snapshots();
+  }
+
+  DocumentReference getRef({String collectionNamed, String uid}) {
+    return FirebaseFirestore.instance.collection(collectionNamed).doc(uid);
   }
 }

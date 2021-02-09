@@ -1,4 +1,4 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Employee {
@@ -9,7 +9,7 @@ class Employee {
   String password;
   String occupation;
   String admissionDate;
-  String company; //DocumentReference company;
+  DocumentReference company;
   String uid;
 
   Employee({
