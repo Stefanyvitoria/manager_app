@@ -118,6 +118,40 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
           ListTile(
             onTap: () {
+              ConstantesWidgets.dialog(
+                context: context,
+                title: Text('Delete Company'),
+                content: Text('Press confirm to delete the company.'),
+                actions: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      DatabaseServiceFirestore().deleteDoc(
+                          uid: FirebaseAuth.instance.currentUser.uid,
+                          collectionName: 'company');
+                      user.company = null;
+                      DatabaseServiceFirestore().setDoc(
+                        collectionName: 'ceo',
+                        instance: user,
+                        uid: user.uid,
+                      );
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    });
+                  },
+                  child: Text('Confirm'),
+                ),
+              );
+            },
+            title: Text(
+              'Delete Company',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
               _buildPopup(context, 'Support');
             },
             title: Text(
