@@ -434,8 +434,8 @@ class _AddEmployeeState extends State<AddEmployee> {
   }
 
   bool _validate() {
-    if (_formKey.currentState.validate()) {
-      //employee.company = ceo.company; //*****
+    if (_formKey.currentState.validate() && ceo.company != null) {
+      employee.company = ceo.company;
       employee.admissionDate = _admissionDateController.text;
       employee.name = _nameController.text;
       employee.occupation = _ocupacionController.text;
