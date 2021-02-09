@@ -11,18 +11,19 @@ class Employee {
   String admissionDate;
   DocumentReference company;
   String uid;
+  String sold;
 
-  Employee({
-    this.name,
-    this.email,
-    this.phone,
-    this.adress,
-    this.password,
-    this.occupation,
-    this.admissionDate,
-    this.company,
-    this.uid,
-  });
+  Employee(
+      {this.name,
+      this.email,
+      this.phone,
+      this.adress,
+      this.password,
+      this.occupation,
+      this.admissionDate,
+      this.company,
+      this.uid,
+      this.sold});
 
   Employee.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -34,6 +35,7 @@ class Employee {
     admissionDate = json['admissionDate'];
     company = json['company'];
     uid = json['uid'];
+    sold = json['sold'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +49,7 @@ class Employee {
     data['admissionDate'] = this.admissionDate;
     data['company'] = this.company;
     data['uid'] = this.uid;
+    data['sold'] = this.sold;
     return data;
   }
 
@@ -60,5 +63,6 @@ class Employee {
     admissionDate = snapshot.data['admissionDate'];
     company = snapshot.data['company'];
     uid = snapshot.data['uid'];
+    sold = snapshot.data['sold'];
   }
 }

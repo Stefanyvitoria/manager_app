@@ -165,7 +165,8 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'sales');
+              List arg = ["ceo", ceo];
+              Navigator.pushNamed(context, 'sales', arguments: arg);
             },
             leading: Icon(Icons.attach_money),
             title: Text(
@@ -254,7 +255,8 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "sales");
+              List arg = ["employee", employee];
+              Navigator.pushNamed(context, "sales", arguments: arg);
             },
             leading: Icon(
               Icons.attach_money,
@@ -269,7 +271,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'notes');
+              Navigator.pushNamed(context, 'notes', arguments: employee);
             },
             leading: Icon(Icons.book),
             title: Text(

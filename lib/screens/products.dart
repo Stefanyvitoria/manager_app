@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:manager_app/services/database_service.dart';
@@ -35,7 +36,8 @@ class _ProductsState extends State<Products> {
           ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'addProduct');
+          List args = ["New Product", ceo, null];
+          Navigator.pushNamed(context, 'addOrEditProduct', arguments: args);
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
@@ -52,7 +54,7 @@ class _ProductsState extends State<Products> {
           List products = snapshot.data.docs.map(
             //map elements into object product
             (DocumentSnapshot e) {
-              return Product.fromJson(e.data());
+              return Product.fromJson(e.data(), e.id);
             },
           ).toList();
 
@@ -60,14 +62,19 @@ class _ProductsState extends State<Products> {
             itemCount: products.length,
             itemBuilder: (BuildContext ctxt, int index) {
               return Dismissible(
-                onDismissed: (direction) {},
+                onDismissed: (direction) {
+                  DatabaseServiceFirestore().deleteDoc(
+                      uid: products[index].id, collectionName: "product");
+                },
                 child: ListTile(
                     leading: Icon(Icons.point_of_sale),
                     title: Text(products[index].name),
-                    subtitle: Text("value: ${products[index].value}"),
+                    subtitle: Text("Amount: ${products[index].amount}"),
                     trailing: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, 'editProduct');
+                        List args = ["Edit Product", ceo, products[index].id];
+                        Navigator.pushNamed(context, 'addOrEditProduct',
+                            arguments: args);
                       },
                       child: Icon(Icons.edit, color: Colors.grey),
                     ),
@@ -95,7 +102,7 @@ class _ProductsState extends State<Products> {
                                     ),
                                   ],
                                   title: Text(
-                                    "${products[index].name}\ncompany: ${products[index].company}\nvalue: R\$ ${products[index].value}",
+                                    "${products[index].name}\nAmount: ${products[index].amount}\nCompany: ${products[index].company}\nEach Value: R\$ ${products[index].value}",
                                     style: TextStyle(color: Colors.grey[800]),
                                   ),
                                 ),
@@ -127,163 +134,126 @@ class _ProductsState extends State<Products> {
   }
 }
 
-class EditProduct extends StatefulWidget {
+class AddOrEditProduct extends StatefulWidget {
   @override
-  _EditProductState createState() => _EditProductState();
+  _AddOrEditProductState createState() => _AddOrEditProductState();
 }
 
-class _EditProductState extends State<EditProduct> {
+class _AddOrEditProductState extends State<AddOrEditProduct> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _valueController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
+  Product product = Product();
   @override
   Widget build(BuildContext context) {
+    List args = ModalRoute.of(context).settings.arguments;
+    Ceo ceo = args[1];
+    String title = args[0];
+    product.id = args[2];
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Edit Product",
-        ),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
         child: SizedBox(
           width: MediaQuery.of(context).size.width, //size of screen
           height: MediaQuery.of(context).size.height, //size of screen
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Name:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Company:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Value:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
                     },
-                    child: Text(
-                      'Confirm',
+                    controller: _nameController,
+                    onSaved: (text) {
+                      _nameController.text = text;
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Name:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    controller: _amountController,
+                    onSaved: (text) {
+                      _amountController.text = text;
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    validator: (String value) {
+                      return value.isEmpty ? 'Required field.' : null;
+                    },
+                    controller: _valueController,
+                    onSaved: (text) {
+                      _valueController.text = text;
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Value:',
+                      labelStyle: TextStyle(fontSize: 15),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (!_validate()) return;
+                        product.refUID =
+                            ceo.uid; // add reference id of ceo to product
+                        DatabaseServiceFirestore().setDoc(
+                            collectionName: 'product',
+                            instance: product,
+                            uid: product.id);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Confirm',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-}
 
-class AddProduct extends StatefulWidget {
-  @override
-  _AddProductState createState() => _AddProductState();
-}
-
-class _AddProductState extends State<AddProduct> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "New Product",
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width, //size of screen
-          height: MediaQuery.of(context).size.height, //size of screen
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Name:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Company:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Value:',
-                    labelStyle: TextStyle(fontSize: 15),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Confirm',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  bool _validate() {
+    if (_formKey.currentState.validate()) {
+      product.name = _nameController.text;
+      product.value = _valueController.text;
+      product.amount = _amountController.text;
+      return true;
+    }
+    return false;
   }
 }
 
