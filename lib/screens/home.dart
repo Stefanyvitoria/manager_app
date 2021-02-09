@@ -150,7 +150,8 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'sales');
+              List arg = ["ceo", ceo];
+              Navigator.pushNamed(context, 'sales', arguments: arg);
             },
             leading: Icon(Icons.attach_money),
             title: Text(
@@ -239,7 +240,8 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "sales");
+              List arg = ["employee", employee];
+              Navigator.pushNamed(context, "sales", arguments: arg);
             },
             leading: Icon(
               Icons.attach_money,
