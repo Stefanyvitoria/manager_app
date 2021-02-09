@@ -54,7 +54,6 @@ class DatabaseServiceFirestore {
   }
 
   Stream getDocs({String collectionNamed, field, resultfield}) {
-    // ***** altered the company
     return FirebaseFirestore.instance
         .collection(collectionNamed)
         .where(field, isEqualTo: resultfield)
