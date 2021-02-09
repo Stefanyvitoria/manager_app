@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
       'addOrEditProduct': (context) => AddOrEditProduct(),
       'ranking': (context) => Ranking(),
       'notes': (context) => Notes(),
+      'addOrEditNote': (context) => AddOrEditNote(),
       'settings': (context) => SettingsApp(),
       'statistics': (context) => Statistics(),
       'profile': (context) => Profile(),
