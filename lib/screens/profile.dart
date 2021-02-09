@@ -25,402 +25,417 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  List<Widget> _buildProfileUser(Ceo user) {
+    return <Widget>[
+      Center(
+        child: Text(
+          'User Profile',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      Divider(),
+      ListTile(
+        onTap: () {
+          ConstantesWidgets.dialog(
+            context: context,
+            title: Text('Edit Name'),
+            content: Container(
+              child: TextFormField(
+                initialValue: user.name,
+                onChanged: (txt) {
+                  user.name = txt;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Name:',
+                  labelStyle: TextStyle(fontSize: 15),
+                  border: UnderlineInputBorder(),
+                ),
+              ),
+            ),
+            actions: TextButton(
+              onPressed: () {
+                setState(() {
+                  DatabaseServiceFirestore().setDoc(
+                    collectionName: 'ceo',
+                    instance: user,
+                    uid: user.uid,
+                  );
+                  Navigator.pop(context);
+                });
+              },
+              child: Text('Confirm'),
+            ),
+          );
+        },
+        leading: Icon(
+          Icons.account_box,
+        ),
+        title: Text(
+          '${user.name}',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      ListTile(
+        onTap: () {
+          ConstantesWidgets.dialog(
+            context: context,
+            title: Text('Edit Email'),
+            content: Container(
+              child: TextFormField(
+                initialValue: user.email,
+                onChanged: (txt) {
+                  user.email = txt;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Email:',
+                  labelStyle: TextStyle(fontSize: 15),
+                  border: UnderlineInputBorder(),
+                ),
+              ),
+            ),
+            actions: TextButton(
+              onPressed: () {
+                setState(() {
+                  DatabaseServiceFirestore().setDoc(
+                    collectionName: 'ceo',
+                    instance: user,
+                    uid: user.uid,
+                  );
+                  Navigator.pop(context);
+                });
+              },
+              child: Text('Confirm'),
+            ),
+          );
+        },
+        leading: Icon(
+          Icons.email,
+        ),
+        title: Text(
+          '${user.email}',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      ListTile(
+        onTap: () {
+          ConstantesWidgets.dialog(
+            context: context,
+            title: Text('Edit phone'),
+            content: Container(
+              child: TextFormField(
+                initialValue: user.phone,
+                onChanged: (txt) {
+                  user.phone = txt;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Phone:',
+                  labelStyle: TextStyle(fontSize: 15),
+                  border: UnderlineInputBorder(),
+                ),
+              ),
+            ),
+            actions: TextButton(
+              onPressed: () {
+                setState(() {
+                  DatabaseServiceFirestore().setDoc(
+                    collectionName: 'ceo',
+                    instance: user,
+                    uid: user.uid,
+                  );
+                  Navigator.pop(context);
+                });
+              },
+              child: Text('Confirm'),
+            ),
+          );
+        },
+        leading: Icon(
+          Icons.phone,
+        ),
+        title: Text(
+          '${user.phone}',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      ConstantesSpaces.spacer,
+    ];
+  }
+
   _buildBodyProfileCEO(Ceo user) {
     //Returns the CEO body if user.type equals 'ceo'.
+    if (user.company == null) {
+      return ListView(
+        padding: EdgeInsets.only(top: 25),
+        children: _buildProfileUser(user),
+      );
+    } else {
+      return StreamBuilder(
+        stream: DatabaseServiceFirestore().getDoc(
+          collectionName: 'company',
+          uid: user.uid,
+        ),
+        builder: (context, AsyncSnapshot snapshot) {
+          while (snapshot.hasError ||
+              snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return Loading();
+          }
 
-    return StreamBuilder(
-      stream: DatabaseServiceFirestore().getDoc(
-        collectionName: 'company',
-        uid: user.uid,
-      ),
-      builder: (context, AsyncSnapshot snapshot) {
-        while (snapshot.hasError ||
-            snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData) {
-          return Loading();
-        }
-
-        Company company = Company.fromSnapshot(snapshot);
-        return ListView(
-          padding: EdgeInsets.only(top: 25),
-          children: [
-            Center(
-              child: Text(
-                'User Profile',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
+          Company company = Company.fromSnapshot(snapshot);
+          return ListView(
+            padding: EdgeInsets.only(top: 25),
+            children: [
+              Column(
+                children: _buildProfileUser(user),
+              ),
+              //Company profile
+              Center(
+                child: Text(
+                  'Company Profile',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Name'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: user.name,
-                      onChanged: (txt) {
-                        user.name = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Name:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
+              Divider(),
+              ListTile(
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Edit Company Name'),
+                    content: Container(
+                      child: TextFormField(
+                        initialValue: company.name,
+                        onChanged: (txt) {
+                          company.name = txt;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Name:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: UnderlineInputBorder(),
+                        ),
                       ),
                     ),
+                    actions: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: 'company',
+                            instance: company,
+                            uid: user.uid,
+                          );
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: Text('Confirm'),
+                    ),
+                  );
+                },
+                leading: Icon(
+                  Icons.account_balance,
+                ),
+                title: Text(
+                  '${company.name}',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'ceo',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.account_box,
-              ),
-              title: Text(
-                '${user.name}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Email'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: user.email,
-                      onChanged: (txt) {
-                        user.email = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Email:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
+              ListTile(
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Edit Company CNPJ'),
+                    content: Container(
+                      child: TextFormField(
+                        initialValue: company.cnpj,
+                        onChanged: (txt) {
+                          company.cnpj = txt;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'CNPJ:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: UnderlineInputBorder(),
+                        ),
                       ),
                     ),
+                    actions: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: 'company',
+                            instance: company,
+                            uid: user.uid,
+                          );
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: Text('Confirm'),
+                    ),
+                  );
+                },
+                leading: Icon(
+                  Icons.people,
+                ),
+                title: Text(
+                  'CNPJ : ${company.cnpj}',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'ceo',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.email,
-              ),
-              title: Text(
-                '${user.email}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit phone'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: user.phone,
-                      onChanged: (txt) {
-                        user.phone = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Phone:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
+              ListTile(
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Edit Company Email'),
+                    content: Container(
+                      child: TextFormField(
+                        initialValue: company.email,
+                        onChanged: (txt) {
+                          company.email = txt;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Email:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: UnderlineInputBorder(),
+                        ),
                       ),
                     ),
-                  ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'ceo',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.phone,
-              ),
-              title: Text(
-                '${user.phone}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ConstantesSpaces.spacer,
-            Center(
-              child: Text(
-                'Company Profile',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Company Name'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: company.name,
-                      onChanged: (txt) {
-                        company.name = txt;
+                    actions: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: 'company',
+                            instance: company,
+                            uid: user.uid,
+                          );
+                          Navigator.pop(context);
+                        });
                       },
-                      decoration: const InputDecoration(
-                        labelText: 'Name:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
+                      child: Text('Confirm'),
+                    ),
+                  );
+                },
+                leading: Icon(
+                  Icons.email,
+                ),
+                title: Text(
+                  '${company.email}',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Edit Company Phone'),
+                    content: Container(
+                      child: TextFormField(
+                        initialValue: company.phone,
+                        onChanged: (txt) {
+                          company.phone = txt;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Phone:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: UnderlineInputBorder(),
+                        ),
                       ),
                     ),
+                    actions: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: 'company',
+                            instance: company,
+                            uid: user.uid,
+                          );
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: Text('Confirm'),
+                    ),
+                  );
+                },
+                leading: Icon(
+                  Icons.phone,
+                ),
+                title: Text(
+                  '${company.phone}',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'company',
-                          instance: company,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.account_balance,
-              ),
-              title: Text(
-                '${company.name}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Company CNPJ'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: company.cnpj,
-                      onChanged: (txt) {
-                        company.cnpj = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'CNPJ:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
+              ListTile(
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Edit Company Adress'),
+                    content: Container(
+                      child: TextFormField(
+                        initialValue: company.adress,
+                        onChanged: (txt) {
+                          company.adress = txt;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Adress:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: UnderlineInputBorder(),
+                        ),
                       ),
                     ),
-                  ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'company',
-                          instance: company,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.people,
-              ),
-              title: Text(
-                'CNPJ : ${company.cnpj}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Company Email'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: company.email,
-                      onChanged: (txt) {
-                        company.email = txt;
+                    actions: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: 'company',
+                            instance: company,
+                            uid: user.uid,
+                          );
+                          Navigator.pop(context);
+                        });
                       },
-                      decoration: const InputDecoration(
-                        labelText: 'Email:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
-                      ),
+                      child: Text('Confirm'),
                     ),
+                  );
+                },
+                leading: Icon(
+                  Icons.add_location_sharp,
+                ),
+                title: Text(
+                  '${company.adress}',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'company',
-                          instance: company,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.email,
-              ),
-              title: Text(
-                '${company.email}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Company Phone'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: company.phone,
-                      onChanged: (txt) {
-                        company.phone = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Phone:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'company',
-                          instance: company,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.phone,
-              ),
-              title: Text(
-                '${company.phone}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Edit Company Adress'),
-                  content: Container(
-                    child: TextFormField(
-                      initialValue: company.adress,
-                      onChanged: (txt) {
-                        company.adress = txt;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Adress:',
-                        labelStyle: TextStyle(fontSize: 15),
-                        border: UnderlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'company',
-                          instance: company,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
-                  ),
-                );
-              },
-              leading: Icon(
-                Icons.add_location_sharp,
-              ),
-              title: Text(
-                '${company.adress}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+            ],
+          );
+        },
+      );
+    }
   }
 
   _buildBodyProfileEmployee(Employee user) {

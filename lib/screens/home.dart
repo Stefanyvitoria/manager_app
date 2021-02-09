@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
     // Returns the employee bar app if user.type equals 'employee'.
     // Returns the client bar app if user.type equals 'client'.
     if (_type == "ceo") {
-      Ceo ceo = Ceo.fromSnapshot(snapshot);
+      Ceo ceo = Ceo.fromSnapshot(snapshot); //current user
       return AppBar(
         title: Text("${ceo.name}".substring(0, 1).toUpperCase() +
             "${ceo.name}".substring(1)),
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
     //Returns the staff if user.type is equal to 'employee'.
     //Returns the customer body if user.type is equal to 'customer'.
     if (_type == "ceo") {
-      Ceo ceo = Ceo.fromSnapshot(snapshot);
+      Ceo ceo = Ceo.fromSnapshot(snapshot); //current user
       return ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
           ConstantesSpaces.spaceDivider,
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "ranking");
+              Navigator.pushNamed(context, "ranking", arguments: employee);
             },
             leading: Icon(
               Icons.star,

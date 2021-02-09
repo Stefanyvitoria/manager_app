@@ -16,8 +16,7 @@ class _RankingState extends State<Ranking> {
   @override
   Widget build(BuildContext context) {
     Employee employee = ModalRoute.of(context).settings.arguments;
-    print(employee.company.collection('employee').doc().id);
-    print("oi");
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -36,7 +35,7 @@ class _RankingState extends State<Ranking> {
         stream: DatabaseServiceFirestore().getDocs(
             collectionNamed: "employee",
             field: "company",
-            resultfield: employee.company.id),
+            resultfield: employee.company),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Loading(); //widget loading

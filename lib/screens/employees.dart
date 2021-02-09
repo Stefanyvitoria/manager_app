@@ -56,7 +56,7 @@ class _EmployeesState extends State<Employees> {
             return Loading(); //widget loading
           }
           List listEmployees = snapshot.data.docs.map(
-            //map elements into object product
+            //map elements into object employee
             (DocumentSnapshot e) {
               return Employee.fromJson(e.data());
             },
@@ -68,6 +68,7 @@ class _EmployeesState extends State<Employees> {
               Employee employee = listEmployees[index];
               return Dismissible(
                 onDismissed: (direction) {
+                  DatabaseServiceAuth.deleteUser(employee);
                   DatabaseServiceFirestore()
                       .deleteDoc(collectionName: 'employee', uid: employee.uid);
                 },
@@ -407,15 +408,21 @@ class _AddEmployeeState extends State<AddEmployee> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (!_validate()) return;
+                        //create login employee
                         await DatabaseServiceAuth.register(
                             employee.email, employee.password);
+
                         employee.uid = FirebaseAuth.instance.currentUser.uid;
-                        DatabaseServiceFirestore().setDoc(
+                        //create document employee
+                        await DatabaseServiceFirestore().setDoc(
                             collectionName: 'employee',
                             instance: employee,
                             uid: employee.uid);
 
-                        DatabaseServiceAuth.logOut();
+                        await DatabaseServiceAuth.logOut();
+
+                        await DatabaseServiceAuth.login(
+                            ceo.email, ceo.password);
 
                         Navigator.pop(context);
                       },

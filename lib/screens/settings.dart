@@ -94,9 +94,12 @@ class _SettingsAppState extends State<SettingsApp> {
                 content: Text('Press confirm to delete the account.'),
                 actions: TextButton(
                   onPressed: () {
+                    //there is a logical exclusion of company, users, etc.
                     setState(() {
+                      //delete user authentication
                       DatabaseServiceAuth.deleteUser(
                           FirebaseAuth.instance.currentUser);
+                      //delete user from company
                       DatabaseServiceFirestore().deleteDoc(
                           uid: FirebaseAuth.instance.currentUser.uid,
                           collectionName: _type);
@@ -117,43 +120,7 @@ class _SettingsAppState extends State<SettingsApp> {
             ),
           ),
           ListTile(
-            onTap: () {
-              ConstantesWidgets.dialog(
-                context: context,
-                title: Text('Delete Company'),
-                content: Text('Press confirm to delete the company.'),
-                actions: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      DatabaseServiceFirestore().deleteDoc(
-                          uid: FirebaseAuth.instance.currentUser.uid,
-                          collectionName: 'company');
-                      user.company = null;
-                      DatabaseServiceFirestore().setDoc(
-                        collectionName: 'ceo',
-                        instance: user,
-                        uid: user.uid,
-                      );
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    });
-                  },
-                  child: Text('Confirm'),
-                ),
-              );
-            },
-            title: Text(
-              'Delete Company',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              _buildPopup(context, 'Support');
-            },
+            onTap: () {},
             title: Text(
               'Support',
               style: TextStyle(
@@ -163,9 +130,7 @@ class _SettingsAppState extends State<SettingsApp> {
             ),
           ),
           ListTile(
-            onTap: () {
-              _buildPopup(context, 'About');
-            },
+            onTap: () {},
             title: Text(
               'About',
               style: TextStyle(
@@ -176,26 +141,6 @@ class _SettingsAppState extends State<SettingsApp> {
           ),
         ],
       ),
-    );
-  }
-
-  _buildPopup(context, txt) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('$txt'),
-          content: Text('(missing add functionality)'),
-          actions: [
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 }
