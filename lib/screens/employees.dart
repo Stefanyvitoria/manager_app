@@ -97,10 +97,10 @@ class _EmployeesState extends State<Employees> {
                     onTap: () {
                       ConstantesWidgets.dialog(
                         context: context,
+                        title: Text("${employee.name}"),
                         content: Wrap(
                           direction: Axis.vertical,
                           children: [
-                            Text("Name: ${employee.name}"),
                             Text("Occupation: ${employee.occupation}"),
                             Text("Admission Date: ${employee.admissionDate}"),
                             Text("Quantity of Sales: ${employee.sold}"),

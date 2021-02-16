@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/product.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
-
 import 'Loading.dart';
 
 class Products extends StatefulWidget {
@@ -16,33 +15,34 @@ class Products extends StatefulWidget {
 
 List<Product> products;
 List<Product> loadProducts() {
-  print(products);
   return products;
 }
 
 Ceo ceo;
 
 class ProductsState extends State<Products> {
-  //var _currentUser = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
-    //print("ceo UID ${_currentUser.uid}");
     Ceo ceo = ModalRoute.of(context).settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-        //will be a listview.builder stream
         stream: DatabaseServiceFirestore().getDocs(
-            field: "refUID", resultfield: ceo.uid, collectionNamed: 'product'),
+            field: "company",
+            resultfield: ceo.company,
+            collectionNamed: 'product'),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Loading(); //widget loading
+          while (snapshot.hasError ||
+              snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return Loading();
           }
+
           products = snapshot.data.docs.map(
             //map elements into object product
             (DocumentSnapshot e) {
               return Product.fromJson(e.data(), e.id);
             },
           ).toList();
+
           return Scaffold(
             appBar: AppBar(
                 title: Text(
@@ -59,7 +59,7 @@ class ProductsState extends State<Products> {
                 ]),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                List args = ["New Product", ceo, null];
+                List args = ["New Product", ceo, Product()];
                 Navigator.pushNamed(context, 'addOrEditProduct',
                     arguments: args);
               },
@@ -70,64 +70,46 @@ class ProductsState extends State<Products> {
             body: ListView.builder(
               itemCount: products.length,
               itemBuilder: (BuildContext ctxt, int index) {
+                Product product = products[index];
                 return Dismissible(
-                  onDismissed: (direction) {
-                    DatabaseServiceFirestore().deleteDoc(
+                  onDismissed: (direction) async {
+                    //delete product
+                    await DatabaseServiceFirestore().deleteDoc(
                         uid: products[index].id, collectionName: "product");
                   },
                   child: Card(
                     child: ListTile(
-                        leading: Icon(Icons.point_of_sale),
-                        title: Text(products[index].name),
-                        subtitle: Text("Amount: ${products[index].amount}"),
-                        trailing: TextButton(
-                          onPressed: () {
-                            List args = [
-                              "Edit Product",
-                              ceo,
-                              products[index].id
-                            ];
-                            Navigator.pushNamed(context, 'addOrEditProduct',
-                                arguments: args);
-                          },
-                          child: Icon(Icons.edit, color: Colors.grey),
-                        ),
-                        onTap: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Wrap(
-                                  direction: Axis.vertical,
-                                  children: [
-                                    AlertDialog(
-                                      titlePadding: EdgeInsets.only(
-                                          top: 40,
-                                          bottom: 20,
-                                          left: 30,
-                                          right: 10),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'OK',
-                                            style: TextStyle(
-                                                color: Colors.grey[700]),
-                                          ),
-                                        ),
-                                      ],
-                                      title: Text(
-                                        "${products[index].name}\nAmount: ${products[index].amount}\nCompany: ${products[index].company}\nEach Value: R\$ ${products[index].value}",
-                                        style:
-                                            TextStyle(color: Colors.grey[800]),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              });
-                        }),
+                      leading: Icon(Icons.all_inbox),
+                      title: Text(product.name),
+                      subtitle: Text("Amount: ${product.amount}"),
+                      trailing: TextButton(
+                        onPressed: () {
+                          List args = ["Edit Product", ceo, product];
+                          Navigator.pushNamed(context, 'addOrEditProduct',
+                              arguments: args);
+                        },
+                        child: Icon(Icons.edit, color: Colors.grey),
+                      ),
+                      onTap: () {
+                        ConstantesWidgets.dialog(
+                          context: context,
+                          title: Text('${product.name}'),
+                          content: Wrap(
+                            direction: Axis.vertical,
+                            children: [
+                              Text('Value: ${product.value}'),
+                              Text('Amount: ${product.amount}')
+                            ],
+                          ),
+                          actions: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Ok'),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   key: Key(products[index].id),
                   background: Container(
@@ -159,16 +141,14 @@ class AddOrEditProduct extends StatefulWidget {
 
 class _AddOrEditProductState extends State<AddOrEditProduct> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _valueController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
-  Product product = Product();
+  Product product;
   @override
   Widget build(BuildContext context) {
     List args = ModalRoute.of(context).settings.arguments;
-    Ceo ceo = args[1];
+    ceo = args[1];
     String title = args[0];
-    product.id = args[2];
+    product = args[2];
+
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
@@ -183,12 +163,12 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextFormField(
+                    initialValue: product.name,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
-                    controller: _nameController,
-                    onSaved: (text) {
-                      _nameController.text = text;
+                    onChanged: (text) {
+                      product.name = text;
                     },
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
@@ -201,12 +181,12 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                     height: 10,
                   ),
                   TextFormField(
+                    initialValue: product.amount,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
-                    controller: _amountController,
-                    onSaved: (text) {
-                      _amountController.text = text;
+                    onChanged: (text) {
+                      product.amount = text;
                     },
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -219,12 +199,13 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                     height: 10,
                   ),
                   TextFormField(
+                    initialValue:
+                        product.value == null ? '' : product.value.toString(),
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
-                    controller: _valueController,
-                    onSaved: (text) {
-                      _valueController.text = text;
+                    onChanged: (text) {
+                      product.value = num.parse(text);
                     },
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -240,11 +221,10 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                     width: 150,
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (!_validate()) return;
-                        product.refUID =
-                            ceo.uid; // add reference id of ceo to product
-                        DatabaseServiceFirestore().setDoc(
+                        //add product.
+                        await DatabaseServiceFirestore().setDoc(
                             collectionName: 'product',
                             instance: product,
                             uid: product.id);
@@ -266,9 +246,7 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
 
   bool _validate() {
     if (_formKey.currentState.validate()) {
-      product.name = _nameController.text;
-      product.value = _valueController.text;
-      product.amount = _amountController.text;
+      product.company = ceo.company;
       return true;
     }
     return false;
