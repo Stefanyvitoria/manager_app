@@ -11,39 +11,25 @@ import 'Loading.dart';
 
 class Products extends StatefulWidget {
   @override
-  _ProductsState createState() => _ProductsState();
+  ProductsState createState() => ProductsState();
 }
 
-class _ProductsState extends State<Products> {
+List<Product> products;
+List<Product> loadProducts() {
+  print(products);
+  return products;
+}
+
+Ceo ceo;
+
+class ProductsState extends State<Products> {
   //var _currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     //print("ceo UID ${_currentUser.uid}");
     Ceo ceo = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            "Products",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                showSearch(context: context, delegate: DataSearchProduct());
-              },
-              child: Icon(Icons.search, color: Colors.white),
-            ),
-          ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          List args = ["New Product", ceo, null];
-          Navigator.pushNamed(context, 'addOrEditProduct', arguments: args);
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-        backgroundColor: Colors.teal[300],
-      ),
-      body: StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot>(
         //will be a listview.builder stream
         stream: DatabaseServiceFirestore().getDocs(
             field: "refUID", resultfield: ceo.uid, collectionNamed: 'product'),
@@ -51,86 +37,118 @@ class _ProductsState extends State<Products> {
           if (!snapshot.hasData) {
             return Loading(); //widget loading
           }
-          List products = snapshot.data.docs.map(
+          products = snapshot.data.docs.map(
             //map elements into object product
             (DocumentSnapshot e) {
               return Product.fromJson(e.data(), e.id);
             },
           ).toList();
-
-          return ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return Dismissible(
-                onDismissed: (direction) {
-                  DatabaseServiceFirestore().deleteDoc(
-                      uid: products[index].id, collectionName: "product");
-                },
-                child: ListTile(
-                    leading: Icon(Icons.point_of_sale),
-                    title: Text(products[index].name),
-                    subtitle: Text("Amount: ${products[index].amount}"),
-                    trailing: TextButton(
-                      onPressed: () {
-                        List args = ["Edit Product", ceo, products[index].id];
-                        Navigator.pushNamed(context, 'addOrEditProduct',
-                            arguments: args);
-                      },
-                      child: Icon(Icons.edit, color: Colors.grey),
-                    ),
-                    onTap: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Wrap(
-                              direction: Axis.vertical,
-                              children: [
-                                AlertDialog(
-                                  titlePadding: EdgeInsets.only(
-                                      top: 40, bottom: 20, left: 30, right: 10),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'OK',
+          return Scaffold(
+            appBar: AppBar(
+                title: Text(
+                  "Products",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      showSearch(
+                          context: context, delegate: DataSearchProduct());
+                    },
+                    child: Icon(Icons.search, color: Colors.white),
+                  ),
+                ]),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                List args = ["New Product", ceo, null];
+                Navigator.pushNamed(context, 'addOrEditProduct',
+                    arguments: args);
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.add),
+              backgroundColor: Colors.teal[300],
+            ),
+            body: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+                return Dismissible(
+                  onDismissed: (direction) {
+                    DatabaseServiceFirestore().deleteDoc(
+                        uid: products[index].id, collectionName: "product");
+                  },
+                  child: Card(
+                    child: ListTile(
+                        leading: Icon(Icons.point_of_sale),
+                        title: Text(products[index].name),
+                        subtitle: Text("Amount: ${products[index].amount}"),
+                        trailing: TextButton(
+                          onPressed: () {
+                            List args = [
+                              "Edit Product",
+                              ceo,
+                              products[index].id
+                            ];
+                            Navigator.pushNamed(context, 'addOrEditProduct',
+                                arguments: args);
+                          },
+                          child: Icon(Icons.edit, color: Colors.grey),
+                        ),
+                        onTap: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Wrap(
+                                  direction: Axis.vertical,
+                                  children: [
+                                    AlertDialog(
+                                      titlePadding: EdgeInsets.only(
+                                          top: 40,
+                                          bottom: 20,
+                                          left: 30,
+                                          right: 10),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'OK',
+                                            style: TextStyle(
+                                                color: Colors.grey[700]),
+                                          ),
+                                        ),
+                                      ],
+                                      title: Text(
+                                        "${products[index].name}\nAmount: ${products[index].amount}\nCompany: ${products[index].company}\nEach Value: R\$ ${products[index].value}",
                                         style:
-                                            TextStyle(color: Colors.grey[700]),
+                                            TextStyle(color: Colors.grey[800]),
                                       ),
                                     ),
                                   ],
-                                  title: Text(
-                                    "${products[index].name}\nAmount: ${products[index].amount}\nCompany: ${products[index].company}\nEach Value: R\$ ${products[index].value}",
-                                    style: TextStyle(color: Colors.grey[800]),
-                                  ),
-                                ),
-                              ],
-                            );
-                          });
-                    }),
-                key: Key(products[index].id),
-                background: Container(
-                  color: Colors.red[300],
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.delete),
-                        Icon(Icons.delete),
-                      ],
+                                );
+                              });
+                        }),
+                  ),
+                  key: Key(products[index].id),
+                  background: Container(
+                    color: Colors.red[300],
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 40, right: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.delete),
+                          Icon(Icons.delete),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
+        });
   }
 }
 
@@ -257,21 +275,8 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
   }
 }
 
-class DataSearchProduct extends SearchDelegate<String> {
+class DataSearchProduct extends SearchDelegate<Product> {
   //function to search bar on sales page
-  final sales = [
-    "Product1",
-    "Product2",
-    "Product3",
-    "Product4",
-    "Product5",
-  ];
-  final recentSales = [
-    "Product1",
-    "Product2",
-    "Product3",
-  ];
-
   @override
   List<Widget> buildActions(BuildContext context) {
     //button to erase the search bar words
@@ -301,32 +306,142 @@ class DataSearchProduct extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    throw UnimplementedError();
+    final products = query.isEmpty
+        ? loadProducts()
+        : loadProducts().where((p) => p.name.startsWith(query)).toList();
+    return products.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final Product listProducts = products[index];
+
+              return Dismissible(
+                onDismissed: (direction) {
+                  DatabaseServiceFirestore().deleteDoc(
+                      uid: products[index].id, collectionName: "product");
+                },
+                child: Card(
+                  child: ListTile(
+                    leading: Icon(Icons.point_of_sale),
+                    title: RichText(
+                      text: TextSpan(
+                          text: listProducts.name.substring(0, query.length),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                                text: listProducts.name.substring(query.length),
+                                style: TextStyle(color: Colors.grey))
+                          ]),
+                    ),
+                    subtitle: Text("Amount: ${listProducts.amount}"),
+                    trailing: TextButton(
+                      onPressed: () {
+                        List args = ["Edit Product", ceo, listProducts.id];
+                        Navigator.pushNamed(context, 'addOrEditProduct',
+                            arguments: args);
+                      },
+                      child: Icon(Icons.edit, color: Colors.grey),
+                    ),
+                    onTap: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Wrap(
+                            direction: Axis.vertical,
+                            children: [
+                              AlertDialog(
+                                titlePadding: EdgeInsets.only(
+                                    top: 40, bottom: 20, left: 30, right: 10),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'OK',
+                                      style: TextStyle(color: Colors.grey[700]),
+                                    ),
+                                  ),
+                                ],
+                                title: Text(
+                                  "${listProducts.name}\nAmount: ${listProducts.amount}\nCompany: ${listProducts.company}\nEach Value: R\$ ${listProducts.value}",
+                                  style: TextStyle(color: Colors.grey[800]),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+                key: Key(listProducts.id),
+                background: Container(
+                  color: Colors.red[300],
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.delete),
+                        Icon(Icons.delete),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    //show a list of suggestions
-    final suggestionList = query.isEmpty
-        ? recentSales
-        : sales.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        leading: Icon(Icons.indeterminate_check_box),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey))
-            ],
-          ),
-        ),
-      ),
-      itemCount: suggestionList.length,
-    );
+    final products = query.isEmpty
+        ? loadProducts()
+        : loadProducts().where((p) => p.name.startsWith(query)).toList();
+
+    return products.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final Product listProducts = products[index];
+
+              return Card(
+                child: ListTile(
+                  title: RichText(
+                    text: TextSpan(
+                      text: listProducts.name.substring(0, query.length),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: listProducts.name.substring(query.length),
+                            style: TextStyle(color: Colors.grey))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
