@@ -11,7 +11,7 @@ class Employee {
   String admissionDate;
   DocumentReference company;
   String uid;
-  String sold;
+  num sold;
 
   Employee(
       {this.name,

@@ -120,6 +120,7 @@ class _ActionFinanceState extends State<ActionFinance> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (!_validate()) return;
+
                         //create action
                         DocumentReference idExpense =
                             await DatabaseServiceFirestore().addDoc(
@@ -128,7 +129,8 @@ class _ActionFinanceState extends State<ActionFinance> {
                         );
                         //update finance
                         finance.actions.add(idExpense);
-                        DatabaseServiceFirestore().setDoc(
+                        finance.liquidMoney += expense.value;
+                        await DatabaseServiceFirestore().setDoc(
                           collectionName: 'finance',
                           instance: finance,
                           uid: _uid,

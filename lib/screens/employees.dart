@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/screens/Loading.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 import 'package:manager_app/models/employee.dart';
 
@@ -16,6 +17,7 @@ class _EmployeesState extends State<Employees> {
   @override
   Widget build(BuildContext context) {
     ceo = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -38,7 +40,7 @@ class _EmployeesState extends State<Employees> {
         },
         tooltip: 'Increment',
         child: Icon(
-          Icons.add,
+          Icons.person_add_alt_1_outlined,
         ),
         backgroundColor: Colors.teal,
       ),
@@ -49,12 +51,11 @@ class _EmployeesState extends State<Employees> {
             resultfield: ceo.company),
         builder: (context, AsyncSnapshot snapshot) {
           while (snapshot.hasError ||
-              snapshot.connectionState == ConnectionState.waiting) {
+              snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
             return Loading();
           }
-          if (!snapshot.hasData) {
-            return Loading(); //widget loading
-          }
+
           List listEmployees = snapshot.data.docs.map(
             //map elements into object employee
             (DocumentSnapshot e) {
@@ -67,13 +68,20 @@ class _EmployeesState extends State<Employees> {
             itemBuilder: (context, int index) {
               Employee employee = listEmployees[index];
               return Dismissible(
-                onDismissed: (direction) {
-                  DatabaseServiceAuth.deleteUser(employee);
-                  DatabaseServiceFirestore()
+                onDismissed: (direction) async {
+                  //requires authentication to delete
+                  await DatabaseServiceAuth.login(
+                      employee.email, employee.password);
+                  //delete employee
+                  listEmployees.remove(employee);
+                  await DatabaseServiceAuth.deleteUser(
+                      FirebaseAuth.instance.currentUser);
+                  await DatabaseServiceFirestore()
                       .deleteDoc(collectionName: 'employee', uid: employee.uid);
+                  await DatabaseServiceAuth.login(ceo.email, ceo.password);
                 },
                 child: ListTile(
-                    leading: Icon(Icons.point_of_sale),
+                    leading: Icon(Icons.person_outline),
                     title: Text("${employee.name}"),
                     subtitle: Text("Occupation: ${employee.occupation}"),
                     trailing: TextButton(
@@ -87,30 +95,26 @@ class _EmployeesState extends State<Employees> {
                       ),
                     ),
                     onTap: () {
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "Name: ${employee.name}\nOccupation: ${employee.occupation}\nAdmissionDate: ${employee.admissionDate}\nQuantity of Sales: 99", //****** a terminar
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            );
-                          });
+                      ConstantesWidgets.dialog(
+                        context: context,
+                        content: Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            Text("Name: ${employee.name}"),
+                            Text("Occupation: ${employee.occupation}"),
+                            Text("Admission Date: ${employee.admissionDate}"),
+                            Text("Quantity of Sales: ${employee.sold}"),
+                          ],
+                        ),
+                        actions: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Ok',
+                          ),
+                        ),
+                      );
                     }),
                 key: Key("2"),
                 background: Container(
@@ -245,6 +249,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (!_validate()) return;
+                        //update employee
                         DatabaseServiceFirestore().setDoc(
                           collectionName: 'employee',
                           uid: employee.uid,
@@ -287,7 +292,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   TextEditingController _admissionDateController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  Employee employee = Employee();
+  Employee employee = Employee(sold: 0);
   Ceo ceo;
 
   @override
@@ -408,19 +413,20 @@ class _AddEmployeeState extends State<AddEmployee> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (!_validate()) return;
+
                         //create login employee
                         await DatabaseServiceAuth.register(
                             employee.email, employee.password);
 
-                        employee.uid = FirebaseAuth.instance.currentUser.uid;
                         //create document employee
+                        employee.uid = FirebaseAuth.instance.currentUser.uid;
                         await DatabaseServiceFirestore().setDoc(
                             collectionName: 'employee',
                             instance: employee,
                             uid: employee.uid);
 
+                        //login in CEO
                         await DatabaseServiceAuth.logOut();
-
                         await DatabaseServiceAuth.login(
                             ceo.email, ceo.password);
 

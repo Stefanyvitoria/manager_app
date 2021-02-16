@@ -8,7 +8,6 @@ class Ceo {
   String phone;
   DocumentReference company;
   String uid;
-  List<DocumentReference> employees;
 
   Ceo(
       {this.name,
@@ -16,7 +15,6 @@ class Ceo {
       this.password,
       this.phone,
       this.company,
-      this.employees,
       this.uid});
 
   Ceo.fromJson(Map<String, dynamic> json) {
@@ -25,7 +23,6 @@ class Ceo {
     password = json['password'];
     phone = json['phone'];
     company = json['company'];
-    employees = json['employees'];
     uid = json['uid'];
   }
 
@@ -36,7 +33,6 @@ class Ceo {
     data['password'] = this.password;
     data['phone'] = this.phone;
     data['company'] = this.company;
-    data['employees'] = this.employees;
     data['uid'] = this.uid;
     return data;
   }
@@ -47,7 +43,6 @@ class Ceo {
     password = snapshot.data['password'];
     phone = snapshot.data['phone'];
     company = snapshot.data['company'];
-    employees = snapshot.data['employees'];
     uid = snapshot.data['uid'];
   }
 }

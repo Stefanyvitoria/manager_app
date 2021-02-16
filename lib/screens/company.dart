@@ -134,18 +134,6 @@ class _CompanyScreenState extends State<CompanyScreen> {
                         instance: company,
                         uid: ceo.uid,
                       );
-
-                      finance.company = DatabaseServiceFirestore().getRef(
-                        collectionNamed: 'company',
-                        uid: ceo.uid,
-                      );
-                      //update finance
-                      await DatabaseServiceFirestore().setDoc(
-                        collectionName: 'finance',
-                        instance: finance,
-                        uid: ceo.uid,
-                      );
-
                       //Company Ref
                       ceo.company = DatabaseServiceFirestore().getRef(
                         collectionNamed: 'company',

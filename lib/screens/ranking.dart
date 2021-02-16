@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/employee.dart';
-import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/services/database_service.dart';
 
 import 'Loading.dart';

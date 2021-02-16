@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manager_app/models/action.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/finance.dart';
-//import 'package:manager_app/models/sale.dart';
 import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 
@@ -34,7 +34,6 @@ class _FinancesScreenState extends State<FinancesScreen> {
         }
 
         finance = Finances.fromSnapshot(snapshot);
-        List lActions = finance.actions;
 
         return Scaffold(
           appBar: AppBar(
@@ -123,6 +122,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                   child: ListView.builder(
                     itemCount: finance.actions.length,
                     itemBuilder: (context, int index) {
+                      index = (finance.actions.length - 1) - index;
                       DocumentReference action = finance.actions[index];
                       if (action.parent.id == 'sale') {
                         return StreamBuilder(
@@ -136,6 +136,8 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                     ConnectionState.waiting) {
                               return LinearProgressIndicator();
                             }
+                            FinanceAction action =
+                                FinanceAction.fromSnapshot(snapshot);
                             return ListTile(
                               title: Text(
                                 "Sale",
@@ -144,7 +146,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle: Text("\$ ${snapshot.data['value']}"),
+                              subtitle: Text("\$ ${action.value}"),
                               leading: Icon(Icons.info_outline),
                               trailing: TextButton(
                                 child: Icon(Icons.expand_more,
@@ -156,9 +158,8 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                     content: Wrap(
                                       direction: Axis.vertical,
                                       children: [
-                                        Text('Date: ${snapshot.data['date']}'),
-                                        Text(
-                                            'Value: \$ ${snapshot.data['value']}')
+                                        Text('Date: ${action.date}'),
+                                        Text('Value: \$ ${action.value}')
                                       ],
                                     ),
                                     actions: Row(
@@ -199,18 +200,20 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                     ConnectionState.waiting) {
                               return LinearProgressIndicator();
                             }
+                            FinanceAction actionv =
+                                FinanceAction.fromSnapshot(snapshot);
                             return ListTile(
                               title: Text(
-                                '${snapshot.data['value'] > 0 ? "Addition" : "Withdrawal"}',
+                                '${actionv.value > 0 ? "Addition" : "Withdrawal"}',
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.w500,
-                                  color: snapshot.data['value'] > 0
+                                  color: actionv.value > 0
                                       ? Colors.black
                                       : Colors.red,
                                 ),
                               ),
-                              subtitle: Text("\$ ${snapshot.data['value']}"),
+                              subtitle: Text("\$ ${actionv.value}"),
                               leading: Icon(Icons.info_outline),
                               trailing: TextButton(
                                 child: Icon(Icons.expand_more,
@@ -218,26 +221,29 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                 onPressed: () {
                                   ConstantesWidgets.dialog(
                                     context: context,
-                                    title: Text('Expense'),
+                                    title: Text(
+                                        '${actionv.value > 0 ? "Addition" : "Withdrawal"}'),
                                     content: Wrap(
                                       direction: Axis.vertical,
                                       children: [
-                                        Text('Date: ${snapshot.data['date']}'),
-                                        Text(
-                                            'Value: \$ ${snapshot.data['value']}')
+                                        Text('Date: ${actionv.date}'),
+                                        Text('Value: \$ ${actionv.value}')
                                       ],
                                     ),
                                     actions: Row(
                                       children: [
                                         TextButton(
                                           onPressed: () {
+                                            //delete from expense
                                             DatabaseServiceFirestore()
                                                 .deleteDoc(
                                                     collectionName: 'expense',
-                                                    uid: snapshot.data.id);
-                                            lActions
-                                                .removeAt(lActions.length - 1);
-                                            finance.actions = lActions;
+                                                    uid: action.id);
+                                            //delete
+                                            finance.actions.remove(action);
+                                            finance.liquidMoney -=
+                                                actionv.value;
+                                            //update finance
                                             DatabaseServiceFirestore().setDoc(
                                               collectionName: 'finance',
                                               instance: finance,
@@ -246,13 +252,13 @@ class _FinancesScreenState extends State<FinancesScreen> {
 
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('delete'),
+                                          child: Text('Delete'),
                                         ),
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('ok'),
+                                          child: Text('Ok'),
                                         ),
                                       ],
                                     ),

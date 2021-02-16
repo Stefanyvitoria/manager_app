@@ -10,10 +10,10 @@ class SettingsApp extends StatefulWidget {
 }
 
 class _SettingsAppState extends State<SettingsApp> {
-  bool valueSwitch = false;
-
   @override
   Widget build(BuildContext context) {
+    bool valueSwitch =
+        Theme.of(context).brightness == Brightness.light ? false : true;
     dynamic user = ModalRoute.of(context).settings.arguments;
     String _type = user.toString() == "Instance of 'Ceo'" ? "ceo" : "employee";
     return Scaffold(
