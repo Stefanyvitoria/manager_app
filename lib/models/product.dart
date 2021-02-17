@@ -5,7 +5,7 @@ class Product {
   DocumentReference company;
   num value;
   String id;
-  String amount;
+  num amount;
 
   Product({
     this.value,

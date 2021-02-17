@@ -47,7 +47,9 @@ class _LoginState extends State<Login> {
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
-                height: MediaQuery.of(context).size.height / 1.828,
+                height: MediaQuery.of(context).size.height -
+                    220 -
+                    (AppBar().preferredSize.height),
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
                     BoxShadow(

@@ -35,17 +35,28 @@ class ConstantesSpaces {
 class ConstantesWidgets {
   static dialog({context, Widget title, Widget content, actions}) {
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 30,
-              vertical: 50,
-            ),
-            title: title,
-            content: content,
-            actions: [actions],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 30,
+            vertical: 50,
+          ),
+          title: title,
+          content: content,
+          actions: [actions],
+        );
+      },
+    );
+  }
+
+  static Widget loading() {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.teal,
+        ),
+      ),
+    );
   }
 }

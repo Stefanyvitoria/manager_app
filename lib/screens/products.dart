@@ -6,7 +6,7 @@ import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
-import 'Loading.dart';
+//import 'Loading.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class ProductsState extends State<Products> {
           while (snapshot.hasError ||
               snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
-            return Loading();
+            return ConstantesWidgets.loading();
           }
 
           products = snapshot.data.docs.map(
@@ -181,12 +181,13 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: product.amount,
+                    initialValue:
+                        product.amount == null ? '' : product.amount.toString(),
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
                     onChanged: (text) {
-                      product.amount = text;
+                      product.amount = text != '' ? num.parse(text) : 0;
                     },
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
-//import 'package:manager_app/models/company.dart';
 import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';

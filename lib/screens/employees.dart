@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
-import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 import 'package:manager_app/models/employee.dart';
@@ -53,7 +52,7 @@ class _EmployeesState extends State<Employees> {
           while (snapshot.hasError ||
               snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
-            return Loading();
+            return ConstantesWidgets.loading();
           }
 
           List listEmployees = snapshot.data.docs.map(

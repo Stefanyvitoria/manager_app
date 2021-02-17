@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/action.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/finance.dart';
-import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
-
 import 'package:manager_app/services/database_service.dart';
 
 class FinancesScreen extends StatefulWidget {
@@ -30,7 +28,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting ||
             !snapshot.hasData) {
-          return Loading();
+          return ConstantesWidgets.loading();
         }
 
         finance = Finances.fromSnapshot(snapshot);
@@ -134,7 +132,9 @@ class _FinancesScreenState extends State<FinancesScreen> {
                             while (snapshot.hasError ||
                                 snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                              return LinearProgressIndicator();
+                              return LinearProgressIndicator(
+                                backgroundColor: Colors.teal,
+                              );
                             }
                             FinanceAction action =
                                 FinanceAction.fromSnapshot(snapshot);
@@ -162,25 +162,11 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                         Text('Value: \$ ${action.value}')
                                       ],
                                     ),
-                                    actions: Row(
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            DatabaseServiceFirestore()
-                                                .deleteDoc(
-                                                    collectionName: 'sale',
-                                                    uid: snapshot.data.id);
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('delete'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('ok'),
-                                        ),
-                                      ],
+                                    actions: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('ok'),
                                     ),
                                   );
                                 },
@@ -198,7 +184,9 @@ class _FinancesScreenState extends State<FinancesScreen> {
                             while (snapshot.hasError ||
                                 snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                              return LinearProgressIndicator();
+                              return LinearProgressIndicator(
+                                backgroundColor: Colors.teal,
+                              );
                             }
                             FinanceAction actionv =
                                 FinanceAction.fromSnapshot(snapshot);
@@ -233,12 +221,13 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                     actions: Row(
                                       children: [
                                         TextButton(
-                                          onPressed: () {
+                                          onPressed: () async {
                                             //delete from expense
-                                            DatabaseServiceFirestore()
+                                            await DatabaseServiceFirestore()
                                                 .deleteDoc(
                                                     collectionName: 'expense',
                                                     uid: action.id);
+
                                             //delete
                                             finance.actions.remove(action);
                                             finance.liquidMoney -=

@@ -3,7 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
+import 'package:manager_app/models/finance.dart';
+//import 'package:manager_app/models/finance.dart';
+import 'package:manager_app/models/product.dart';
 import 'package:manager_app/models/sale.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 
 import 'Loading.dart';
@@ -32,140 +36,264 @@ class AddOrEditSale extends StatefulWidget {
 
 class _AddOrEditSale extends State<AddOrEditSale> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _productController = TextEditingController();
-  TextEditingController _valueController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
-  TextEditingController _employeeController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
-  Sale sale = Sale();
+  List lEmployees;
+  List lProducts;
+  Sale sale;
+  String productValue;
+  String employeeValue;
+  String dataValue;
+  String amountValue;
+  Ceo ceo;
+  Finances finance;
+  String title;
+  num money;
+  num amount;
+
   @override
   Widget build(BuildContext context) {
     List args = ModalRoute.of(context).settings.arguments;
-    Ceo ceo = args[1];
-    String title = args[0];
-    sale.id = args[2];
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title,
-        ),
+    ceo = args[1];
+    title = args[0];
+    sale = args[2] == null ? Sale() : args[2];
+    money = args[2] != null ? args[2].value : 0;
+    money = args[2] != null ? args[2].productAmount : 0;
+    // TextEditingController myController = TextEditingController();
+    // TextEditingController myController2 = TextEditingController();
+
+    return StreamBuilder(
+      stream: DatabaseServiceFirestore().getDoc(
+        collectionName: 'finance',
+        uid: ceo.uid,
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width, //size of screen
-          height: MediaQuery.of(context).size.height, //size of screen
-          child: Padding(
-            padding: const EdgeInsets.all(20),
+      builder: (context, AsyncSnapshot snapshot) {
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return ConstantesWidgets.loading();
+        }
+
+        finance = Finances.fromSnapshot(snapshot);
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: SizedBox(
+            width: MediaQuery.of(context).size.width, //size of screen
+            height: MediaQuery.of(context).size.height, //size of screen
             child: Form(
               key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: ListView(
+                padding: const EdgeInsets.all(20),
                 children: [
-                  TextFormField(
-                    onSaved: (text) {
-                      _productController.text = text;
-                    },
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    controller: _productController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Product:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
+                  Align(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height,
+                      ),
+                      child: StreamBuilder(
+                        stream: DatabaseServiceFirestore().getDocs(
+                          collectionNamed: 'product',
+                          field: 'company',
+                          resultfield: ceo.company,
+                        ),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          while (snapshot.hasError ||
+                              snapshot.connectionState ==
+                                  ConnectionState.waiting ||
+                              !snapshot.hasData) {
+                            return ConstantesWidgets.loading();
+                          }
+
+                          lProducts = snapshot.data.docs.map(
+                            //map elements into object product
+                            (DocumentSnapshot e) {
+                              return Product.fromJson(e.data(), e.id);
+                            },
+                          ).toList();
+
+                          List<String> nameProduct = [];
+                          for (var item in lProducts) {
+                            nameProduct.add(item.name);
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text('Product'),
+                                value: sale.nameProduct == null
+                                    ? productValue
+                                    : sale.nameProduct,
+                                onChanged: (value) {
+                                  setState(() {
+                                    sale.nameProduct = productValue =
+                                        value; //productValue = value;
+                                  });
+                                },
+                                items: nameProduct.map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList()),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    onSaved: (text) {
-                      _employeeController.text = text;
-                    },
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    controller: _employeeController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Employee:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
+                  Align(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height,
+                      ),
+                      child: StreamBuilder(
+                        stream: DatabaseServiceFirestore().getDocs(
+                          collectionNamed: 'employee',
+                          field: 'company',
+                          resultfield: ceo.company,
+                        ),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          while (snapshot.hasError ||
+                              snapshot.connectionState ==
+                                  ConnectionState.waiting ||
+                              !snapshot.hasData) {
+                            return ConstantesWidgets.loading();
+                          }
+
+                          lEmployees = snapshot.data.docs.map(
+                            //map elements into object product
+                            (DocumentSnapshot e) {
+                              return Employee.fromJson(e.data());
+                            },
+                          ).toList();
+
+                          List<String> nameEmployee = [];
+                          for (var item in lEmployees) {
+                            nameEmployee.add(item.name);
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text('Employee'),
+                                value: sale.nameEmployee == null
+                                    ? employeeValue
+                                    : sale.nameEmployee,
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      sale.nameEmployee = employeeValue = value;
+                                    },
+                                  );
+                                },
+                                items: nameEmployee.map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList()),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    onSaved: (text) {
-                      _dateController.text = text;
-                    },
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    controller: _dateController,
-                    keyboardType: TextInputType.datetime,
-                    decoration: const InputDecoration(
-                      labelText: 'Date:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    onSaved: (text) {
-                      _amountController.text = text;
-                    },
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    onSaved: (text) {
-                      _valueController.text = text;
-                    },
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    controller: _valueController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Value:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: 150,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (!_validate()) return;
-                        sale.ceoid = ceo.uid; // add reference id of ceo to sale
-                        DatabaseServiceFirestore().setDoc(
-                            collectionName: 'sale',
-                            instance: sale,
-                            uid: sale.id);
-                        Navigator.pop(context);
+                  Align(
+                    child: TextFormField(
+                      //autofocus: true,
+                      initialValue: sale.date == null ? dataValue : sale.date,
+                      onChanged: (text) {
+                        sale.date = dataValue = text;
                       },
-                      child: Text(
-                        'Confirm',
+                      validator: (String value) {
+                        return value.isEmpty ? 'Required field.' : null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Date:',
+                        labelStyle: TextStyle(fontSize: 15),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    child: TextFormField(
+                      //autofocus: true,
+                      initialValue: sale.productAmount == null
+                          ? amountValue
+                          : sale.productAmount.toString(),
+                      onChanged: (text) {
+                        amountValue = text;
+                        sale.productAmount = text != '' ? num.parse(text) : 0;
+                      },
+                      validator: (String value) {
+                        return value.isEmpty ? 'Required field.' : null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Amount:',
+                        labelStyle: TextStyle(fontSize: 15),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    child: SizedBox(
+                      width: 150,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (!_validate()) return;
+
+                          if (title == 'New Sale') {
+                            // add sale
+                            DocumentReference refsale =
+                                await DatabaseServiceFirestore().addDoc(
+                              collectionName: 'sale',
+                              instance: sale,
+                            );
+                            //update liquidMoney
+                            finance.liquidMoney += sale.value;
+                            finance.actions.add(refsale);
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'finance',
+                              instance: finance,
+                              uid: ceo.uid,
+                            );
+                          } else {
+                            //update sale
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'sale',
+                              instance: sale,
+                              uid: sale.id,
+                            );
+                            //update liquidMoney
+                            finance.liquidMoney += num.parse("-$money");
+                            finance.liquidMoney += sale.value;
+                            //finance.actions.add(sale.id);
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'finance',
+                              instance: finance,
+                              uid: ceo.uid,
+                            );
+                          }
+
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Confirm',
+                        ),
                       ),
                     ),
                   ),
@@ -173,21 +301,71 @@ class _AddOrEditSale extends State<AddOrEditSale> {
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   bool _validate() {
-    if (_formKey.currentState.validate()) {
-      sale.product = _productController.text;
-      sale.value = _valueController.text;
-      sale.productAmount = _amountController.text;
-      sale.employee = _employeeController.text;
-      sale.date = _dateController.text;
+    if ((productValue == null || employeeValue == null) &&
+        title == 'New Sale') {
+      ConstantesWidgets.dialog(
+        context: context,
+        title: Text('Fail'),
+        content: Text('All fields are mandatory.'),
+        actions: TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Ok'),
+        ),
+      );
+      return false;
+    } else if (_formKey.currentState.validate()) {
+      String idProduct, idEmployee;
+      num valueProduct;
+
+      employeeValue = employeeValue == null ? sale.nameEmployee : employeeValue;
+      productValue = productValue == null ? sale.nameProduct : productValue;
+
+      //recovery employee id
+      for (var item in lEmployees) {
+        if (item.name == employeeValue) idEmployee = item.uid;
+      }
+      //recovery employee reference
+      DocumentReference employee = DatabaseServiceFirestore()
+          .getRef(collectionNamed: 'employee', uid: idEmployee);
+
+      //recovery product id, value product and update products
+      for (var item in lProducts) {
+        if (item.name == productValue) {
+          idProduct = item.id;
+          valueProduct = item.value;
+          item.amount -= num.parse(amountValue);
+          DatabaseServiceFirestore().setDoc(
+            collectionName: 'product',
+            instance: item,
+            uid: item.id,
+          );
+        }
+      }
+      //recovery product reference
+      DocumentReference product = DatabaseServiceFirestore()
+          .getRef(collectionNamed: 'product', uid: idProduct);
+
+      sale.employee = employee;
+      sale.product = product;
+      sale.company = ceo.company;
+      sale.date = dataValue;
+      sale.nameEmployee = employeeValue;
+      sale.nameProduct = productValue;
+      sale.productAmount = num.parse(amountValue);
+      sale.value = num.parse(amountValue) * valueProduct;
+
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 }
 
@@ -245,10 +423,12 @@ buildBodySales(List obj, BuildContext context) {
     Ceo ceo = obj[1];
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
-          collectionNamed: "sale", field: "ceoid", resultfield: ceo.uid),
+          collectionNamed: "sale", field: "company", resultfield: ceo.company),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Loading();
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return ConstantesWidgets.loading();
         }
         List sales = snapshot.data.docs.map(
           (DocumentSnapshot e) {
@@ -258,6 +438,7 @@ buildBodySales(List obj, BuildContext context) {
         return ListView.builder(
           itemCount: sales.length,
           itemBuilder: (BuildContext ctxt, int index) {
+            Sale sale = sales[index];
             return Dismissible(
               onDismissed: (direction) {
                 DatabaseServiceFirestore()
@@ -265,11 +446,11 @@ buildBodySales(List obj, BuildContext context) {
               },
               child: ListTile(
                   leading: Icon(Icons.point_of_sale),
-                  title: Text("${sales[index].product}"),
-                  subtitle: Text("Value: ${sales[index].value}"),
+                  title: Text("${sale.nameProduct}"),
+                  subtitle: Text("Value: ${sale.value}"),
                   trailing: TextButton(
                     onPressed: () {
-                      List args = ["Edit Sale", ceo, sales[index].id];
+                      List args = ["Edit Sale", ceo, sale];
                       Navigator.pushNamed(context, 'addOrEditSale',
                           arguments: args);
                     },
@@ -306,7 +487,7 @@ buildBodySales(List obj, BuildContext context) {
                           );
                         });
                   }),
-              key: Key(sales[index].id),
+              key: UniqueKey(),
               background: Container(
                 color: Colors.red[300],
                 alignment: AlignmentDirectional.centerStart,
