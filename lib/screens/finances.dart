@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/action.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/finance.dart';
+import 'package:manager_app/models/sale.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 
@@ -136,8 +137,10 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                 backgroundColor: Colors.teal,
                               );
                             }
-                            FinanceAction action =
-                                FinanceAction.fromSnapshot(snapshot);
+                            Sale action = Sale(
+                                date: snapshot.data['date'],
+                                value: snapshot.data['value']);
+
                             return ListTile(
                               title: Text(
                                 "Sale",
@@ -159,7 +162,9 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                       direction: Axis.vertical,
                                       children: [
                                         Text('Date: ${action.date}'),
-                                        Text('Value: \$ ${action.value}')
+                                        Text(
+                                          'Value: \$ ${action.value}',
+                                        )
                                       ],
                                     ),
                                     actions: TextButton(
@@ -215,7 +220,9 @@ class _FinancesScreenState extends State<FinancesScreen> {
                                       direction: Axis.vertical,
                                       children: [
                                         Text('Date: ${actionv.date}'),
-                                        Text('Value: \$ ${actionv.value}')
+                                        Text('Value: \$ ${actionv.value}'),
+                                        Text(
+                                            'Descrition: ${actionv.descricion}'),
                                       ],
                                     ),
                                     actions: Row(

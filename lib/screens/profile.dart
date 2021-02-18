@@ -74,7 +74,8 @@ class _ProfileState extends State<Profile> {
           Icons.account_box,
         ),
         title: Text(
-          '${user.name}',
+          "${user.name}".substring(0, 1).toUpperCase() +
+              "${user.name}".substring(1),
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w400,
@@ -85,32 +86,17 @@ class _ProfileState extends State<Profile> {
         onTap: () {
           ConstantesWidgets.dialog(
             context: context,
-            title: Text('Edit Email'),
-            content: Container(
-              child: TextFormField(
-                initialValue: user.email,
-                onChanged: (txt) {
-                  user.email = txt;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Email:',
-                  labelStyle: TextStyle(fontSize: 15),
-                  border: UnderlineInputBorder(),
-                ),
-              ),
-            ),
+            title: Text('Email'),
+            content: Text('Email: ${user.email}'),
             actions: TextButton(
               onPressed: () {
-                setState(() {
-                  DatabaseServiceFirestore().setDoc(
-                    collectionName: 'ceo',
-                    instance: user,
-                    uid: user.uid,
-                  );
-                  Navigator.pop(context);
-                });
+                setState(
+                  () {
+                    Navigator.pop(context);
+                  },
+                );
               },
-              child: Text('Confirm'),
+              child: Text('Ok'),
             ),
           );
         },
@@ -162,7 +148,7 @@ class _ProfileState extends State<Profile> {
           Icons.phone,
         ),
         title: Text(
-          '${user.phone}',
+          user.phone == null ? 'tap to edit / add' : user.phone,
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w400,
