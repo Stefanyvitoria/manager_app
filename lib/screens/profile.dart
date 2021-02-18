@@ -451,8 +451,7 @@ class _ProfileState extends State<Profile> {
     return StreamBuilder(
       stream: DatabaseServiceFirestore().getDoc(
         collectionName: 'company',
-        uid: user.company
-            .id, // ***** a implementar, precisa recuperar a empresa atravás da referencia de funcionário
+        uid: user.company.id,
       ),
       builder: (context, AsyncSnapshot snapshot) {
         while (snapshot.hasError ||
@@ -465,16 +464,6 @@ class _ProfileState extends State<Profile> {
         return ListView(
           padding: EdgeInsets.only(top: 25),
           children: [
-            Center(
-              child: Text(
-                'User Profile',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Divider(),
             ListTile(
               onTap: () {
                 ConstantesWidgets.dialog(
@@ -540,6 +529,10 @@ class _ProfileState extends State<Profile> {
                   actions: TextButton(
                     onPressed: () {
                       setState(() {
+                        DatabaseServiceAuth.changeEmail(
+                          FirebaseAuth.instance.currentUser,
+                          user.email,
+                        );
                         DatabaseServiceFirestore().setDoc(
                           collectionName: 'employee',
                           instance: user,
@@ -600,7 +593,7 @@ class _ProfileState extends State<Profile> {
                 Icons.phone,
               ),
               title: Text(
-                '${user.phone}',
+                user.phone == null ? 'tap to edit / add' : user.phone,
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w400,
@@ -644,7 +637,7 @@ class _ProfileState extends State<Profile> {
                 Icons.add_location_sharp,
               ),
               title: Text(
-                '${user.adress}',
+                user.adress == null ? 'tap to edit / add' : user.adress,
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w400,
@@ -652,7 +645,20 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                ConstantesWidgets.dialog(
+                  context: context,
+                  title: Wrap(
+                    children: [Text('Company name: \n${company.name}')],
+                  ),
+                  actions: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Ok'),
+                  ),
+                );
+              },
               leading: Icon(
                 Icons.account_balance,
               ),
