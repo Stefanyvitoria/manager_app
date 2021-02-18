@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
@@ -425,6 +425,8 @@ buildFloatingButtonSales(arg, BuildContext context) {
 buildBodySales(List obj, BuildContext context) {
   // list obj contains string to determinate ceo or employee and contains object properties
   String user = obj[0];
+  Finances finance;
+  var product;
   if (user == "ceo") {
     Ceo ceo = obj[1];
     return StreamBuilder<QuerySnapshot>(
@@ -445,69 +447,125 @@ buildBodySales(List obj, BuildContext context) {
           itemCount: sales.length,
           itemBuilder: (BuildContext ctxt, int index) {
             Sale sale = sales[index];
-            return Dismissible(
-              onDismissed: (direction) {
-                DatabaseServiceFirestore()
-                    .deleteDoc(uid: sales[index].id, collectionName: "sale");
-              },
-              child: ListTile(
-                  leading: Icon(Icons.point_of_sale),
-                  title: Text("${sale.nameProduct}"),
-                  subtitle: Text("Value: ${sale.value}"),
-                  trailing: TextButton(
-                    onPressed: () {
-                      List args = ["Edit Sale", ceo, sale];
-                      Navigator.pushNamed(context, 'addOrEditSale',
-                          arguments: args);
-                    },
-                    child: Icon(Icons.edit, color: Colors.grey),
-                  ),
-                  onTap: () {
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Wrap(
-                            direction: Axis.vertical,
-                            children: [
-                              AlertDialog(
-                                titlePadding: EdgeInsets.only(
-                                    top: 40, bottom: 20, left: 30, right: 10),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'OK',
-                                      style: TextStyle(color: Colors.grey[700]),
-                                    ),
-                                  ),
-                                ],
-                                title: Text(
-                                  "${sales[index].product}\nvalue: ${sales[index].value}\ndate: ${sales[index].date}\nseller: ${sales[index].employee}\nAmount: ${sales[index].productAmount}\n",
-                                  style: TextStyle(color: Colors.grey[800]),
-                                ),
-                              ),
-                            ],
-                          );
-                        });
-                  }),
-              key: UniqueKey(),
-              background: Container(
-                color: Colors.red[300],
-                alignment: AlignmentDirectional.centerStart,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 40, right: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.delete),
-                      Icon(Icons.delete),
-                    ],
-                  ),
-                ),
+            return StreamBuilder(
+              stream: DatabaseServiceFirestore().getDoc(
+                collectionName: 'finance',
+                uid: ceo.uid,
               ),
+              builder: (context, snapshot) {
+                while (snapshot.hasError ||
+                    snapshot.connectionState == ConnectionState.waiting) {
+                  return LinearProgressIndicator(
+                    backgroundColor: Colors.teal,
+                  );
+                }
+
+                finance = Finances.fromSnapshot(snapshot);
+
+                return StreamBuilder(
+                  stream: DatabaseServiceFirestore().getDocs(
+                    collectionNamed: 'product',
+                    field: 'name',
+                    resultfield: sale.nameProduct,
+                  ),
+                  builder: (context, snapshot1) {
+                    while (snapshot1.hasError ||
+                        snapshot1.connectionState == ConnectionState.waiting) {
+                      return LinearProgressIndicator(
+                        backgroundColor: Colors.teal,
+                      );
+                    }
+                    product = snapshot1.data.docs.map(
+                      (DocumentSnapshot e) {
+                        return Product.fromJson(e.data(), e.id);
+                      },
+                    ).toList();
+                    product = product[0];
+
+                    return Dismissible(
+                      onDismissed: (direction) async {
+                        //update finance
+                        finance.liquidMoney -= sale.value;
+                        DocumentReference refSale =
+                            DatabaseServiceFirestore().getRef(
+                          collectionNamed: 'sale',
+                          uid: sale.id,
+                        );
+                        finance.actions.remove(refSale);
+                        await DatabaseServiceFirestore().setDoc(
+                          collectionName: 'finance',
+                          instance: finance,
+                          uid: ceo.uid,
+                        );
+
+                        //update product
+                        product.amount += sale.productAmount;
+                        await DatabaseServiceFirestore().setDoc(
+                          collectionName: 'product',
+                          instance: product,
+                          uid: product.id,
+                        );
+
+                        //delete sale
+                        await DatabaseServiceFirestore()
+                            .deleteDoc(uid: sale.id, collectionName: "sale");
+                      },
+                      child: ListTile(
+                        leading: Icon(Icons.point_of_sale),
+                        title: Text("${sale.nameProduct}"),
+                        subtitle: Text("Value: ${sale.value}"),
+                        trailing: TextButton(
+                          onPressed: () {
+                            List args = ["Edit Sale", ceo, sale];
+                            Navigator.pushNamed(context, 'addOrEditSale',
+                                arguments: args);
+                          },
+                          child: Icon(Icons.edit, color: Colors.grey),
+                        ),
+                        onTap: () {
+                          ConstantesWidgets.dialog(
+                            context: context,
+                            title: Text('Sale'),
+                            content: Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                Text('Sale value: \$ ${sale.value}'),
+                                Text('Date: ${sale.date}'),
+                                Text('Product: ${sale.nameProduct}'),
+                                Text('Amount: ${sale.productAmount}'),
+                                Text(
+                                    'Product value: \$ ${sale.value / sale.productAmount}'),
+                                Text('Employee: ${sale.nameEmployee}'),
+                              ],
+                            ),
+                            actions: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Ok'),
+                            ),
+                          );
+                        },
+                      ),
+                      key: UniqueKey(),
+                      background: Container(
+                        color: Colors.red[300],
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.delete),
+                              Icon(Icons.delete),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             );
           },
         );
