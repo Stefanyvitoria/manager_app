@@ -122,6 +122,54 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+            Divider(),
+          ],
+          if (ceo.password == null) ...[
+            ListTile(
+              leading: Icon(Icons.verified),
+              title: Text(
+                'Confirm Password',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () {
+                ConstantesWidgets.dialog(
+                  context: context,
+                  title: Text('Confirm Password'),
+                  content: Wrap(
+                    children: [
+                      Text(
+                          'You recently changed your password, please confirm your password.'),
+                      TextFormField(
+                        onChanged: (txt) {
+                          ceo.password = txt;
+                        },
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'updated password:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: TextButton(
+                    onPressed: () {
+                      DatabaseServiceFirestore().setDoc(
+                        collectionName: 'ceo',
+                        instance: ceo,
+                        uid: ceo.uid,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Confirm'),
+                  ),
+                );
+              },
+            ),
+            Divider(),
           ],
           ListTile(
             onTap: () {

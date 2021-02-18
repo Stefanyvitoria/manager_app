@@ -189,24 +189,6 @@ class _EditEmployeeState extends State<EditEmployee> {
                     height: 10,
                   ),
                   TextFormField(
-                    initialValue: employee.email,
-                    validator: (String value) {
-                      return value.isEmpty ? 'Required field.' : null;
-                    },
-                    onChanged: (txt) {
-                      employee.email = txt.trim();
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email:',
-                      labelStyle: TextStyle(fontSize: 15),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
                     initialValue: employee.occupation,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
@@ -446,7 +428,19 @@ class _AddEmployeeState extends State<AddEmployee> {
   }
 
   bool _validate() {
-    if (_formKey.currentState.validate() && ceo.company != null) {
+    if (ceo.company == null) {
+      ConstantesWidgets.dialog(
+        context: context,
+        title: Text('fail'),
+        content: Text('company not registered.\nFirst register your company.'),
+        actions: TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Ok'),
+        ),
+      );
+    } else if (_formKey.currentState.validate()) {
       employee.company = ceo.company;
       employee.admissionDate = _admissionDateController.text;
       employee.name = _nameController.text;

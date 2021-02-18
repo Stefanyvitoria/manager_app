@@ -65,18 +65,23 @@ class _SettingsAppState extends State<SettingsApp> {
                 actions: TextButton(
                   onPressed: () {
                     setState(() {
+                      //change password
+                      DatabaseServiceAuth.changePassword(
+                        FirebaseAuth.instance.currentUser,
+                        user.password,
+                      );
                       DatabaseServiceFirestore().setDoc(
                         collectionName: _type,
                         instance: user,
                         uid: user.uid,
                       );
+
                       Navigator.pop(context);
                     });
                   },
                   child: Text('Confirm'),
                 ),
               );
-              //_buildPopup(context, 'Change Password');
             },
             title: Text(
               'Change Password',
@@ -94,15 +99,11 @@ class _SettingsAppState extends State<SettingsApp> {
                 content: Text('Press confirm to delete the account.'),
                 actions: TextButton(
                   onPressed: () {
-                    //there is a logical exclusion of company, users, etc.
                     setState(() {
-                      //delete user authentication
+                      //delete login (logical exclusion)
                       DatabaseServiceAuth.deleteUser(
                           FirebaseAuth.instance.currentUser);
-                      //delete user from company
-                      DatabaseServiceFirestore().deleteDoc(
-                          uid: FirebaseAuth.instance.currentUser.uid,
-                          collectionName: _type);
+
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           '/', (Route<dynamic> route) => false);
                     });
@@ -120,7 +121,22 @@ class _SettingsAppState extends State<SettingsApp> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              ConstantesWidgets.dialog(
+                context: context,
+                title: Text('Sr Manager'),
+                content: Wrap(children: [
+                  Text('In case of problems found in the App, contact the developers:\n' +
+                      '\n- stefanyvitoria9307@gmail.com, \n- rodrigobrochardt@gmail.com.'),
+                ]),
+                actions: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Ok'),
+                ),
+              );
+            },
             title: Text(
               'Support',
               style: TextStyle(
@@ -130,7 +146,23 @@ class _SettingsAppState extends State<SettingsApp> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              ConstantesWidgets.dialog(
+                context: context,
+                title: Text('Sr Manager 2.0'),
+                content: Wrap(children: [
+                  Text('Sr Manager is an app aimed at assisting small business CEOs.' +
+                      '\nThe app offers assistance in managing sales, employees and cash inflows and outflows.' +
+                      'It also offers assistance to employees in monitoring their situation in the company.'),
+                ]),
+                actions: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Ok'),
+                ),
+              );
+            },
             title: Text(
               'About',
               style: TextStyle(

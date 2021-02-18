@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/company.dart';
@@ -87,11 +88,32 @@ class _ProfileState extends State<Profile> {
           ConstantesWidgets.dialog(
             context: context,
             title: Text('Email'),
-            content: Text('Email: ${user.email}'),
+            content: Container(
+              child: TextFormField(
+                initialValue: user.email,
+                onChanged: (txt) {
+                  user.email = txt;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'email:',
+                  labelStyle: TextStyle(fontSize: 15),
+                  border: UnderlineInputBorder(),
+                ),
+              ),
+            ),
             actions: TextButton(
               onPressed: () {
                 setState(
                   () {
+                    DatabaseServiceAuth.changeEmail(
+                      FirebaseAuth.instance.currentUser,
+                      user.email,
+                    );
+                    DatabaseServiceFirestore().setDoc(
+                      collectionName: 'ceo',
+                      instance: user,
+                      uid: user.uid,
+                    );
                     Navigator.pop(context);
                   },
                 );

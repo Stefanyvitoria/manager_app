@@ -20,12 +20,24 @@ class DatabaseServiceAuth {
   static Future deleteUser(user) async {
     await user.delete();
   }
+
+  static Future changePassword(user, String passw) async {
+    await user.updatePassword(passw);
+  }
+
+  static Future changeEmail(user, String email) async {
+    await user.updateEmail(email);
+  }
+
+  static Future forgotPassword(user, String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 }
 
 class DatabaseServiceFirestore {
-  validatelogin({String collectiom, uid}) async {
+  validatelogin({String collection, uid}) async {
     var result = false;
-    await FirebaseFirestore.instance.collection(collectiom).doc(uid).get().then(
+    await FirebaseFirestore.instance.collection(collection).doc(uid).get().then(
       (DocumentSnapshot value) {
         if (value.exists) {
           result = true;
@@ -64,6 +76,10 @@ class DatabaseServiceFirestore {
         .collection(collectionNamed)
         .where(field, isEqualTo: resultfield)
         .snapshots();
+  }
+
+  Stream getAllDocs({String collectionNamed}) {
+    return FirebaseFirestore.instance.collection(collectionNamed).snapshots();
   }
 
   DocumentReference getRef({String collectionNamed, String uid}) {

@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments; // recovery user type.
 
-    _emailController.text = 'ste1@gmail.com';
+    _emailController.text = 'stefany9307@outlook.com';
     _passWController.text = '123456';
     return Scaffold(
       appBar: AppBar(
@@ -118,7 +118,8 @@ class _LoginState extends State<Login> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pushNamed('forgotPassword');
+                              Navigator.of(context).pushNamed('forgotPassword',
+                                  arguments: _type);
                             },
                           ),
                         ],
@@ -185,7 +186,7 @@ class _LoginState extends State<Login> {
 
   _validatelogin(uid) async {
     var result = await DatabaseServiceFirestore()
-        .validatelogin(uid: uid, collectiom: _type);
+        .validatelogin(uid: uid, collection: _type);
 
     return result;
   }

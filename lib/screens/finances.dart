@@ -42,6 +42,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
             actions: [
               IconButton(
                 icon: Icon(Icons.add),
+                tooltip: 'add actions',
                 onPressed: () {
                   Navigator.pushNamed(context, 'action',
                       arguments: [finance, ceo.uid]);
