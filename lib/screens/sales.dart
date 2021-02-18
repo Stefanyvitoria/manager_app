@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/models/finance.dart';
-//import 'package:manager_app/models/finance.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:manager_app/models/sale.dart';
 import 'package:manager_app/services/constantes.dart';
@@ -36,18 +35,14 @@ class AddOrEditSale extends StatefulWidget {
 
 class _AddOrEditSale extends State<AddOrEditSale> {
   final _formKey = GlobalKey<FormState>();
-  List lEmployees;
-  List lProducts;
+  List lEmployees, lProducts;
   Sale sale;
-  String productValue;
-  String employeeValue;
-  String dataValue;
-  String amountValue;
+  String productValue, employeeValue, dataValue;
+  String title, amountValue;
   Ceo ceo;
   Finances finance;
-  String title;
-  num money;
-  num amount;
+
+  num money, amount;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +51,7 @@ class _AddOrEditSale extends State<AddOrEditSale> {
     title = args[0];
     sale = args[2] == null ? Sale() : args[2];
     money = args[2] != null ? args[2].value : 0;
-    money = args[2] != null ? args[2].productAmount : 0;
-    // TextEditingController myController = TextEditingController();
-    // TextEditingController myController2 = TextEditingController();
+    amount = args[2] != null ? args[2].productAmount : 0;
 
     return StreamBuilder(
       stream: DatabaseServiceFirestore().getDoc(
@@ -119,24 +112,34 @@ class _AddOrEditSale extends State<AddOrEditSale> {
 
                           return Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: DropdownButton(
-                                isExpanded: true,
-                                hint: Text('Product'),
-                                value: sale.nameProduct == null
-                                    ? productValue
-                                    : sale.nameProduct,
-                                onChanged: (value) {
-                                  setState(() {
-                                    sale.nameProduct = productValue =
-                                        value; //productValue = value;
-                                  });
-                                },
-                                items: nameProduct.map((String value) {
-                                  return new DropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(value),
-                                  );
-                                }).toList()),
+                            child: Container(
+                              height: title == 'New Sale' ? 55 : 0,
+                              child: Column(
+                                children: [
+                                  if (title == 'New Sale') ...[
+                                    DropdownButton(
+                                        itemHeight: 55,
+                                        isExpanded: true,
+                                        hint: Text('Product'),
+                                        value: sale.nameProduct == null
+                                            ? productValue
+                                            : sale.nameProduct,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            sale.nameProduct = productValue =
+                                                value; //productValue = value;
+                                          });
+                                        },
+                                        items: nameProduct.map((String value) {
+                                          return new DropdownMenuItem<String>(
+                                            value: value,
+                                            child: new Text(value),
+                                          );
+                                        }).toList()),
+                                  ]
+                                ],
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -266,14 +269,14 @@ class _AddOrEditSale extends State<AddOrEditSale> {
                             //update liquidMoney
                             finance.liquidMoney += sale.value;
                             finance.actions.add(refsale);
-                            DatabaseServiceFirestore().setDoc(
+                            await DatabaseServiceFirestore().setDoc(
                               collectionName: 'finance',
                               instance: finance,
                               uid: ceo.uid,
                             );
                           } else {
                             //update sale
-                            DatabaseServiceFirestore().setDoc(
+                            await DatabaseServiceFirestore().setDoc(
                               collectionName: 'sale',
                               instance: sale,
                               uid: sale.id,
@@ -282,7 +285,7 @@ class _AddOrEditSale extends State<AddOrEditSale> {
                             finance.liquidMoney += num.parse("-$money");
                             finance.liquidMoney += sale.value;
                             //finance.actions.add(sale.id);
-                            DatabaseServiceFirestore().setDoc(
+                            await DatabaseServiceFirestore().setDoc(
                               collectionName: 'finance',
                               instance: finance,
                               uid: ceo.uid,
@@ -327,6 +330,9 @@ class _AddOrEditSale extends State<AddOrEditSale> {
 
       employeeValue = employeeValue == null ? sale.nameEmployee : employeeValue;
       productValue = productValue == null ? sale.nameProduct : productValue;
+      dataValue = dataValue == null ? sale.date : dataValue;
+      amountValue =
+          amountValue == null ? sale.productAmount.toString() : amountValue;
 
       //recovery employee id
       for (var item in lEmployees) {
@@ -341,7 +347,7 @@ class _AddOrEditSale extends State<AddOrEditSale> {
         if (item.name == productValue) {
           idProduct = item.id;
           valueProduct = item.value;
-          item.amount -= num.parse(amountValue);
+          item.amount -= (num.parse(amountValue) - amount);
           DatabaseServiceFirestore().setDoc(
             collectionName: 'product',
             instance: item,
