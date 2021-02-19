@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/models/note.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
-import 'Loading.dart';
 
 class Notes extends StatefulWidget {
   @override
@@ -15,6 +15,10 @@ class _NotesState extends State<Notes> {
   @override
   Widget build(BuildContext context) {
     Employee employee = ModalRoute.of(context).settings.arguments;
+    DocumentReference refEmployee = DatabaseServiceFirestore().getRef(
+      collectionNamed: 'employee',
+      uid: employee.uid,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,14 +35,13 @@ class _NotesState extends State<Notes> {
         backgroundColor: Colors.teal[300],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        //will be a listview.builder stream
         stream: DatabaseServiceFirestore().getDocs(
             field: "employee",
-            resultfield: employee.uid,
+            resultfield: refEmployee,
             collectionNamed: 'note'),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Loading(); //widget loading
+            return ConstantesWidgets.loading(); //widget loading
           }
           List<Note> notes = snapshot.data.docs.map((DocumentSnapshot e) {
             return Note.fromJson(e.data(), e.id);
@@ -47,23 +50,45 @@ class _NotesState extends State<Notes> {
           return ListView.builder(
               itemCount: notes.length,
               itemBuilder: (BuildContext context, int index) {
+                Note note = notes[index];
                 return Dismissible(
                   onDismissed: (direction) {
-                    DatabaseServiceFirestore().deleteDoc(
-                        uid: notes[index].id, collectionName: "note");
+                    DatabaseServiceFirestore()
+                        .deleteDoc(uid: note.id, collectionName: "note");
                   },
                   child: ListTile(
+                    onTap: () {
+                      ConstantesWidgets.dialog(
+                        context: context,
+                        title: Wrap(
+                          children: [Text('${note.title}')],
+                        ),
+                        content: Wrap(
+                          children: [Text(note.description)],
+                        ),
+                        actions: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Ok'),
+                        ),
+                      );
+                    },
                     trailing: TextButton(
                         onPressed: () {
-                          List args = ["Edit Note", employee, notes[index].id];
+                          List args = ["Edit Note", employee, note];
                           Navigator.pushNamed(context, 'addOrEditNote',
                               arguments: args);
                         },
                         child: Icon(Icons.edit, color: Colors.grey)),
                     leading: Icon(Icons.book),
-                    title: Text(notes[index].title),
+                    title: Text(note.title),
                     isThreeLine: true,
-                    subtitle: Text(notes[index].description),
+                    subtitle: Text(note.description.substring(
+                        0,
+                        note.description.length >= 10
+                            ? 10
+                            : note.description.length)),
                   ),
                   key: Key(employee.uid),
                   background: Container(
@@ -95,15 +120,15 @@ class AddOrEditNote extends StatefulWidget {
 
 class _AddOrEditNoteState extends State<AddOrEditNote> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  Note note = Note();
+  Note note;
+
   @override
   Widget build(BuildContext context) {
     List args = ModalRoute.of(context).settings.arguments;
     Employee employee = args[1];
     String title = args[0];
-    note.id = args[2];
+    note = args[2] == null ? Note() : args[2];
+
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
@@ -118,16 +143,16 @@ class _AddOrEditNoteState extends State<AddOrEditNote> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextFormField(
+                    initialValue: note.title == null ? '' : note.title,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
-                    controller: _titleController,
-                    onSaved: (text) {
-                      _titleController.text = text;
+                    onChanged: (text) {
+                      note.title = text;
                     },
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
-                      labelText: 'title:',
+                      labelText: 'Title:',
                       labelStyle: TextStyle(fontSize: 15),
                       border: OutlineInputBorder(),
                     ),
@@ -136,17 +161,18 @@ class _AddOrEditNoteState extends State<AddOrEditNote> {
                     height: 10,
                   ),
                   TextFormField(
+                    initialValue:
+                        note.description == null ? '' : note.description,
                     validator: (String value) {
                       return value.isEmpty ? 'Required field.' : null;
                     },
-                    controller: _descriptionController,
-                    onSaved: (text) {
-                      _descriptionController.text = text;
+                    onChanged: (text) {
+                      note.description = text;
                     },
                     maxLines: 5,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
-                      labelText: 'a little description:',
+                      labelText: 'A little description:',
                       labelStyle: TextStyle(fontSize: 15),
                       border: OutlineInputBorder(),
                     ),
@@ -160,8 +186,13 @@ class _AddOrEditNoteState extends State<AddOrEditNote> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (!_validate()) return;
-                        note.employee =
-                            employee.uid; // add reference id of ceo to product
+                        DocumentReference refEmployee =
+                            DatabaseServiceFirestore().getRef(
+                          collectionNamed: 'employee',
+                          uid: employee.uid,
+                        );
+                        note.employee = refEmployee;
+
                         DatabaseServiceFirestore().setDoc(
                             collectionName: 'note',
                             instance: note,
@@ -169,7 +200,7 @@ class _AddOrEditNoteState extends State<AddOrEditNote> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Confirm',
+                        title == 'New Note' ? 'Create Note' : 'Confirm',
                       ),
                     ),
                   ),
@@ -184,8 +215,8 @@ class _AddOrEditNoteState extends State<AddOrEditNote> {
 
   bool _validate() {
     if (_formKey.currentState.validate()) {
-      note.title = _titleController.text;
-      note.description = _descriptionController.text;
+      if (note.title == null) note.title = '';
+      if (note.description == null) note.description = '';
       return true;
     }
     return false;

@@ -206,7 +206,7 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
                       return value.isEmpty ? 'Required field.' : null;
                     },
                     onChanged: (text) {
-                      product.value = num.parse(text);
+                      product.value = num.parse(text.replaceAll(',', ''));
                     },
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(

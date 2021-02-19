@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
-import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,7 +26,7 @@ class _HomeState extends State<Home> {
       builder: (context, snapshot) {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting) {
-          return Loading();
+          return ConstantesWidgets.loading();
         }
         return Scaffold(
           appBar: _builAppBarHome(snapshot),
@@ -62,12 +61,13 @@ class _HomeState extends State<Home> {
     } else if (_type == "employee") {
       return AppBar(
         title: Text(
-          'SR Manager',
-          style: TextStyle(fontSize: 23),
+          'SR Manager - Employee',
+          style: TextStyle(fontSize: 19),
         ),
         actions: [
           TextButton(
             onPressed: () {
+              DatabaseServiceAuth.logOut();
               Navigator.of(context).pushReplacementNamed('/');
             },
             child: Icon(
@@ -275,16 +275,67 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           ListTile(
             leading: Image(image: ConstantesImages.pLogo),
-            title: Text(
-              '${employee.name}\n${employee.email}',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w800,
-                fontStyle: FontStyle.italic,
+            title: Wrap(children: [
+              Text(
+                '${employee.name}'.substring(0, 1).toUpperCase() +
+                    "${employee.name}".substring(1) +
+                    ',\n${employee.occupation}',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w800,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
-            ),
+            ]),
           ),
           ConstantesSpaces.spaceDivider,
+          if (employee.password == null) ...[
+            ListTile(
+              leading: Icon(Icons.verified),
+              title: Text(
+                'Confirm Password',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () {
+                ConstantesWidgets.dialog(
+                  context: context,
+                  title: Text('Confirm Password'),
+                  content: Wrap(
+                    children: [
+                      Text(
+                          'You recently changed your password, please confirm your password.'),
+                      TextFormField(
+                        onChanged: (txt) {
+                          employee.password = txt;
+                        },
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'updated password:',
+                          labelStyle: TextStyle(fontSize: 15),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: TextButton(
+                    onPressed: () {
+                      DatabaseServiceFirestore().setDoc(
+                        collectionName: 'employee',
+                        instance: employee,
+                        uid: employee.uid,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Confirm'),
+                  ),
+                );
+              },
+            ),
+            Divider(),
+          ],
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, "ranking", arguments: employee);

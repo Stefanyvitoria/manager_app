@@ -100,9 +100,16 @@ class _SettingsAppState extends State<SettingsApp> {
                 actions: TextButton(
                   onPressed: () {
                     setState(() {
-                      //delete login (logical exclusion)
+                      //delete login and (logical exclusion)
                       DatabaseServiceAuth.deleteUser(
                           FirebaseAuth.instance.currentUser);
+                      print(user.toString());
+                      if (user.toString() == "Instance of 'Employee'") {
+                        DatabaseServiceFirestore().deleteDoc(
+                          collectionName: 'employee',
+                          uid: user.uid,
+                        );
+                      }
 
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           '/', (Route<dynamic> route) => false);

@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Note {
   String title;
   String description;
-  String employee;
+  DocumentReference employee;
   String id;
 
   Note({
