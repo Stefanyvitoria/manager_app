@@ -6,7 +6,6 @@ import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
-//import 'Loading.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -324,42 +323,29 @@ class DataSearchProduct extends SearchDelegate<Product> {
                     subtitle: Text("Amount: ${listProducts.amount}"),
                     trailing: TextButton(
                       onPressed: () {
-                        List args = ["Edit Product", ceo, listProducts.id];
+                        List args = ["Edit Product", ceo, listProducts];
                         Navigator.pushNamed(context, 'addOrEditProduct',
                             arguments: args);
                       },
                       child: Icon(Icons.edit, color: Colors.grey),
                     ),
                     onTap: () {
-                      showDialog(
-                        barrierDismissible: false,
+                      ConstantesWidgets.dialog(
                         context: context,
-                        builder: (BuildContext context) {
-                          return Wrap(
-                            direction: Axis.vertical,
-                            children: [
-                              AlertDialog(
-                                titlePadding: EdgeInsets.only(
-                                    top: 40, bottom: 20, left: 30, right: 10),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'OK',
-                                      style: TextStyle(color: Colors.grey[700]),
-                                    ),
-                                  ),
-                                ],
-                                title: Text(
-                                  "${listProducts.name}\nAmount: ${listProducts.amount}\nCompany: ${listProducts.company}\nEach Value: R\$ ${listProducts.value}",
-                                  style: TextStyle(color: Colors.grey[800]),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
+                        title: Text('${listProducts.name}'),
+                        content: Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            Text('Value: ${listProducts.value}'),
+                            Text('Amount: ${listProducts.amount}')
+                          ],
+                        ),
+                        actions: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Ok'),
+                        ),
                       );
                     },
                   ),

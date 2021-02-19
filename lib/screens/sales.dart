@@ -517,42 +517,44 @@ buildBodySales(List obj, BuildContext context) {
                         await DatabaseServiceFirestore()
                             .deleteDoc(uid: sale.id, collectionName: "sale");
                       },
-                      child: ListTile(
-                        leading: Icon(Icons.point_of_sale),
-                        title: Text("${sale.nameProduct}"),
-                        subtitle: Text("Value: ${sale.value}"),
-                        trailing: TextButton(
-                          onPressed: () {
-                            List args = ["Edit Sale", ceo, sale];
-                            Navigator.pushNamed(context, 'addOrEditSale',
-                                arguments: args);
+                      child: Card(
+                        child: ListTile(
+                          leading: Icon(Icons.point_of_sale),
+                          title: Text("${sale.nameProduct}"),
+                          subtitle: Text("Value: ${sale.value}"),
+                          trailing: TextButton(
+                            onPressed: () {
+                              List args = ["Edit Sale", ceo, sale];
+                              Navigator.pushNamed(context, 'addOrEditSale',
+                                  arguments: args);
+                            },
+                            child: Icon(Icons.edit, color: Colors.grey),
+                          ),
+                          onTap: () {
+                            ConstantesWidgets.dialog(
+                              context: context,
+                              title: Text('Sale'),
+                              content: Wrap(
+                                direction: Axis.vertical,
+                                children: [
+                                  Text('Sale value: \$ ${sale.value}'),
+                                  Text('Date: ${sale.date}'),
+                                  Text('Product: ${sale.nameProduct}'),
+                                  Text('Amount: ${sale.productAmount}'),
+                                  Text(
+                                      'Product value: \$ ${sale.value / sale.productAmount}'),
+                                  Text('Employee: ${sale.nameEmployee}'),
+                                ],
+                              ),
+                              actions: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Ok'),
+                              ),
+                            );
                           },
-                          child: Icon(Icons.edit, color: Colors.grey),
                         ),
-                        onTap: () {
-                          ConstantesWidgets.dialog(
-                            context: context,
-                            title: Text('Sale'),
-                            content: Wrap(
-                              direction: Axis.vertical,
-                              children: [
-                                Text('Sale value: \$ ${sale.value}'),
-                                Text('Date: ${sale.date}'),
-                                Text('Product: ${sale.nameProduct}'),
-                                Text('Amount: ${sale.productAmount}'),
-                                Text(
-                                    'Product value: \$ ${sale.value / sale.productAmount}'),
-                                Text('Employee: ${sale.nameEmployee}'),
-                              ],
-                            ),
-                            actions: TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Ok'),
-                            ),
-                          );
-                        },
                       ),
                       key: UniqueKey(),
                       background: Container(
@@ -607,30 +609,32 @@ buildBodySales(List obj, BuildContext context) {
           itemCount: sales.length,
           itemBuilder: (BuildContext ctxt, int index) {
             Sale sale = sales[index];
-            return ListTile(
-              leading: Icon(Icons.point_of_sale),
-              title: Text("${sale.nameProduct}"),
-              subtitle: Text("Value: ${sale.value}"),
-              onTap: () {
-                ConstantesWidgets.dialog(
-                  context: context,
-                  title: Text('Sale'),
-                  content: Wrap(
-                    children: [
-                      Text('Value: \$ ${sale.value}\nProduct: ${sale.nameProduct}' +
-                          '\nProduct value: ${sale.value / sale.productAmount}' +
-                          '\nSalle amount: ${sale.productAmount}.' +
-                          '\nDate: ${sale.date}')
-                    ],
-                  ),
-                  actions: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Ok'),
-                  ),
-                );
-              },
+            return Card(
+              child: ListTile(
+                leading: Icon(Icons.point_of_sale),
+                title: Text("${sale.nameProduct}"),
+                subtitle: Text("Value: ${sale.value}"),
+                onTap: () {
+                  ConstantesWidgets.dialog(
+                    context: context,
+                    title: Text('Sale'),
+                    content: Wrap(
+                      children: [
+                        Text('Value: \$ ${sale.value}\nProduct: ${sale.nameProduct}' +
+                            '\nProduct value: ${sale.value / sale.productAmount}' +
+                            '\nSalle amount: ${sale.productAmount}.' +
+                            '\nDate: ${sale.date}')
+                      ],
+                    ),
+                    actions: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Ok'),
+                    ),
+                  );
+                },
+              ),
             );
           },
         );
@@ -708,7 +712,7 @@ class DataSearchSale extends SearchDelegate<String> {
                                     style: TextStyle(color: Colors.grey))
                               ]),
                         ),
-                        subtitle: Text("Amount: ${sale.date}"),
+                        subtitle: Text("Amount: ${sale.productAmount}"),
                         trailing: TextButton(
                           onPressed: () {
                             List args = ["Edit Sale", ceo, sale];
@@ -790,15 +794,7 @@ class DataSearchSale extends SearchDelegate<String> {
                                   style: TextStyle(color: Colors.grey))
                             ]),
                       ),
-                      subtitle: Text("Amount: ${sale.date}"),
-                      trailing: TextButton(
-                        onPressed: () {
-                          List args = ["Edit Sale", ceo, sale];
-                          Navigator.pushNamed(context, 'addOrEditSale',
-                              arguments: args);
-                        },
-                        child: Icon(Icons.edit, color: Colors.grey),
-                      ),
+                      subtitle: Text("Amount: ${sale.productAmount}"),
                       onTap: () {
                         ConstantesWidgets.dialog(
                           context: context,

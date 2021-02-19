@@ -56,39 +56,41 @@ class _NotesState extends State<Notes> {
                     DatabaseServiceFirestore()
                         .deleteDoc(uid: note.id, collectionName: "note");
                   },
-                  child: ListTile(
-                    onTap: () {
-                      ConstantesWidgets.dialog(
-                        context: context,
-                        title: Wrap(
-                          children: [Text('${note.title}')],
-                        ),
-                        content: Wrap(
-                          children: [Text(note.description)],
-                        ),
-                        actions: TextButton(
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        ConstantesWidgets.dialog(
+                          context: context,
+                          title: Wrap(
+                            children: [Text('${note.title}')],
+                          ),
+                          content: Wrap(
+                            children: [Text(note.description)],
+                          ),
+                          actions: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Ok'),
+                          ),
+                        );
+                      },
+                      trailing: TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            List args = ["Edit Note", employee, note];
+                            Navigator.pushNamed(context, 'addOrEditNote',
+                                arguments: args);
                           },
-                          child: Text('Ok'),
-                        ),
-                      );
-                    },
-                    trailing: TextButton(
-                        onPressed: () {
-                          List args = ["Edit Note", employee, note];
-                          Navigator.pushNamed(context, 'addOrEditNote',
-                              arguments: args);
-                        },
-                        child: Icon(Icons.edit, color: Colors.grey)),
-                    leading: Icon(Icons.book),
-                    title: Text(note.title),
-                    isThreeLine: true,
-                    subtitle: Text(note.description.substring(
-                        0,
-                        note.description.length >= 10
-                            ? 10
-                            : note.description.length)),
+                          child: Icon(Icons.edit, color: Colors.grey)),
+                      leading: Icon(Icons.book),
+                      title: Text(note.title),
+                      isThreeLine: true,
+                      subtitle: Text(note.description.substring(
+                          0,
+                          note.description.length >= 10
+                              ? 10
+                              : note.description.length)),
+                    ),
                   ),
                   key: Key(employee.uid),
                   background: Container(
