@@ -10,10 +10,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController _nameContoler = TextEditingController();
-  TextEditingController _emailControler = TextEditingController();
-  TextEditingController _passWord1Controler = TextEditingController();
-  TextEditingController _passWord2Controler = TextEditingController();
+  String name, email, passw1, passw2;
 
   final _formkey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
@@ -32,98 +29,70 @@ class _RegisterState extends State<Register> {
         child: ListView(
           padding: EdgeInsets.only(top: 30, left: 20, right: 20),
           children: [
-            Center(
-              child: Text(
-                'Name:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Container(
-              child: TextFormField(
-                validator: (String value) {
-                  return value.isEmpty ? 'Required field.' : null;
-                },
-                onSaved: (text) {
-                  _nameContoler.text = text;
-                },
-                controller: _nameContoler,
+            TextFormField(
+              validator: (String value) {
+                return value.isEmpty ? 'Required field.' : null;
+              },
+              onChanged: (text) {
+                name = text;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Name:',
+                labelStyle: TextStyle(fontSize: 15),
+                border: OutlineInputBorder(),
               ),
             ),
             ConstantesSpaces.spacermin,
-            Center(
-              child: Text(
-                'Email:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Container(
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                validator: (String value) {
-                  return value.isEmpty ? 'Required field.' : null;
-                },
-                onSaved: (text) {
-                  _emailControler.text = text;
-                },
-                controller: _emailControler,
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              validator: (String value) {
+                return value.isEmpty ? 'Required field.' : null;
+              },
+              onChanged: (text) {
+                email = text;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Email:',
+                labelStyle: TextStyle(fontSize: 15),
+                border: OutlineInputBorder(),
               ),
             ),
             ConstantesSpaces.spacermin,
-            Center(
-              child: Text(
-                'Password:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Container(
-              child: TextFormField(
-                obscureText: true,
-                validator: (String value) {
-                  return value.isEmpty
-                      ? 'Required field.'
-                      : value != _passWord2Controler.text
-                          ? 'incompatible passwords.'
-                          : null;
-                },
-                onSaved: (text) {
-                  _passWord1Controler.text = text;
-                },
-                controller: _passWord1Controler,
+            TextFormField(
+              obscureText: true,
+              validator: (String value) {
+                return value.isEmpty
+                    ? 'Required field.'
+                    : value != passw2
+                        ? 'incompatible passwords.'
+                        : null;
+              },
+              onChanged: (text) {
+                passw1 = text;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Password:',
+                labelStyle: TextStyle(fontSize: 15),
+                border: OutlineInputBorder(),
               ),
             ),
             ConstantesSpaces.spacermin,
-            Center(
-              child: Text(
-                'confirm password:',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Container(
-              child: TextFormField(
-                obscureText: true,
-                validator: (String value) {
-                  return value.isEmpty
-                      ? 'Required field.'
-                      : value != _passWord1Controler.text
-                          ? 'incompatible passwords.'
-                          : null;
-                },
-                onSaved: (text) {
-                  _passWord2Controler.text = text;
-                },
-                controller: _passWord2Controler,
+            TextFormField(
+              obscureText: true,
+              validator: (String value) {
+                return value.isEmpty
+                    ? 'Required field.'
+                    : value != passw1
+                        ? 'incompatible passwords.'
+                        : null;
+              },
+              onChanged: (text) {
+                passw2 = text;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Password:',
+                labelStyle: TextStyle(fontSize: 15),
+                border: OutlineInputBorder(),
               ),
             ),
             Align(
@@ -151,9 +120,9 @@ class _RegisterState extends State<Register> {
 
   bool _validate() {
     if (_formkey.currentState.validate()) {
-      ceo.password = _passWord1Controler.text;
-      ceo.name = _nameContoler.text;
-      ceo.email = _emailControler.text;
+      ceo.password = passw1;
+      ceo.name = name;
+      ceo.email = email;
       return true;
     }
     return false;
