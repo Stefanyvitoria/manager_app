@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
-import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,7 +26,7 @@ class _HomeState extends State<Home> {
       builder: (context, snapshot) {
         while (snapshot.hasError ||
             snapshot.connectionState == ConnectionState.waiting) {
-          return Loading();
+          return ConstantesWidgets.loading();
         }
         return Scaffold(
           appBar: _builAppBarHome(snapshot),

@@ -31,7 +31,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         List listUsers = snapshot.data.docs.map(
           //map elements
           (DocumentSnapshot e) {
-            return _type == 'emplyee'
+            return _type == 'employee'
                 ? Employee.fromJson(e.data())
                 : Ceo.fromJson(e.data());
           },

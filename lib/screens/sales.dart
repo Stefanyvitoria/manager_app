@@ -9,8 +9,6 @@ import 'package:manager_app/models/sale.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 
-import 'Loading.dart';
-
 class Sales extends StatefulWidget {
   @override
   _SalesState createState() => _SalesState();
@@ -573,65 +571,55 @@ buildBodySales(List obj, BuildContext context) {
     );
   } else if (user == "employee") {
     Employee employee = obj[1];
+    DocumentReference refEmployee = DatabaseServiceFirestore().getRef(
+      collectionNamed: 'employee',
+      uid: employee.uid,
+    );
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
-          collectionNamed: "sale",
-          field: "employeeid",
-          resultfield: employee.uid),
+        collectionNamed: "sale",
+        field: 'employee',
+        resultfield: refEmployee,
+      ),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Loading();
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return ConstantesWidgets.loading();
         }
+
         List sales = snapshot.data.docs.map(
           (DocumentSnapshot e) {
             return Sale.fromJson(e.data(), e.id);
           },
         ).toList();
+
         return ListView.builder(
           itemCount: sales.length,
           itemBuilder: (BuildContext ctxt, int index) {
+            Sale sale = sales[index];
             return ListTile(
               leading: Icon(Icons.point_of_sale),
-              title: Text("${sales[index].product}"),
-              subtitle: Text("Value: ${sales[index].value}"),
-              trailing: TextButton(
-                onPressed: () {
-                  List args = ["Edit Sale", employee, sales[index].id];
-                  Navigator.pushNamed(context, 'addOrEditSale',
-                      arguments: args);
-                },
-                child: Icon(Icons.edit, color: Colors.grey),
-              ),
+              title: Text("${sale.nameProduct}"),
+              subtitle: Text("Value: ${sale.value}"),
               onTap: () {
-                showDialog(
-                  barrierDismissible: false,
+                ConstantesWidgets.dialog(
                   context: context,
-                  builder: (BuildContext context) {
-                    return Wrap(
-                      direction: Axis.vertical,
-                      children: [
-                        AlertDialog(
-                          titlePadding: EdgeInsets.only(
-                              top: 40, bottom: 20, left: 30, right: 10),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'OK',
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                            ),
-                          ],
-                          title: Text(
-                            "${sales[index].product}\nvalue: ${sales[index].value}\ndate: ${sales[index].date}\nseller: ${sales[index].employee}\nAmount: ${sales[index].productAmount}\n",
-                            style: TextStyle(color: Colors.grey[800]),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                  title: Text('Sale'),
+                  content: Wrap(
+                    children: [
+                      Text('Value: \$ ${sale.value}\nProduct: ${sale.nameProduct}' +
+                          '\nProduct value: ${sale.value / sale.productAmount}' +
+                          '\nSalle amount: ${sale.productAmount}.' +
+                          '\nDate: ${sale.date}')
+                    ],
+                  ),
+                  actions: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Ok'),
+                  ),
                 );
               },
             );
