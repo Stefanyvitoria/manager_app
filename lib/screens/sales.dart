@@ -422,13 +422,22 @@ buildFloatingButtonSales(arg, BuildContext context) {
   } else {}
 }
 
+List sales; //list of sales
+Ceo ceo; // object ceo
+Employee employee; // object employee
+String user; //identify ceo/employee screen
+List loadSales() {
+  //to return list sales
+  return sales;
+}
+
 buildBodySales(List obj, BuildContext context) {
   // list obj contains string to determinate ceo or employee and contains object properties
-  String user = obj[0];
+  user = obj[0];
   Finances finance;
   var product;
   if (user == "ceo") {
-    Ceo ceo = obj[1];
+    ceo = obj[1];
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
           collectionNamed: "sale", field: "company", resultfield: ceo.company),
@@ -438,7 +447,7 @@ buildBodySales(List obj, BuildContext context) {
             !snapshot.hasData) {
           return ConstantesWidgets.loading();
         }
-        List sales = snapshot.data.docs.map(
+        sales = snapshot.data.docs.map(
           (DocumentSnapshot e) {
             return Sale.fromJson(e.data(), e.id);
           },
@@ -572,7 +581,7 @@ buildBodySales(List obj, BuildContext context) {
       },
     );
   } else if (user == "employee") {
-    Employee employee = obj[1];
+    employee = obj[1];
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseServiceFirestore().getDocs(
           collectionNamed: "sale",
@@ -582,7 +591,7 @@ buildBodySales(List obj, BuildContext context) {
         if (!snapshot.hasData) {
           return Loading();
         }
-        List sales = snapshot.data.docs.map(
+        sales = snapshot.data.docs.map(
           (DocumentSnapshot e) {
             return Sale.fromJson(e.data(), e.id);
           },
@@ -643,18 +652,7 @@ buildBodySales(List obj, BuildContext context) {
 }
 
 class DataSearchSale extends SearchDelegate<String> {
-  //function to search bar on sales page
-  final sales = [
-    "Sale1",
-    "Sale2",
-    "Sale3",
-    "Sale4",
-    "Sale5",
-  ];
-  final recentSales = [
-    "Sale1",
-  ];
-
+//function to search bar on product page
   @override
   List<Widget> buildActions(BuildContext context) {
     //button to erase the search bar words
@@ -684,32 +682,202 @@ class DataSearchSale extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    throw UnimplementedError();
+    final listSales = query.isEmpty
+        ? loadSales()
+        : loadSales().where((p) => p.nameProduct.startsWith(query)).toList();
+    return user == "ceo"
+        ? (listSales.isEmpty
+            ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  "No results found.",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ])
+            : ListView.builder(
+                itemCount: listSales.length,
+                itemBuilder: (context, index) {
+                  final Sale sale = listSales[index];
+
+                  return Dismissible(
+                    onDismissed: (direction) {
+                      DatabaseServiceFirestore()
+                          .deleteDoc(uid: sale.id, collectionName: "sale");
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(Icons.point_of_sale),
+                        title: RichText(
+                          text: TextSpan(
+                              text: sale.nameProduct.substring(0, query.length),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                    text: sale.nameProduct
+                                        .substring(query.length),
+                                    style: TextStyle(color: Colors.grey))
+                              ]),
+                        ),
+                        subtitle: Text("Amount: ${sale.date}"),
+                        trailing: TextButton(
+                          onPressed: () {
+                            List args = ["Edit Sale", ceo, sale];
+                            Navigator.pushNamed(context, 'addOrEditSale',
+                                arguments: args);
+                          },
+                          child: Icon(Icons.edit, color: Colors.grey),
+                        ),
+                        onTap: () {
+                          ConstantesWidgets.dialog(
+                            context: context,
+                            title: Text('Sale'),
+                            content: Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                Text('Sale value: \$ ${sale.value}'),
+                                Text('Date: ${sale.date}'),
+                                Text('Product: ${sale.nameProduct}'),
+                                Text('Amount: ${sale.productAmount}'),
+                                Text(
+                                    'Product value: \$ ${sale.value / sale.productAmount}'),
+                                Text('Employee: ${sale.nameEmployee}'),
+                              ],
+                            ),
+                            actions: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Ok'),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    key: Key(sale.id),
+                    background: Container(
+                      color: Colors.red[300],
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 40, right: 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.delete),
+                            Icon(Icons.delete),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ))
+        : listSales.isEmpty
+            ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  "No results found.",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ])
+            : ListView.builder(
+                itemCount: listSales.length,
+                itemBuilder: (context, index) {
+                  final Sale sale = listSales[index];
+
+                  return Card(
+                    child: ListTile(
+                      leading: Icon(Icons.point_of_sale),
+                      title: RichText(
+                        text: TextSpan(
+                            text: sale.nameProduct.substring(0, query.length),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              TextSpan(
+                                  text:
+                                      sale.nameProduct.substring(query.length),
+                                  style: TextStyle(color: Colors.grey))
+                            ]),
+                      ),
+                      subtitle: Text("Amount: ${sale.date}"),
+                      trailing: TextButton(
+                        onPressed: () {
+                          List args = ["Edit Sale", ceo, sale];
+                          Navigator.pushNamed(context, 'addOrEditSale',
+                              arguments: args);
+                        },
+                        child: Icon(Icons.edit, color: Colors.grey),
+                      ),
+                      onTap: () {
+                        ConstantesWidgets.dialog(
+                          context: context,
+                          title: Text('Sale'),
+                          content: Wrap(
+                            direction: Axis.vertical,
+                            children: [
+                              Text('Sale value: \$ ${sale.value}'),
+                              Text('Date: ${sale.date}'),
+                              Text('Product: ${sale.nameProduct}'),
+                              Text('Amount: ${sale.productAmount}'),
+                              Text(
+                                  'Product value: \$ ${sale.value / sale.productAmount}'),
+                              Text('Employee: ${sale.nameEmployee}'),
+                            ],
+                          ),
+                          actions: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Ok'),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    //show a list of suggestions
-    final suggestionList = query.isEmpty
-        ? recentSales
-        : sales.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        leading: Icon(Icons.money),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey))
-            ],
-          ),
-        ),
-      ),
-      itemCount: suggestionList.length,
-    );
+    final listSales = query.isEmpty
+        ? loadSales()
+        : loadSales().where((p) => p.nameProduct.startsWith(query)).toList();
+
+    return listSales.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: listSales.length,
+            itemBuilder: (context, index) {
+              final Sale sale = listSales[index];
+
+              return Card(
+                child: ListTile(
+                  title: RichText(
+                    text: TextSpan(
+                      text: sale.nameProduct.substring(0, query.length),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: sale.nameProduct.substring(query.length),
+                            style: TextStyle(color: Colors.grey))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
