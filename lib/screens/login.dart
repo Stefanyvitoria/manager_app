@@ -15,12 +15,18 @@ class _LoginState extends State<Login> {
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passWController = TextEditingController();
+  bool _obscureText = true;
+  void _showPassword() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments; // recovery user type.
 
-    _emailController.text = 'stefany9307@outlook.com';
+    _emailController.text = 'stefanyvitoria9307@gmail.com';
     _passWController.text = '123456';
     return Scaffold(
       appBar: AppBar(
@@ -100,13 +106,19 @@ class _LoginState extends State<Login> {
                           validator: (String value) {
                             return value.isEmpty ? 'Required field.' : null;
                           },
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                              labelText: 'Password:',
-                              suffixIcon: Icon(
-                                Icons.remove_red_eye,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            labelText: 'Password:',
+                            suffixIcon: TextButton(
+                              onPressed: _showPassword,
+                              child: Icon(
+                                _obscureText == true
+                                    ? Icons.remove_red_eye_outlined
+                                    : Icons.remove_red_eye,
                                 color: Colors.white,
-                              )),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Row(
