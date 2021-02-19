@@ -62,24 +62,34 @@ class _SettingsAppState extends State<SettingsApp> {
                     ),
                   ),
                 ),
-                actions: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      //change password
-                      DatabaseServiceAuth.changePassword(
-                        FirebaseAuth.instance.currentUser,
-                        user.password,
-                      );
-                      DatabaseServiceFirestore().setDoc(
-                        collectionName: _type,
-                        instance: user,
-                        uid: user.uid,
-                      );
+                actions: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          //change password
+                          DatabaseServiceAuth.changePassword(
+                            FirebaseAuth.instance.currentUser,
+                            user.password,
+                          );
+                          DatabaseServiceFirestore().setDoc(
+                            collectionName: _type,
+                            instance: user,
+                            uid: user.uid,
+                          );
 
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: Text('Confirm'),
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: Text('Confirm'),
+                    ),
+                  ],
                 ),
               );
             },
@@ -97,25 +107,35 @@ class _SettingsAppState extends State<SettingsApp> {
                 context: context,
                 title: Text('Delete Account'),
                 content: Text('Press confirm to delete the account.'),
-                actions: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      //delete login and (logical exclusion)
-                      DatabaseServiceAuth.deleteUser(
-                          FirebaseAuth.instance.currentUser);
-                      print(user.toString());
-                      if (user.toString() == "Instance of 'Employee'") {
-                        DatabaseServiceFirestore().deleteDoc(
-                          collectionName: 'employee',
-                          uid: user.uid,
-                        );
-                      }
+                actions: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          //delete login and (logical exclusion)
+                          DatabaseServiceAuth.deleteUser(
+                              FirebaseAuth.instance.currentUser);
+                          print(user.toString());
+                          if (user.toString() == "Instance of 'Employee'") {
+                            DatabaseServiceFirestore().deleteDoc(
+                              collectionName: 'employee',
+                              uid: user.uid,
+                            );
+                          }
 
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/', (Route<dynamic> route) => false);
-                    });
-                  },
-                  child: Text('Confirm'),
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/', (Route<dynamic> route) => false);
+                        });
+                      },
+                      child: Text('Confirm'),
+                    ),
+                  ],
                 ),
               );
             },
