@@ -530,11 +530,10 @@ buildBodySales(List obj, BuildContext context) {
                             .deleteDoc(uid: sale.id, collectionName: "sale");
 
                         //update employee sold
-                        var a = await sale.employee.get().then(
+                        await sale.employee.get().then(
                           (value) {
                             if (value.id == sale.employee.id) {
                               employee = Employee.fromJson(value.data());
-                              print(employee);
                             }
                           },
                         );

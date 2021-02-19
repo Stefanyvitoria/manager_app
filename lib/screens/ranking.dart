@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/employee.dart';
+import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
 
 import 'Loading.dart';
@@ -19,7 +19,7 @@ class _RankingState extends State<Ranking> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Best Sellers",
+          "Employees ranking",
         ),
         actions: [
           TextButton(
@@ -48,50 +48,82 @@ class _RankingState extends State<Ranking> {
               }
             },
           ).toList();
+
+          mergeSortEmployees(employees);
+
           return ListView.builder(
-              itemCount: employees.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                return ListTile(
-                  title: Text("My Name"),
-                  leading: Text("#1"),
-                  subtitle: Text("Sales quantity: 100"),
+            itemCount: employees.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              Employee employeec = employees[index];
+              return Card(
+                child: ListTile(
+                  title: Text(employeec.name),
+                  leading: Text(
+                    "#${index + 1}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text("Sales quantity: ${employeec.sold}"),
                   onTap: () {
-                    showDialog(
-                      barrierDismissible: false,
+                    ConstantesWidgets.dialog(
                       context: context,
-                      builder: (BuildContext context) {
-                        return Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            AlertDialog(
-                              titlePadding: EdgeInsets.only(
-                                  top: 40, bottom: 20, left: 30, right: 10),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                ),
-                              ],
-                              title: Text(
-                                "MyName\noccupation: seller\nadmissionDate: 99/99/99\nQuantity of Sales: 100",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                      title: Wrap(children: [
+                        Text('#${index + 1} - ' + employeec.name)
+                      ]),
+                      content: Wrap(
+                        children: [
+                          Text('Occupation: ${employeec.occupation}' +
+                              '\nAdmission date: ${employeec.admissionDate}' +
+                              '\nQuantity of sales: ${employeec.sold}'),
+                        ],
+                      ),
                     );
                   },
-                );
-              });
+                ),
+              );
+            },
+          );
         },
       ),
     );
+  }
+
+  void mergeSortEmployees(List<Employee> listEmployees) {
+    //sort in descending order
+    if (listEmployees.length > 1) {
+      var quite = listEmployees.length ~/ 2;
+      var listLeft = listEmployees.sublist(0, quite);
+      var listRight = listEmployees.sublist(quite, listEmployees.length);
+
+      mergeSortEmployees(listLeft);
+      mergeSortEmployees(listRight);
+
+      int i, j, k;
+      i = j = k = 0;
+
+      while ((i < listLeft.length) && (j < listRight.length)) {
+        if (listLeft[i].sold > listRight[j].sold) {
+          listEmployees[k] = listLeft[i];
+          i += 1;
+        } else {
+          listEmployees[k] = listRight[j];
+          j += 1;
+        }
+        k += 1;
+      }
+      while (i < listLeft.length) {
+        listEmployees[k] = listLeft[i];
+        i += 1;
+        k += 1;
+      }
+      while (j < listRight.length) {
+        listEmployees[k] = listRight[j];
+        j += 1;
+        k += 1;
+      }
+    }
   }
 }
 
