@@ -104,10 +104,19 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (!_validate()) return;
                     await DatabaseServiceAuth.register(ceo.email, ceo.password);
-                    ceo.uid = auth.currentUser.uid; //*****
+                    ceo.uid = auth.currentUser.uid;
                     DatabaseServiceFirestore().setDoc(
                         uid: ceo.uid, collectionName: 'ceo', instance: ceo);
-                    _buildPopup(context);
+                    ConstantesWidgets.dialog(
+                      context: context,
+                      title: Text('Sucess'),
+                      actions: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Ok'),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -126,28 +135,5 @@ class _RegisterState extends State<Register> {
       return true;
     }
     return false;
-  }
-
-  _buildPopup(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Success.'),
-          actions: [
-            TextButton(
-              child: Text(
-                'Ok',
-                style: TextStyle(color: Colors.black),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
   }
 }
