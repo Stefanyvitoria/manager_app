@@ -436,19 +436,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   }
 
   bool _validate() {
-    if (ceo.company == null) {
-      ConstantesWidgets.dialog(
-        context: context,
-        title: Text('fail'),
-        content: Text('company not registered.\nFirst register your company.'),
-        actions: TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Ok'),
-        ),
-      );
-    } else if (_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
       employee.company = ceo.company;
       employee.admissionDate = _admissionDateController.text;
       employee.name = _nameController.text;

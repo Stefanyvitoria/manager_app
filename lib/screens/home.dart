@@ -93,6 +93,21 @@ class _HomeState extends State<Home> {
     //Returns the customer body if user.type is equal to 'customer'.
     if (_type == "ceo") {
       Ceo ceo = Ceo.fromSnapshot(snapshot); //current user
+      Widget dialogHome() {
+        return ConstantesWidgets.dialog(
+          context: context,
+          title: Text('fail'),
+          content:
+              Text('company not registered.\nFirst register your company.'),
+          actions: TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Ok'),
+          ),
+        );
+      }
+
       return ListView(
         padding: EdgeInsets.only(top: 30, left: 20, right: 20),
         children: <Widget>[
@@ -115,7 +130,7 @@ class _HomeState extends State<Home> {
               },
               leading: Icon(Icons.account_balance),
               title: Text(
-                'Add Company',
+                'Register Company',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
@@ -141,7 +156,7 @@ class _HomeState extends State<Home> {
                   content: Wrap(
                     children: [
                       Text(
-                          'You recently changed your password, please confirm your password.'),
+                          'You recently tried to change or changed your password, please confirm your password.'),
                       TextFormField(
                         onChanged: (txt) {
                           ceo.password = txt;
@@ -173,7 +188,11 @@ class _HomeState extends State<Home> {
           ],
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'finances', arguments: ceo);
+              if (ceo.company == null) {
+                dialogHome();
+              } else {
+                Navigator.pushNamed(context, 'finances', arguments: ceo);
+              }
             },
             leading: Icon(Icons.account_balance_wallet),
             title: Text(
@@ -186,7 +205,11 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "employees", arguments: ceo);
+              if (ceo.company == null) {
+                dialogHome();
+              } else {
+                Navigator.pushNamed(context, "employees", arguments: ceo);
+              }
             },
             leading: Icon(Icons.people),
             title: Text(
@@ -199,7 +222,11 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "products", arguments: ceo);
+              if (ceo.company == null) {
+                dialogHome();
+              } else {
+                Navigator.pushNamed(context, "products", arguments: ceo);
+              }
             },
             leading: Icon(Icons.inbox_rounded),
             title: Text(
@@ -212,8 +239,12 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              List arg = ["ceo", ceo];
-              Navigator.pushNamed(context, 'sales', arguments: arg);
+              if (ceo.company == null) {
+                dialogHome();
+              } else {
+                List arg = ["ceo", ceo];
+                Navigator.pushNamed(context, 'sales', arguments: arg);
+              }
             },
             leading: Icon(Icons.attach_money),
             title: Text(
@@ -226,7 +257,11 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, 'statistics');
+              if (ceo.company == null) {
+                dialogHome();
+              } else {
+                Navigator.pushNamed(context, 'statistics');
+              }
             },
             leading: Icon(FontAwesomeIcons.chartArea),
             title: Text(

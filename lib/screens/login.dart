@@ -26,8 +26,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments; // recovery user type.
 
-    _emailController.text = 'stefanyvitoria9307@gmail.com';
-    //_emailController.text = 'nat@gmail.com';
+    _emailController.text = 't@gmail.com';
+    //_emailController.text = 'stefanyvitoria9307@gmail.com';
     _passWController.text = '123456';
     return Scaffold(
       appBar: AppBar(
