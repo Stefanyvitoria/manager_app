@@ -255,7 +255,7 @@ class _AddOrEditProductState extends State<AddOrEditProduct> {
 }
 
 class DataSearchProduct extends SearchDelegate<Product> {
-  //function to search bar on sales page
+  //function to search bar on product page
   @override
   List<Widget> buildActions(BuildContext context) {
     //button to erase the search bar words
@@ -307,7 +307,7 @@ class DataSearchProduct extends SearchDelegate<Product> {
                 },
                 child: Card(
                   child: ListTile(
-                    leading: Icon(Icons.point_of_sale),
+                    leading: Icon(Icons.all_inbox),
                     title: RichText(
                       text: TextSpan(
                           text: listProducts.name.substring(0, query.length),
