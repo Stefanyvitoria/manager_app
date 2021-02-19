@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
     //Returns the customer body if user.type is equal to 'customer'.
     if (_type == "ceo") {
       Ceo ceo = Ceo.fromSnapshot(snapshot); //current user
-      Widget dialogHome() {
+      Future<dynamic> dialogHome() {
         return ConstantesWidgets.dialog(
           context: context,
           title: Text('fail'),
