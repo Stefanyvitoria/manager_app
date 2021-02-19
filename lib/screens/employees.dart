@@ -11,60 +11,66 @@ class Employees extends StatefulWidget {
   _EmployeesState createState() => _EmployeesState();
 }
 
+List<Employee> listEmployees;
+List<Employee> loadEmployees() {
+  return listEmployees;
+}
+
+Ceo ceo;
+
 class _EmployeesState extends State<Employees> {
-  Ceo ceo;
   @override
   Widget build(BuildContext context) {
     ceo = ModalRoute.of(context).settings.arguments;
 
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            "Employees",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                showSearch(context: context, delegate: DataSearchEmployee());
-              },
-              child: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: DatabaseServiceFirestore().getDocs(
+          collectionNamed: 'employee',
+          field: "company",
+          resultfield: ceo.company),
+      builder: (context, snapshot) {
+        while (snapshot.hasError ||
+            snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return ConstantesWidgets.loading();
+        }
+        listEmployees = snapshot.data.docs.map(
+          //map elements into object employee
+          (DocumentSnapshot e) {
+            return Employee.fromJson(e.data());
+          },
+        ).toList();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Employees",
             ),
-          ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'addEmployee', arguments: ceo);
-        },
-        tooltip: 'Increment',
-        child: Icon(
-          Icons.person_add_alt_1_outlined,
-        ),
-        backgroundColor: Colors.teal,
-      ),
-      body: StreamBuilder(
-        stream: DatabaseServiceFirestore().getDocs(
-            collectionNamed: 'employee',
-            field: "company",
-            resultfield: ceo.company),
-        builder: (context, AsyncSnapshot snapshot) {
-          while (snapshot.hasError ||
-              snapshot.connectionState == ConnectionState.waiting ||
-              !snapshot.hasData) {
-            return ConstantesWidgets.loading();
-          }
-
-          List listEmployees = snapshot.data.docs.map(
-            //map elements into object employee
-            (DocumentSnapshot e) {
-              return Employee.fromJson(e.data());
+            actions: [
+              TextButton(
+                onPressed: () {
+                  print('oi');
+                  showSearch(context: context, delegate: DataSearchEmployee());
+                },
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'addEmployee', arguments: ceo);
             },
-          ).toList();
-
-          return ListView.builder(
+            tooltip: 'Increment',
+            child: Icon(
+              Icons.person_add_alt_1_outlined,
+            ),
+            backgroundColor: Colors.teal,
+          ),
+          body: ListView.builder(
             itemCount: listEmployees.length,
-            itemBuilder: (context, int index) {
+            itemBuilder: (BuildContext ctxt, int index) {
               Employee employee = listEmployees[index];
               return Dismissible(
                 onDismissed: (direction) async {
@@ -79,43 +85,45 @@ class _EmployeesState extends State<Employees> {
                       .deleteDoc(collectionName: 'employee', uid: employee.uid);
                   await DatabaseServiceAuth.login(ceo.email, ceo.password);
                 },
-                child: ListTile(
-                    leading: Icon(Icons.person_outline),
-                    title: Text("${employee.name}"),
-                    subtitle: Text("Occupation: ${employee.occupation}"),
-                    trailing: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, 'editEmployee',
-                            arguments: listEmployees[index]);
-                      },
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.grey,
+                child: Card(
+                  child: ListTile(
+                      leading: Icon(Icons.person_outline),
+                      title: Text("${employee.name}"),
+                      subtitle: Text("Occupation: ${employee.occupation}"),
+                      trailing: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'editEmployee',
+                              arguments: listEmployees[index]);
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    onTap: () {
-                      ConstantesWidgets.dialog(
-                        context: context,
-                        title: Text("${employee.name}"),
-                        content: Wrap(
-                          direction: Axis.vertical,
-                          children: [
-                            Text("Occupation: ${employee.occupation}"),
-                            Text("Admission Date: ${employee.admissionDate}"),
-                            Text("Quantity of Sales: ${employee.sold}"),
-                          ],
-                        ),
-                        actions: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'Ok',
+                      onTap: () {
+                        ConstantesWidgets.dialog(
+                          context: context,
+                          title: Text("${employee.name}"),
+                          content: Wrap(
+                            direction: Axis.vertical,
+                            children: [
+                              Text("Occupation: ${employee.occupation}"),
+                              Text("Admission Date: ${employee.admissionDate}"),
+                              Text("Quantity of Sales: ${employee.sold}"),
+                            ],
                           ),
-                        ),
-                      );
-                    }),
-                key: Key("2"),
+                          actions: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Ok',
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+                key: Key(employee.uid),
                 background: Container(
                   color: Colors.red[300],
                   alignment: AlignmentDirectional.centerStart,
@@ -132,9 +140,9 @@ class _EmployeesState extends State<Employees> {
                 ),
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -455,17 +463,6 @@ class _AddEmployeeState extends State<AddEmployee> {
 
 class DataSearchEmployee extends SearchDelegate<String> {
   //function to search bar on sales page
-  final sales = [
-    "Employee1",
-    "Employee2",
-    "Employee3",
-    "Employee4",
-    "Employee5",
-  ];
-  final recentSales = [
-    "Employee1",
-    "Employee2",
-  ];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -496,32 +493,133 @@ class DataSearchEmployee extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    throw UnimplementedError();
+    final employees = query.isEmpty
+        ? loadEmployees()
+        : loadEmployees().where((p) => p.name.startsWith(query)).toList();
+    return employees.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: employees.length,
+            itemBuilder: (context, index) {
+              final Employee listEmployees = employees[index];
+
+              return Dismissible(
+                onDismissed: (direction) {
+                  DatabaseServiceFirestore().deleteDoc(
+                      collectionName: 'employee', uid: listEmployees.uid);
+                },
+                child: Card(
+                  child: ListTile(
+                    leading: Icon(Icons.person_outline),
+                    title: RichText(
+                      text: TextSpan(
+                          text: listEmployees.name.substring(0, query.length),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                                text:
+                                    listEmployees.name.substring(query.length),
+                                style: TextStyle(color: Colors.grey))
+                          ]),
+                    ),
+                    subtitle: Text("Occupation: ${listEmployees.occupation}"),
+                    trailing: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editEmployee',
+                            arguments: listEmployees);
+                      },
+                      child: Icon(Icons.edit, color: Colors.grey),
+                    ),
+                    onTap: () {
+                      ConstantesWidgets.dialog(
+                        context: context,
+                        title: Text("${listEmployees.name}"),
+                        content: Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            Text("Occupation: ${listEmployees.occupation}"),
+                            Text(
+                                "Admission Date: ${listEmployees.admissionDate}"),
+                            Text("Quantity of Sales: ${listEmployees.sold}"),
+                          ],
+                        ),
+                        actions: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Ok',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                key: Key(listEmployees.uid),
+                background: Container(
+                  color: Colors.red[300],
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.delete),
+                        Icon(Icons.delete),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    //show a list of suggestions
-    final suggestionList = query.isEmpty
-        ? recentSales
-        : sales.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        leading: Icon(Icons.person),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey))
-            ],
-          ),
-        ),
-      ),
-      itemCount: suggestionList.length,
-    );
+    final employees = query.isEmpty
+        ? loadEmployees()
+        : loadEmployees().where((p) => p.name.startsWith(query)).toList();
+
+    return employees.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: employees.length,
+            itemBuilder: (context, index) {
+              final Employee listEmployees = employees[index];
+
+              return Card(
+                child: ListTile(
+                  title: RichText(
+                    text: TextSpan(
+                      text: listEmployees.name.substring(0, query.length),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: listEmployees.name.substring(query.length),
+                            style: TextStyle(color: Colors.grey))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
