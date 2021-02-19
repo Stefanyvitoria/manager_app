@@ -562,18 +562,28 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'employee',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
+                  actions: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'employee',
+                              instance: user,
+                              uid: user.uid,
+                            );
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -606,22 +616,32 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceAuth.changeEmail(
-                          FirebaseAuth.instance.currentUser,
-                          user.email,
-                        );
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'employee',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
+                  actions: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            DatabaseServiceAuth.changeEmail(
+                              FirebaseAuth.instance.currentUser,
+                              user.email,
+                            );
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'employee',
+                              instance: user,
+                              uid: user.uid,
+                            );
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -654,18 +674,28 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'employee',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
+                  actions: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'employee',
+                              instance: user,
+                              uid: user.uid,
+                            );
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -698,18 +728,28 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  actions: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        DatabaseServiceFirestore().setDoc(
-                          collectionName: 'employee',
-                          instance: user,
-                          uid: user.uid,
-                        );
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Text('Confirm'),
+                  actions: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            DatabaseServiceFirestore().setDoc(
+                              collectionName: 'employee',
+                              instance: user,
+                              uid: user.uid,
+                            );
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
                   ),
                 );
               },
