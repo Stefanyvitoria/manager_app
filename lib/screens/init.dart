@@ -55,7 +55,7 @@ class Init extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context)
-                          .pushReplacementNamed('login', arguments: 'ceo');
+                          .pushNamed('login', arguments: 'ceo');
                     },
                   ),
                 ),
@@ -70,7 +70,7 @@ class Init extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context)
-                          .pushReplacementNamed('login', arguments: 'employee');
+                          .pushNamed('login', arguments: 'employee');
                     },
                   ),
                 ),

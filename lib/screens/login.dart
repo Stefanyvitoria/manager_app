@@ -26,23 +26,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments; // recovery user type.
 
-    //_emailController.text = 't@gmail.com';
-    _emailController.text = 'stefanyvitoria9307@gmail.com';
+    _emailController.text = 'nat@gmail.com';
+    //_emailController.text = 'stefanyvitoria9307@gmail.com';
     _passWController.text = '123456';
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/');
-              },
-            ),
-            Container(width: 20),
-            Text('Login'),
-          ],
-        ),
+        title: Text('Login'),
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 10, left: 15, right: 15),
@@ -153,12 +142,13 @@ class _LoginState extends State<Login> {
                                     _passWController.text);
                                 if (await _validatelogin(
                                     FirebaseAuth.instance.currentUser.uid)) {
-                                  Navigator.of(context).pushReplacementNamed(
-                                      'home',
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      'home', (Route<dynamic> route) => false,
                                       arguments: _type);
                                 } else {
-                                  Navigator.of(context).pushReplacementNamed(
-                                      'home',
+                                  //Login with user exchanged
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      'home', (Route<dynamic> route) => false,
                                       arguments:
                                           _type == 'ceo' ? 'employee' : 'ceo');
                                 }
