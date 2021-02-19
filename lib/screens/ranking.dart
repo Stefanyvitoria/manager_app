@@ -26,7 +26,7 @@ class _RankingState extends State<Ranking> {
             onPressed: () {
               showSearch(context: context, delegate: DataSearchRanking());
             },
-            child: Icon(Icons.search),
+            child: Icon(Icons.search, color: Colors.white),
           ),
         ],
       ),

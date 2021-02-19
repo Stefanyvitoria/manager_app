@@ -334,7 +334,19 @@ class _AddOrEditSale extends State<AddOrEditSale> {
 
       //recovery employee id
       for (var item in lEmployees) {
-        if (item.name == employeeValue) idEmployee = item.uid;
+        if (item.name == employeeValue) {
+          if (amount == 0) {
+            item.sold += num.parse(amountValue);
+          } else {
+            item.sold += (num.parse(amountValue) - amount);
+          }
+          idEmployee = item.uid;
+          DatabaseServiceFirestore().setDoc(
+            collectionName: 'employee',
+            instance: item,
+            uid: item.uid,
+          );
+        }
       }
       //recovery employee reference
       DocumentReference employee = DatabaseServiceFirestore()
@@ -516,6 +528,22 @@ buildBodySales(List obj, BuildContext context) {
                         //delete sale
                         await DatabaseServiceFirestore()
                             .deleteDoc(uid: sale.id, collectionName: "sale");
+
+                        //update employee sold
+                        var a = await sale.employee.get().then(
+                          (value) {
+                            if (value.id == sale.employee.id) {
+                              employee = Employee.fromJson(value.data());
+                              print(employee);
+                            }
+                          },
+                        );
+                        employee.sold -= sale.productAmount;
+                        await DatabaseServiceFirestore().setDoc(
+                          collectionName: 'employee',
+                          instance: employee,
+                          uid: employee.uid,
+                        );
                       },
                       child: Card(
                         child: ListTile(
