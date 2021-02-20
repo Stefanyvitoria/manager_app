@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/theme.dart';
 import 'package:manager_app/services/database_service.dart';
+import 'package:provider/provider.dart';
 
 class SettingsApp extends StatefulWidget {
   @override
@@ -23,17 +24,14 @@ class _SettingsAppState extends State<SettingsApp> {
       body: ListView(
         children: [
           ListTile(
-            trailing: Switch(
-              activeColor: Theme.of(context).primaryColor,
-              value: valueSwitch,
-              onChanged: (value) {
-                Themebuilder.of(context).changeTheme();
-                setState(
-                  () {
-                    valueSwitch = !valueSwitch;
-                  },
-                );
-              },
+            trailing: Consumer<ThemeNotifier>(
+              builder: (context, notifier, child) => Switch(
+                activeColor: Theme.of(context).primaryColor,
+                value: notifier.darkTheme,
+                onChanged: (value) {
+                  notifier.toggleTheme();
+                },
+              ),
             ),
             title: Text(
               'Dark Theme',
