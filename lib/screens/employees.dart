@@ -481,10 +481,10 @@ class DataSearchEmployee extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    final employees = query.isEmpty
+    final listEmployees = query.isEmpty
         ? loadEmployees()
         : loadEmployees().where((p) => p.name.startsWith(query)).toList();
-    return employees.isEmpty
+    return listEmployees.isEmpty
         ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "No results found.",
@@ -492,51 +492,49 @@ class DataSearchEmployee extends SearchDelegate<String> {
             ),
           ])
         : ListView.builder(
-            itemCount: employees.length,
+            itemCount: listEmployees.length,
             itemBuilder: (context, index) {
-              final Employee listEmployees = employees[index];
+              final Employee employee = listEmployees[index];
 
               return Dismissible(
                 onDismissed: (direction) {
-                  DatabaseServiceFirestore().deleteDoc(
-                      collectionName: 'employee', uid: listEmployees.uid);
+                  DatabaseServiceFirestore()
+                      .deleteDoc(collectionName: 'employee', uid: employee.uid);
                 },
                 child: Card(
                   child: ListTile(
                     leading: Icon(Icons.person_outline),
                     title: RichText(
                       text: TextSpan(
-                          text: listEmployees.name.substring(0, query.length),
+                          text: employee.name.substring(0, query.length),
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(
-                                text:
-                                    listEmployees.name.substring(query.length),
+                                text: employee.name.substring(query.length),
                                 style: TextStyle(color: Colors.grey))
                           ]),
                     ),
-                    subtitle: Text("Occupation: ${listEmployees.occupation}"),
+                    subtitle: Text("Occupation: ${employee.occupation}"),
                     trailing: TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, 'editEmployee',
-                            arguments: listEmployees);
+                            arguments: employee);
                       },
                       child: Icon(Icons.edit, color: Colors.grey),
                     ),
                     onTap: () {
                       ConstantesWidgets.dialog(
                         context: context,
-                        title: Text("${listEmployees.name}"),
+                        title: Text("${employee.name}"),
                         content: Wrap(
                           direction: Axis.vertical,
                           children: [
-                            Text("Occupation: ${listEmployees.occupation}"),
-                            Text(
-                                "Admission Date: ${listEmployees.admissionDate}"),
-                            Text("Quantity of Sales: ${listEmployees.sold}"),
+                            Text("Occupation: ${employee.occupation}"),
+                            Text("Admission Date: ${employee.admissionDate}"),
+                            Text("Quantity of Sales: ${employee.sold}"),
                           ],
                         ),
                         actions: TextButton(
@@ -551,7 +549,7 @@ class DataSearchEmployee extends SearchDelegate<String> {
                     },
                   ),
                 ),
-                key: Key(listEmployees.uid),
+                key: Key(employee.uid),
                 background: Container(
                   color: Colors.red[300],
                   alignment: AlignmentDirectional.centerStart,
@@ -573,11 +571,11 @@ class DataSearchEmployee extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final employees = query.isEmpty
+    final listEmployees = query.isEmpty
         ? loadEmployees()
         : loadEmployees().where((p) => p.name.startsWith(query)).toList();
 
-    return employees.isEmpty
+    return listEmployees.isEmpty
         ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "No results found.",
@@ -585,22 +583,22 @@ class DataSearchEmployee extends SearchDelegate<String> {
             ),
           ])
         : ListView.builder(
-            itemCount: employees.length,
+            itemCount: listEmployees.length,
             itemBuilder: (context, index) {
-              final Employee listEmployees = employees[index];
+              final Employee employee = listEmployees[index];
 
               return Card(
                 child: ListTile(
                   title: RichText(
                     text: TextSpan(
-                      text: listEmployees.name.substring(0, query.length),
+                      text: employee.name.substring(0, query.length),
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       children: [
                         TextSpan(
-                            text: listEmployees.name.substring(query.length),
+                            text: employee.name.substring(query.length),
                             style: TextStyle(color: Colors.grey))
                       ],
                     ),
