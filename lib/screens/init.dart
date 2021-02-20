@@ -84,7 +84,8 @@ class Init extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed('home');
+                      Navigator.of(context)
+                          .pushNamed('home', arguments: 'client');
                     },
                   ),
                 ),
