@@ -6,6 +6,11 @@ import 'package:manager_app/services/database_service.dart';
 
 import 'Loading.dart';
 
+List employees;
+List loadEmployeesRank() {
+  return employees;
+}
+
 class Ranking extends StatefulWidget {
   @override
   _RankingState createState() => _RankingState();
@@ -40,7 +45,7 @@ class _RankingState extends State<Ranking> {
             return Loading(); //widget loading
           }
 
-          List employees = snapshot.data.docs.map(
+          employees = snapshot.data.docs.map(
             //map elements into object employee
             (DocumentSnapshot e) {
               if (e.data()['company'].id == employee.company.id) {
@@ -128,18 +133,7 @@ class _RankingState extends State<Ranking> {
 }
 
 class DataSearchRanking extends SearchDelegate<String> {
-  //function to search bar on sales page
-  final sales = [
-    "MyName",
-    "Employee2",
-    "Employee3",
-    "Employee4",
-    "Employee5",
-  ];
-  final recentSales = [
-    "Employee1",
-    "Employee2",
-  ];
+  //function to search bar on ranking page
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -170,32 +164,87 @@ class DataSearchRanking extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    throw UnimplementedError();
+    final listEmployees = query.isEmpty
+        ? loadEmployeesRank()
+        : loadEmployeesRank().where((p) => p.name.startsWith(query)).toList();
+    return listEmployees.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: listEmployees.length,
+            itemBuilder: (context, index) {
+              final Employee employee = listEmployees[index];
+
+              return Card(
+                child: ListTile(
+                  title: Text(employee.name),
+                  leading: Text(
+                    "#${index + 1}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text("Sales quantity: ${employee.sold}"),
+                  onTap: () {
+                    ConstantesWidgets.dialog(
+                      context: context,
+                      title: Wrap(
+                          children: [Text('#${index + 1} - ' + employee.name)]),
+                      content: Wrap(
+                        children: [
+                          Text('Occupation: ${employee.occupation}' +
+                              '\nAdmission date: ${employee.admissionDate}' +
+                              '\nQuantity of sales: ${employee.sold}'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     //show a list of suggestions
-    final suggestionList = query.isEmpty
-        ? recentSales
-        : sales.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {},
-        leading: Text("#1"),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            children: [
-              TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey))
-            ],
-          ),
-        ),
-      ),
-      itemCount: suggestionList.length,
-    );
+    final listEmployees = query.isEmpty
+        ? loadEmployeesRank()
+        : loadEmployeesRank().where((p) => p.name.startsWith(query)).toList();
+    return listEmployees.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: listEmployees.length,
+            itemBuilder: (context, index) {
+              final Employee employee = listEmployees[index];
+              return Card(
+                child: ListTile(
+                  leading: Text("#${index + 1}"),
+                  title: RichText(
+                    text: TextSpan(
+                      text: employee.name.substring(0, query.length),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                            text: employee.name.substring(query.length),
+                            style: TextStyle(color: Colors.grey))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
