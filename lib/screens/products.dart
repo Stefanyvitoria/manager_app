@@ -284,10 +284,10 @@ class DataSearchProduct extends SearchDelegate<Product> {
   @override
   Widget buildResults(BuildContext context) {
     // go to the function when press a option
-    final products = query.isEmpty
+    final listProducts = query.isEmpty
         ? loadProducts()
         : loadProducts().where((p) => p.name.startsWith(query)).toList();
-    return products.isEmpty
+    return listProducts.isEmpty
         ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "No results found.",
@@ -295,35 +295,35 @@ class DataSearchProduct extends SearchDelegate<Product> {
             ),
           ])
         : ListView.builder(
-            itemCount: products.length,
+            itemCount: listProducts.length,
             itemBuilder: (context, index) {
-              final Product listProducts = products[index];
+              final Product product = listProducts[index];
 
               return Dismissible(
                 onDismissed: (direction) {
                   DatabaseServiceFirestore().deleteDoc(
-                      uid: products[index].id, collectionName: "product");
+                      uid: listProducts[index].id, collectionName: "product");
                 },
                 child: Card(
                   child: ListTile(
                     leading: Icon(Icons.all_inbox),
                     title: RichText(
                       text: TextSpan(
-                          text: listProducts.name.substring(0, query.length),
+                          text: product.name.substring(0, query.length),
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(
-                                text: listProducts.name.substring(query.length),
+                                text: product.name.substring(query.length),
                                 style: TextStyle(color: Colors.grey))
                           ]),
                     ),
-                    subtitle: Text("Amount: ${listProducts.amount}"),
+                    subtitle: Text("Amount: ${product.amount}"),
                     trailing: TextButton(
                       onPressed: () {
-                        List args = ["Edit Product", ceo, listProducts];
+                        List args = ["Edit Product", ceo, product];
                         Navigator.pushNamed(context, 'addOrEditProduct',
                             arguments: args);
                       },
@@ -332,12 +332,12 @@ class DataSearchProduct extends SearchDelegate<Product> {
                     onTap: () {
                       ConstantesWidgets.dialog(
                         context: context,
-                        title: Text('${listProducts.name}'),
+                        title: Text('${product.name}'),
                         content: Wrap(
                           direction: Axis.vertical,
                           children: [
-                            Text('Value: ${listProducts.value}'),
-                            Text('Amount: ${listProducts.amount}')
+                            Text('Value: ${product.value}'),
+                            Text('Amount: ${product.amount}')
                           ],
                         ),
                         actions: TextButton(
@@ -350,7 +350,7 @@ class DataSearchProduct extends SearchDelegate<Product> {
                     },
                   ),
                 ),
-                key: Key(listProducts.id),
+                key: Key(product.id),
                 background: Container(
                   color: Colors.red[300],
                   alignment: AlignmentDirectional.centerStart,
@@ -372,11 +372,11 @@ class DataSearchProduct extends SearchDelegate<Product> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final products = query.isEmpty
+    final listProducts = query.isEmpty
         ? loadProducts()
         : loadProducts().where((p) => p.name.startsWith(query)).toList();
 
-    return products.isEmpty
+    return listProducts.isEmpty
         ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               "No results found.",
@@ -384,22 +384,22 @@ class DataSearchProduct extends SearchDelegate<Product> {
             ),
           ])
         : ListView.builder(
-            itemCount: products.length,
+            itemCount: listProducts.length,
             itemBuilder: (context, index) {
-              final Product listProducts = products[index];
+              final Product product = products[index];
 
               return Card(
                 child: ListTile(
                   title: RichText(
                     text: TextSpan(
-                      text: listProducts.name.substring(0, query.length),
+                      text: product.name.substring(0, query.length),
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       children: [
                         TextSpan(
-                            text: listProducts.name.substring(query.length),
+                            text: product.name.substring(query.length),
                             style: TextStyle(color: Colors.grey))
                       ],
                     ),
