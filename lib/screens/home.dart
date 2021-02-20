@@ -1,11 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/company.dart';
 import 'package:manager_app/models/employee.dart';
+import 'package:manager_app/screens/Loading.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/models/product.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:manager_app/services/database_service.dart';
+
+List productsList;
+Company company;
+List loadProducts() {
+  return productsList;
+}
 
 class Home extends StatefulWidget {
   @override
@@ -20,20 +29,36 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _type = ModalRoute.of(context).settings.arguments;
 
-    return StreamBuilder(
-      stream: DatabaseServiceFirestore()
-          .getDoc(uid: _currentUser.uid, collectionName: _type),
-      builder: (context, snapshot) {
-        while (snapshot.hasError ||
-            snapshot.connectionState == ConnectionState.waiting) {
-          return ConstantesWidgets.loading();
-        }
-        return Scaffold(
-          appBar: _builAppBarHome(snapshot),
-          body: _builBodyHome(snapshot),
-        );
-      },
-    );
+    return _type == "client"
+        ? StreamBuilder(
+            stream: DatabaseServiceFirestore()
+                .getAllDocs(collectionNamed: 'product'),
+            builder: (context, snapshot) {
+              while (snapshot.hasError ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return ConstantesWidgets.loading();
+              }
+
+              return Scaffold(
+                appBar: _builAppBarHome(snapshot),
+                body: _builBodyHome(snapshot),
+              );
+            },
+          )
+        : StreamBuilder(
+            stream: DatabaseServiceFirestore()
+                .getDoc(uid: _currentUser.uid, collectionName: _type),
+            builder: (context, snapshot) {
+              while (snapshot.hasError ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return ConstantesWidgets.loading();
+              }
+              return Scaffold(
+                appBar: _builAppBarHome(snapshot),
+                body: _builBodyHome(snapshot),
+              );
+            },
+          );
   }
 
   AppBar _builAppBarHome(AsyncSnapshot snapshot) {
@@ -83,6 +108,14 @@ class _HomeState extends State<Home> {
           'SR Manager ',
           style: TextStyle(fontSize: 20),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearchProduct());
+            },
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+        ],
       );
     }
   }
@@ -446,51 +479,197 @@ class _HomeState extends State<Home> {
         ],
       );
     } else {
-      List<Product> productsList = [
-        Product(
-          name: 'Product 01',
-          //company: Company(name: 'Company 01'),
-        ),
-        Product(
-          name: 'Product 02',
-          //company: Company(name: 'Company 02'),
-        ),
-        Product(
-          name: 'Product 03',
-          //company: Company(name: 'Company 03'),
-        ),
-      ];
-      return ListView(
-        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-        children: [
-          Center(
-            child: Text(
-              'Enter product name:',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          TextFormField(
-            onChanged: (text) {},
-          ),
-          Align(
-            child: Container(
-              width: 150,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    'productList',
-                    arguments: productsList,
-                  );
-                },
-                child: Text('Consult'),
-              ),
-            ),
-          ),
-        ],
+      productsList = snapshot.data.docs.map(
+        //map elements into object product
+        (DocumentSnapshot e) {
+          return Product.fromJson(e.data(), e.id);
+        },
+      ).toList();
+
+      return ListView.builder(
+        itemCount: productsList.length,
+        itemBuilder: (BuildContext ctxt, int index) {
+          while (!snapshot.hasData) {
+            return Loading();
+          }
+          Product product = productsList[index];
+          return FutureBuilder(
+            future: _getCompany(product),
+            builder: (context, AsyncSnapshot snapshot) {
+              company = snapshot.data;
+
+              return Card(
+                child: ListTile(
+                  leading: Icon(Icons.all_inbox),
+                  title: Text(product.name),
+                  subtitle: Text("Value: ${product.value}"),
+                  onTap: () {
+                    ConstantesWidgets.dialog(
+                      context: context,
+                      title: Text('${product.name}'),
+                      content: Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          Text('Value: ${product.value}'),
+                          Text('Amount: ${product.amount}'),
+                          Text('Company: ${company.name}'),
+                          Text('Phone: ${company.phone}')
+                        ],
+                      ),
+                      actions: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Ok'),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
       );
     }
+  }
+}
+
+Future<Company> _getCompany(Product product) async {
+  //use to get company object
+  Company company = await product.company.get().then((value) {
+    return Company.fromJson(value.data());
+  });
+  print(company.name);
+  return company;
+}
+
+class DataSearchProduct extends SearchDelegate<String> {
+  //function to search bar on product page
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //button to erase the search bar words
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //a button to close search bar
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // go to the function when press a option
+    final listProducts = query.isEmpty
+        ? loadProducts()
+        : loadProducts().where((p) => p.name.startsWith(query)).toList();
+    return listProducts.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: listProducts.length,
+            itemBuilder: (context, index) {
+              final Product product = listProducts[index];
+
+              return Card(
+                child: ListTile(
+                  leading: Icon(Icons.all_inbox),
+                  title: RichText(
+                    text: TextSpan(
+                        text: product.name.substring(0, query.length),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: product.name.substring(query.length),
+                              style: TextStyle(color: Colors.grey))
+                        ]),
+                  ),
+                  subtitle: Text("Value: ${product.value}"),
+                  onTap: () {
+                    ConstantesWidgets.dialog(
+                      context: context,
+                      title: Text('${product.name}'),
+                      content: Wrap(
+                        direction: Axis.vertical,
+                        children: [
+                          Text('Value: ${product.value}'),
+                          Text('Amount: ${product.amount}'),
+                          Text('Company: ${company.name}'),
+                          Text('Phone: ${company.phone}')
+                        ],
+                      ),
+                      actions: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Ok'),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final listProducts = query.isEmpty
+        ? loadProducts()
+        : loadProducts().where((p) => p.name.startsWith(query)).toList();
+
+    return listProducts.isEmpty
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "No results found.",
+              style: TextStyle(fontSize: 20),
+            ),
+          ])
+        : ListView.builder(
+            itemCount: listProducts.length,
+            itemBuilder: (context, index) {
+              final Product product = productsList[index];
+
+              return Card(
+                child: ListTile(
+                  title: RichText(
+                    text: TextSpan(
+                      text: product.name.substring(0, query.length),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: product.name.substring(query.length),
+                            style: TextStyle(color: Colors.grey))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
