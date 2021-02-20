@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:manager_app/screens/Loading.dart';
-import 'package:manager_app/screens/clien_product_list.dart';
 import 'package:manager_app/screens/company.dart';
 import 'package:manager_app/screens/employees.dart';
 import 'package:manager_app/screens/action.dart';
@@ -19,6 +18,7 @@ import 'package:manager_app/screens/settings.dart';
 import 'package:manager_app/screens/statistics.dart';
 import 'package:manager_app/services/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,16 +35,19 @@ class MyApp extends StatelessWidget {
           return Loading();
         }
 
-        return Themebuilder(
-          builder: (context, _themeData) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Manager App',
-              initialRoute: '/',
-              routes: _buildRoutes(context),
-              theme: _themeData,
-            );
-          },
+        return ChangeNotifierProvider(
+          create: (_) => ThemeNotifier(),
+          child: Consumer<ThemeNotifier>(
+            builder: (context, ThemeNotifier notifier, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Manager App',
+                initialRoute: '/',
+                routes: _buildRoutes(context),
+                theme: notifier.darkTheme ? dark : light,
+              );
+            },
+          ),
         );
       },
     );
@@ -55,7 +58,6 @@ class MyApp extends StatelessWidget {
       '/': (context) => Init(),
       'login': (context) => Login(),
       'home': (context) => Home(),
-      'productList': (context) => ClientListTile(),
       'forgotPassword': (context) => ForgotPassword(),
       'register': (context) => Register(),
       'finances': (context) => FinancesScreen(),
