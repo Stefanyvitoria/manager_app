@@ -4,10 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
 import 'package:manager_app/models/employee.dart';
-import 'package:manager_app/models/ngrock_parametros.dart';
-import 'package:manager_app/models/product.dart';
 import 'package:manager_app/services/constantes.dart';
 import 'package:manager_app/services/database_service.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class Statistics extends StatefulWidget {
   @override
@@ -15,6 +14,8 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
+  List<charts.Series<Employee, String>> _seriesEmployee = [];
+
   List<Widget> containers = [
     Container(
       child: Center(
@@ -82,7 +83,12 @@ class _StatisticsState extends State<Statistics> {
                     ).toList();
 
                     Service.mergeSortEmployees(employees);
-
+                    _seriesEmployee.add(charts.Series(
+                        id: "Employees Graphic",
+                        data: employees,
+                        domainFn: (Employee employee, _) => employee.name,
+                        measureFn: (Employee employee, _) => employee.sold,
+                        labelAccessorFn: (Employee row, _) => '${row.sold}'));
                     return Column(
                       children: [
                         Container(
@@ -91,6 +97,35 @@ class _StatisticsState extends State<Statistics> {
                                   (employees.length >= 3
                                       ? 4
                                       : employees.length + 1)),
+                          child: Expanded(
+                            child: charts.PieChart(
+                              _seriesEmployee,
+                              animate: true,
+                              animationDuration: Duration(seconds: 2),
+                              behaviors: [
+                                new charts.DatumLegend(
+                                  outsideJustification:
+                                      charts.OutsideJustification.endDrawArea,
+                                  horizontalFirst: false,
+                                  desiredMaxRows: 2,
+                                  cellPadding:
+                                      new EdgeInsets.only(right: 4, bottom: 4),
+                                  entryTextStyle: charts.TextStyleSpec(
+                                      color: charts
+                                          .MaterialPalette.purple.shadeDefault,
+                                      fontFamily: 'Georgia',
+                                      fontSize: 11),
+                                ),
+                              ],
+                              defaultRenderer: new charts.ArcRendererConfig(
+                                  arcWidth: 100,
+                                  arcRendererDecorators: [
+                                    new charts.ArcLabelDecorator(
+                                        labelPosition:
+                                            charts.ArcLabelPosition.inside)
+                                  ]),
+                            ),
+                          ),
                         ),
                         Container(
                           child: Expanded(
