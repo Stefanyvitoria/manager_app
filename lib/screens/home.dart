@@ -293,7 +293,7 @@ class _HomeState extends State<Home> {
               if (ceo.company == null) {
                 dialogHome();
               } else {
-                Navigator.pushNamed(context, 'statistics');
+                Navigator.pushNamed(context, 'statistics', arguments: ceo);
               }
             },
             leading: Icon(FontAwesomeIcons.chartArea),
