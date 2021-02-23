@@ -54,7 +54,7 @@ class _RankingState extends State<Ranking> {
             },
           ).toList();
 
-          mergeSortEmployees(employees);
+          Service.mergeSortEmployees(employees);
 
           return ListView.builder(
             itemCount: employees.length,
@@ -93,42 +93,6 @@ class _RankingState extends State<Ranking> {
         },
       ),
     );
-  }
-
-  void mergeSortEmployees(List<Employee> listEmployees) {
-    //sort in descending order
-    if (listEmployees.length > 1) {
-      var quite = listEmployees.length ~/ 2;
-      var listLeft = listEmployees.sublist(0, quite);
-      var listRight = listEmployees.sublist(quite, listEmployees.length);
-
-      mergeSortEmployees(listLeft);
-      mergeSortEmployees(listRight);
-
-      int i, j, k;
-      i = j = k = 0;
-
-      while ((i < listLeft.length) && (j < listRight.length)) {
-        if (listLeft[i].sold > listRight[j].sold) {
-          listEmployees[k] = listLeft[i];
-          i += 1;
-        } else {
-          listEmployees[k] = listRight[j];
-          j += 1;
-        }
-        k += 1;
-      }
-      while (i < listLeft.length) {
-        listEmployees[k] = listLeft[i];
-        i += 1;
-        k += 1;
-      }
-      while (j < listRight.length) {
-        listEmployees[k] = listRight[j];
-        j += 1;
-        k += 1;
-      }
-    }
   }
 }
 
