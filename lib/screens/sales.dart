@@ -532,17 +532,19 @@ buildBodySales(List obj, BuildContext context) {
                         //update employee sold
                         await sale.employee.get().then(
                           (value) {
-                            if (value.id == sale.employee.id) {
+                            if (value.id == sale.employee.id && value.exists) {
                               employee = Employee.fromJson(value.data());
                             }
                           },
                         );
-                        employee.sold -= sale.productAmount;
-                        await DatabaseServiceFirestore().setDoc(
-                          collectionName: 'employee',
-                          instance: employee,
-                          uid: employee.uid,
-                        );
+                        if (employee != null) {
+                          employee.sold -= sale.productAmount;
+                          await DatabaseServiceFirestore().setDoc(
+                            collectionName: 'employee',
+                            instance: employee,
+                            uid: employee.uid,
+                          );
+                        }
                       },
                       child: Card(
                         child: ListTile(

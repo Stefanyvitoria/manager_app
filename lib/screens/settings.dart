@@ -117,7 +117,7 @@ class _SettingsAppState extends State<SettingsApp> {
                           //delete login and (logical exclusion)
                           DatabaseServiceAuth.deleteUser(
                               FirebaseAuth.instance.currentUser);
-                          print(user.toString());
+
                           if (user.toString() == "Instance of 'Employee'") {
                             DatabaseServiceFirestore().deleteDoc(
                               collectionName: 'employee',
