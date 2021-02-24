@@ -17,6 +17,7 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
   List<charts.Series<Employee, String>> _seriesEmployee = [];
+  List<charts.Series<Sale, int>> _lineSale = [];
 
   Ceo ceo;
   final _formkey = GlobalKey<FormState>();
@@ -241,7 +242,6 @@ class _StatisticsState extends State<Statistics> {
                 }
 
                 //print(sales);
-
                 List products = [];
                 for (Sale sale in sales) {
                   if (products.indexOf(sale.nameProduct) == -1) {
@@ -271,7 +271,7 @@ class _StatisticsState extends State<Statistics> {
                   xs.add(x);
                 }
 
-                print(xs);
+                //print(xs);
                 List myX = [];
 
                 for (var i = 0; i < products.length; i += 1) {
@@ -295,12 +295,59 @@ class _StatisticsState extends State<Statistics> {
                     )
                   },
                 );
-                return Container();
+
+                print(result);
+
+                return FutureBuilder(
+                    future: result,
+                    builder: (ctxt, snap) {
+                      while (snapshot.hasError ||
+                          snapshot.connectionState == ConnectionState.waiting ||
+                          !snapshot.hasData) {
+                        return ConstantesWidgets.loading();
+                      }
+                      print(snapshot.data);
+                      List value1 = snapshot.data[0]('x_coordinates');
+                      List value2 = snapshot.data[1]('y_coordinates');
+                      print(value1);
+                      return Container();
+                    }); // return Column(
+                //     children: [Text('ALA'), charts.LineChart()]);
               },
             );
           }
         },
       ),
     );
+  }
+
+//   _regression(List sales) async {
+//     return Axes.fromJson(result);
+//   }
+}
+
+class Axes {
+  List x;
+  List y;
+  Axes({
+    this.x,
+    this.y,
+  });
+  Axes.fromJson(Map<String, dynamic> json) {
+    x = json['x_coordinates'];
+    y = json['y_coordinates'];
+  }
+}
+
+class Points {
+  int x;
+  int y;
+  Points({
+    this.x,
+    this.y,
+  });
+  Points.fromJson(Map<String, dynamic> json) {
+    x = json[''];
+    y = json[''];
   }
 }
