@@ -511,7 +511,6 @@ class _HomeState extends State<Home> {
                         direction: Axis.vertical,
                         children: [
                           Text('Value: ${product.value}'),
-                          Text('Amount: ${product.amount}'),
                           Text('Company: ${company.name}'),
                           Text('Phone: ${company.phone}')
                         ],
@@ -539,7 +538,6 @@ Future<Company> _getCompany(Product product) async {
   Company company = await product.company.get().then((value) {
     return Company.fromJson(value.data());
   });
-  print(company.name);
   return company;
 }
 
