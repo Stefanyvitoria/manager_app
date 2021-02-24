@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
@@ -17,7 +17,7 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
   List<charts.Series<Employee, String>> _seriesEmployee = [];
-  List<charts.Series<Sale, int>> _lineSale = [];
+  List<charts.Series<Points, String>> _seriesSale = [];
 
   Ceo ceo;
   final _formkey = GlobalKey<FormState>();
@@ -241,7 +241,6 @@ class _StatisticsState extends State<Statistics> {
                   );
                 }
 
-                //print(sales);
                 List products = [];
                 for (Sale sale in sales) {
                   if (products.indexOf(sale.nameProduct) == -1) {
@@ -251,12 +250,8 @@ class _StatisticsState extends State<Statistics> {
 
                 List xs = [];
                 List ys = [];
-                List pn = [];
-
-                //print(pn.indexOf('sste'));
 
                 for (Sale sale in sales) {
-                  //print(sale.nameProduct + '${sale.productAmount}');
                   List x = [];
 
                   for (var i = 0; i < products.length; i += 1) {
@@ -299,20 +294,82 @@ class _StatisticsState extends State<Statistics> {
                 print(result);
 
                 return FutureBuilder(
-                    future: result,
-                    builder: (ctxt, snap) {
-                      while (snapshot.hasError ||
-                          snapshot.connectionState == ConnectionState.waiting ||
-                          !snapshot.hasData) {
-                        return ConstantesWidgets.loading();
-                      }
-                      print(snapshot.data);
-                      List value1 = snapshot.data[0]('x_coordinates');
-                      List value2 = snapshot.data[1]('y_coordinates');
-                      print(value1);
-                      return Container();
-                    }); // return Column(
-                //     children: [Text('ALA'), charts.LineChart()]);
+                  future: result,
+                  builder: (ctxt, snap) {
+                    while (snap.hasError ||
+                        snap.connectionState == ConnectionState.waiting ||
+                        !snap.hasData) {
+                      return ConstantesWidgets.loading();
+                    }
+                    var a = Axes.fromJson(snap.data);
+
+                    List<Points> points = [];
+                    for (var i = 0; i < products.length; i += 1) {
+                      points.add(Points(
+                          name: products[i], x: (myX[i] / 2).toString()));
+                    }
+
+                    if (_seriesSale.isEmpty) {
+                      _seriesSale.add(charts.Series(
+                          id: "Products Graphic",
+                          data: points,
+                          domainFn: (Points point, _) => point.name,
+                          measureFn: (Points point, _) => num.parse(point.x),
+                          labelAccessorFn: (Points row, _) => row.x));
+                    }
+                    NumberFormat formatter = NumberFormat("00.00");
+
+                    return ListView(children: [
+                      ListTile(
+                        title: Center(
+                          child: Text('Total Sales:'),
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height - 400,
+                        child: charts.PieChart(
+                          _seriesSale,
+                          animate: true,
+                          animationDuration: Duration(seconds: 1),
+                          behaviors: [
+                            new charts.DatumLegend(
+                              outsideJustification:
+                                  charts.OutsideJustification.endDrawArea,
+                              horizontalFirst: false,
+                              desiredMaxRows: 2,
+                              cellPadding:
+                                  new EdgeInsets.only(right: 4, bottom: 4),
+                              entryTextStyle: charts.TextStyleSpec(
+                                  color: charts
+                                      .MaterialPalette.purple.shadeDefault,
+                                  fontFamily: 'Georgia',
+                                  fontSize: 11),
+                            ),
+                          ],
+                          defaultRenderer: new charts.ArcRendererConfig(
+                            arcWidth: 100,
+                            arcRendererDecorators: [
+                              new charts.ArcLabelDecorator(
+                                  labelPosition: charts.ArcLabelPosition.inside)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      ListTile(
+                        title: Center(
+                          child: Text(
+                            'If you manage to double total sales,\nyou will bill: \$ ${formatter.format(a.ys[a.ys.length - 1])}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      )
+                    ]);
+                  },
+                );
               },
             );
           }
@@ -320,34 +377,24 @@ class _StatisticsState extends State<Statistics> {
       ),
     );
   }
-
-//   _regression(List sales) async {
-//     return Axes.fromJson(result);
-//   }
 }
 
 class Axes {
-  List x;
-  List y;
+  List xs;
+  List ys;
   Axes({
-    this.x,
-    this.y,
+    this.xs,
+    this.ys,
   });
   Axes.fromJson(Map<String, dynamic> json) {
-    x = json['x_coordinates'];
-    y = json['y_coordinates'];
+    xs = json['x_coordinates'];
+    ys = json['y_coordinates'];
   }
 }
 
 class Points {
-  int x;
-  int y;
-  Points({
-    this.x,
-    this.y,
-  });
-  Points.fromJson(Map<String, dynamic> json) {
-    x = json[''];
-    y = json[''];
-  }
+  String name;
+  String x;
+
+  Points({this.x, this.name});
 }
