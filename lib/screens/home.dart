@@ -612,7 +612,6 @@ class DataSearchProduct extends SearchDelegate<String> {
                         direction: Axis.vertical,
                         children: [
                           Text('Value: ${product.value}'),
-                          Text('Amount: ${product.amount}'),
                           Text('Company: ${company.name}'),
                           Text('Phone: ${company.phone}')
                         ],
