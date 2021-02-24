@@ -1,16 +1,46 @@
-# manager_app
+# SR Manager
 
-A new Flutter project.
+App description: SR Manager is a management application for micro sales companies. The purpose of the app is to assist small entrepreneurs in managing employees, products, sales and moving money, the app also provides the possibility to predict future earnings based on sales recorded in previous months. In addition, the app provides to employees of registered companies the possibility to check and inspect their position in the company. In addition, the app has a page where potential customers can consult and compare various products sold by registered companies.
 
-## Getting Started
+Features for CEO:
+- Finance.
+- Cashier:
+- Expenditure.
+- Investments.
+- History of actions.
 
-This project is a starting point for a Flutter application.
+-Employees:
+- CRUD.
 
-A few resources to get you started if this is your first Flutter project:
+-Products:
+- CRUD.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+-Sales:
+- CRUD.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-Statistics:
+- Sales by employees.
+- Sales forecast.
+
+Features for Employees:
+- Ranking.
+
+-Notes.
+- CRUD.
+
+-Sales:
+- CRUD.
+
+Customer Features:
+- Consultation of products.
+
+App configuration features:
+-Personal profile.
+
+
+- Company profile.
+- App settings.
+
+Some screens:
+
+![logo](https://github.com/Stefanyvitoria/manager_app/blob/master/images/logo4.png)
