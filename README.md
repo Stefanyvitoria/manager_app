@@ -41,6 +41,5 @@ App configuration features:
 - Company profile.
 - App settings.
 
-Some screens:
 
-![logo](https://github.com/Stefanyvitoria/manager_app/blob/master/images/logo4.png)
+![init](https://github.com/Stefanyvitoria/manager_app/blob/master/images/Screenshot_1614143674.png){:height="20%" width="20%"}
