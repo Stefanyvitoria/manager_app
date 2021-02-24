@@ -16,7 +16,8 @@ class Statistics extends StatefulWidget {
   _StatisticsState createState() => _StatisticsState();
 }
 
-class _StatisticsState extends State<Statistics> {
+class _StatisticsState extends State<Statistics>
+    with SingleTickerProviderStateMixin {
   List<charts.Series<Employee, String>> _seriesEmployee = [];
   List<charts.Series<Points, String>> _seriesSale = [];
 
@@ -25,6 +26,20 @@ class _StatisticsState extends State<Statistics> {
   var server;
   bool regression = false;
   num choose;
+  TabController _tabControler;
+  PageController _pageControler = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    _tabControler = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabControler.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +48,23 @@ class _StatisticsState extends State<Statistics> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Statistics"),
+        bottom: TabBar(
+          onTap: (index) {
+            print('ok');
+            _pageControler.animateToPage(_tabControler.index == 1 ? 1 : 0,
+                duration: Duration(milliseconds: 100), curve: Curves.linear);
+            _tabControler.animateTo(_tabControler.index == 1 ? 0 : 1);
+          },
+          tabs: [Icon(Icons.people_alt), Icon(Icons.point_of_sale)],
+          isScrollable: false,
+          controller: _tabControler,
+        ),
       ),
       body: PageView.builder(
+        controller: _pageControler,
+        onPageChanged: (index) {
+          _tabControler.animateTo(_tabControler.index == 1 ? 0 : 1);
+        },
         itemCount: 2,
         itemBuilder: (context, index) {
           if (index == 0) {
@@ -414,27 +444,28 @@ class _StatisticsState extends State<Statistics> {
                         ),
                         Divider(),
                         ListTile(
-                            title: Center(
-                          child: RichText(
-                            text: TextSpan(
-                              text:
-                                  'Approximate amount of expected\nprofit for the next month, based\non the last $choose months: ',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
+                          title: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                text:
+                                    'Approximate amount of expected\nprofit for the next month, based\non the last $choose months: ',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          '\$ ${formatter.format(a.ys[a.ys.length - 1])}.',
+                                      style: TextStyle(color: Colors.green)),
+                                ],
                               ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text:
-                                        '\$ ${formatter.format(a.ys[a.ys.length - 1])}.',
-                                    style: TextStyle(color: Colors.green)),
-                              ],
                             ),
                           ),
-                        ))
+                        )
                       ],
                     );
                   },
