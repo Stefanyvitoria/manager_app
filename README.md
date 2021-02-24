@@ -42,4 +42,4 @@ App configuration features:
 - App settings.
 
 
-![init](https://github.com/Stefanyvitoria/manager_app/blob/master/images/Screenshot_1614143674.png) <!-- .element height="30%" width="30%" -->
+<img src="https://github.com/Stefanyvitoria/manager_app/blob/master/images/Screenshot_1614143674.png" alt="test image size" height="20%" width="20%">
