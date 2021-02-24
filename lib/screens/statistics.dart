@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:manager_app/models/ceo.dart';
+import 'package:manager_app/models/coordinates.dart';
 import 'package:manager_app/models/employee.dart';
 import 'package:manager_app/models/ngrock_parametros.dart';
 import 'package:manager_app/models/sale.dart';
@@ -23,6 +24,7 @@ class _StatisticsState extends State<Statistics> {
   final _formkey = GlobalKey<FormState>();
   var server;
   bool regression = false;
+  num choose;
 
   @override
   Widget build(BuildContext context) {
@@ -225,13 +227,39 @@ class _StatisticsState extends State<Statistics> {
                             border: OutlineInputBorder(),
                           ),
                         ),
+                        TextFormField(
+                          validator: (value) {
+                            return value.isEmpty ? 'Required field.' : null;
+                          },
+                          onChanged: (text) {
+                            choose = num.parse(text);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Previous months:',
+                            labelStyle: TextStyle(fontSize: 15),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
                         Align(
                           child: ElevatedButton(
                             onPressed: () {
                               if (!_formkey.currentState.validate()) return;
-                              setState(() {
-                                regression = true;
-                              });
+                              if (sales.length > 0) {
+                                setState(() {
+                                  regression = true;
+                                });
+                              } else {
+                                ConstantesWidgets.dialog(
+                                    context: context,
+                                    title: Text('Fail'),
+                                    content:
+                                        Text('You have no registered sales.'),
+                                    actions: TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Ok')));
+                              }
                             },
                             child: Text('Confirm'),
                           ),
@@ -240,6 +268,35 @@ class _StatisticsState extends State<Statistics> {
                     ),
                   );
                 }
+
+                List month = [];
+                var date = DateTime.now();
+                for (int i = 1; i <= choose; i += 1) {
+                  var prevMonth =
+                      new DateTime(date.year, date.month - i, date.day);
+
+                  for (Sale saleM in sales) {
+                    var monthS = saleM.date.substring(
+                        saleM.date.indexOf('/') + 1,
+                        saleM.date.lastIndexOf('/'));
+
+                    var yearS = saleM.date
+                                .substring(0, saleM.date.indexOf('/'))
+                                .length ==
+                            4
+                        ? saleM.date.substring(0, saleM.date.indexOf('/'))
+                        : saleM.date.substring(
+                            saleM.date.lastIndexOf('/') + 1,
+                            saleM.date.length,
+                          );
+
+                    if (num.parse(yearS) == prevMonth.year &&
+                        num.parse(monthS) == prevMonth.month) {
+                      month.add(saleM);
+                    }
+                  }
+                }
+                sales = month;
 
                 List products = [];
                 for (Sale sale in sales) {
@@ -266,7 +323,6 @@ class _StatisticsState extends State<Statistics> {
                   xs.add(x);
                 }
 
-                //print(xs);
                 List myX = [];
 
                 for (var i = 0; i < products.length; i += 1) {
@@ -274,7 +330,7 @@ class _StatisticsState extends State<Statistics> {
                   for (var j = 0; j < xs.length; j += 1) {
                     s += xs[j][i];
                   }
-                  myX.add(s * 2);
+                  myX.add(s ~/ choose);
                 }
 
                 var result = appRest.call(
@@ -291,8 +347,6 @@ class _StatisticsState extends State<Statistics> {
                   },
                 );
 
-                print(result);
-
                 return FutureBuilder(
                   future: result,
                   builder: (ctxt, snap) {
@@ -301,12 +355,12 @@ class _StatisticsState extends State<Statistics> {
                         !snap.hasData) {
                       return ConstantesWidgets.loading();
                     }
-                    var a = Axes.fromJson(snap.data);
+                    var a = Coordinates.fromJson(snap.data);
 
                     List<Points> points = [];
                     for (var i = 0; i < products.length; i += 1) {
-                      points.add(Points(
-                          name: products[i], x: (myX[i] / 2).toString()));
+                      points.add(
+                          Points(name: products[i], x: (myX[i]).toString()));
                     }
 
                     if (_seriesSale.isEmpty) {
@@ -319,55 +373,70 @@ class _StatisticsState extends State<Statistics> {
                     }
                     NumberFormat formatter = NumberFormat("00.00");
 
-                    return ListView(children: [
-                      ListTile(
-                        title: Center(
-                          child: Text('Total Sales:'),
+                    return ListView(
+                      children: [
+                        ListTile(
+                          title: Center(
+                            child: Text(
+                                'Expected quantity of products sold next month:'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height - 400,
-                        child: charts.PieChart(
-                          _seriesSale,
-                          animate: true,
-                          animationDuration: Duration(seconds: 1),
-                          behaviors: [
-                            new charts.DatumLegend(
-                              outsideJustification:
-                                  charts.OutsideJustification.endDrawArea,
-                              horizontalFirst: false,
-                              desiredMaxRows: 2,
-                              cellPadding:
-                                  new EdgeInsets.only(right: 4, bottom: 4),
-                              entryTextStyle: charts.TextStyleSpec(
-                                  color: charts
-                                      .MaterialPalette.purple.shadeDefault,
-                                  fontFamily: 'Georgia',
-                                  fontSize: 11),
-                            ),
-                          ],
-                          defaultRenderer: new charts.ArcRendererConfig(
-                            arcWidth: 100,
-                            arcRendererDecorators: [
-                              new charts.ArcLabelDecorator(
-                                  labelPosition: charts.ArcLabelPosition.inside)
+                        Container(
+                          height: MediaQuery.of(context).size.height - 400,
+                          child: charts.PieChart(
+                            _seriesSale,
+                            animate: true,
+                            animationDuration: Duration(seconds: 1),
+                            behaviors: [
+                              new charts.DatumLegend(
+                                outsideJustification:
+                                    charts.OutsideJustification.endDrawArea,
+                                horizontalFirst: false,
+                                desiredMaxRows: 2,
+                                cellPadding:
+                                    new EdgeInsets.only(right: 4, bottom: 4),
+                                entryTextStyle: charts.TextStyleSpec(
+                                    color: charts
+                                        .MaterialPalette.purple.shadeDefault,
+                                    fontFamily: 'Georgia',
+                                    fontSize: 11),
+                              ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Divider(),
-                      ListTile(
-                        title: Center(
-                          child: Text(
-                            'If you manage to double total sales,\nyou will bill: \$ ${formatter.format(a.ys[a.ys.length - 1])}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                            defaultRenderer: new charts.ArcRendererConfig(
+                              arcWidth: 100,
+                              arcRendererDecorators: [
+                                new charts.ArcLabelDecorator(
+                                    labelPosition:
+                                        charts.ArcLabelPosition.inside)
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    ]);
+                        Divider(),
+                        ListTile(
+                            title: Center(
+                          child: RichText(
+                            text: TextSpan(
+                              text:
+                                  'Approximate amount of expected\nprofit for the next month, based\non the last $choose months: ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        '\$ ${formatter.format(a.ys[a.ys.length - 1])}.',
+                                    style: TextStyle(color: Colors.green)),
+                              ],
+                            ),
+                          ),
+                        ))
+                      ],
+                    );
                   },
                 );
               },
@@ -377,24 +446,4 @@ class _StatisticsState extends State<Statistics> {
       ),
     );
   }
-}
-
-class Axes {
-  List xs;
-  List ys;
-  Axes({
-    this.xs,
-    this.ys,
-  });
-  Axes.fromJson(Map<String, dynamic> json) {
-    xs = json['x_coordinates'];
-    ys = json['y_coordinates'];
-  }
-}
-
-class Points {
-  String name;
-  String x;
-
-  Points({this.x, this.name});
 }

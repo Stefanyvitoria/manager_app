@@ -172,7 +172,7 @@ class _SettingsAppState extends State<SettingsApp> {
             onTap: () {
               ConstantesWidgets.dialog(
                 context: context,
-                title: Text('Sr Manager 2.0'),
+                title: Text('Sr Manager v2.0'),
                 content: Wrap(children: [
                   Text('Sr Manager is an app aimed at assisting small business CEOs.' +
                       '\nThe app offers assistance in managing sales, employees and cash inflows and outflows.' +
