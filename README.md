@@ -2,6 +2,8 @@
 
 App description: SR Manager is a management application for micro sales companies. The purpose of the app is to assist small entrepreneurs in managing employees, products, sales and moving money, the app also provides the possibility to predict future earnings based on sales recorded in previous months. In addition, the app provides to employees of registered companies the possibility to check and inspect their position in the company. In addition, the app has a page where potential customers can consult and compare various products sold by registered companies.
 
+Server URL : https://colab.research.google.com/drive/1IeolJaQkDKrif1qVf-z0FInIsAPsHOLY
+
 Features for CEO:
 - Finance.
 - Cashier:
